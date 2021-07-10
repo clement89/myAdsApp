@@ -428,7 +428,6 @@
 //   }
 // }
 
-
 class VideoResponse {
   bool flag;
   bool badgeFlag;
@@ -460,33 +459,33 @@ class VideoResponse {
       {this.userId,
       this.badgeFlag,
       this.flag,
-        this.cb,
-        this.timeAdded,
-        this.timeBalance,
-        this.userBadges,
-        this.surveyDetails,
-        this.videoName,
-        this.productUrl,
-        this.videoImage,
-        this.videoLink,
-        this.videoId,
-        this.rons,
-        this.nextVideo,
-        this.previousVideo,
-        this.watchedMinutes,
-        this.toWatchMinutes,
-        this.watchedtime,
-        this.toWatchtime,
-        this.wtachedPercentage,
-        this.daysLeftThisMonth,
-        this.balanceTime,
-        this.balanceReward,
-        this.reaction,
-        this.survey});
+      this.cb,
+      this.timeAdded,
+      this.timeBalance,
+      this.userBadges,
+      this.surveyDetails,
+      this.videoName,
+      this.productUrl,
+      this.videoImage,
+      this.videoLink,
+      this.videoId,
+      this.rons,
+      this.nextVideo,
+      this.previousVideo,
+      this.watchedMinutes,
+      this.toWatchMinutes,
+      this.watchedtime,
+      this.toWatchtime,
+      this.wtachedPercentage,
+      this.daysLeftThisMonth,
+      this.balanceTime,
+      this.balanceReward,
+      this.reaction,
+      this.survey});
 
   VideoResponse.fromJson(Map<String, dynamic> json) {
     badgeFlag = json["badgeFlag"];
-  flag = json["flag"];
+    flag = json["flag"];
     userId = json['user_id'];
     cb = json['cb'];
     timeAdded = json['time_added'];
@@ -494,21 +493,26 @@ class VideoResponse {
     // userBadges = json['userBadges'] != null
     //     ? new UserBadges.fromJson(json['userBadges'])
     //     : null;
+
     if (json['userBadges'] != null) {
       userBadges = new List<UserBadges>();
       json['userBadges'].forEach((v) {
         userBadges.add(new UserBadges.fromJson(v));
       });
     }
+
     surveyDetails = json['survey_details'] != null
         ? new SurveyDetails.fromJson(json['survey_details'])
         : null;
+    print('ok....');
+
     videoName = json['video_name'];
     productUrl = json['product_url'];
     videoImage = json['video_image'];
     videoLink = json['video_link'];
     videoId = json['video_id'];
     rons = json['rons'];
+
     nextVideo = json['next_video'] != null
         ? new NextVideos.fromJson(json['next_video'])
         : null;
@@ -517,9 +521,10 @@ class VideoResponse {
         : null;
     watchedMinutes = json['watched_minutes'];
     toWatchMinutes = json['to_watch_minutes'];
+
     if (json['to_watch_time'] != null) {
       TimeFormatter timeFormatter =
-      TimeFormatter.fromJson(json['to_watch_time']);
+          TimeFormatter.fromJson(json['to_watch_time']);
       toWatchtime = (timeFormatter.hrs).toString() +
           ":" +
           (timeFormatter.mins).toString() +
@@ -528,7 +533,7 @@ class VideoResponse {
     }
     if (json['watched_time'] != null) {
       TimeFormatter timeFormatter =
-      TimeFormatter.fromJson(json['watched_time']);
+          TimeFormatter.fromJson(json['watched_time']);
       watchedtime = (timeFormatter.hrs).toString() +
           ":" +
           (timeFormatter.mins).toString() +
@@ -541,13 +546,13 @@ class VideoResponse {
     balanceReward = json['balance_reward'];
     reaction = json['reaction'];
     survey =
-    json['survey'] != null ? new Survey.fromJson(json['survey']) : null;
+        json['survey'] != null ? new Survey.fromJson(json['survey']) : null;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data["badgeFlag"]= this.badgeFlag;
-    data['flag']= this.flag;
+    data["badgeFlag"] = this.badgeFlag;
+    data['flag'] = this.flag;
     data['user_id'] = this.userId;
     data['cb'] = this.cb;
     data['time_added'] = this.timeAdded;
@@ -586,23 +591,23 @@ class VideoResponse {
   }
 }
 
-
-
 class SurveyDetails {
   String name;
   String id;
   List<Question> question;
-
   SurveyDetails({this.name, this.question, this.id});
-
   SurveyDetails.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     id = json['id'];
     if (json['question'] != null) {
-      question = new List<Question>();
-      json['question'].forEach((v) {
-        question.add(new Question.fromJson(v));
-      });
+      try {
+        question = new List<Question>();
+        json['question'].forEach((v) {
+          question.add(new Question.fromJson(v));
+        });
+      } catch (e) {
+        print('error here 222 - $e');
+      }
     }
   }
 
@@ -670,7 +675,8 @@ class PreviousVideo {
   String videoImage;
   String videoLink;
 
-  PreviousVideo({this.videoId, this.videoName, this.videoImage, this.videoLink});
+  PreviousVideo(
+      {this.videoId, this.videoName, this.videoImage, this.videoLink});
 
   PreviousVideo.fromJson(Map<String, dynamic> json) {
     videoId = json['video_id'];
@@ -688,6 +694,7 @@ class PreviousVideo {
     return data;
   }
 }
+
 class WatchedTime {
   int hrs;
   int mins;
@@ -732,7 +739,6 @@ class Survey {
   }
 }
 
-
 class TimeFormatter {
   int hrs, mins, sec;
   TimeFormatter(this.hrs, this.mins, this.sec);
@@ -769,19 +775,19 @@ class UserBadges {
 
   UserBadges(
       {this.available,
-        this.type,
-        this.name,
-        this.id,
-        this.period,
-        this.image,
-        this.notification,
-        this.multiply,
-        this.promoUrl,
-        this.promoCode,
-        this.totViewMinutes,
-        this.surveysCompleted,
-        this.creditHours,
-        this.criteria});
+      this.type,
+      this.name,
+      this.id,
+      this.period,
+      this.image,
+      this.notification,
+      this.multiply,
+      this.promoUrl,
+      this.promoCode,
+      this.totViewMinutes,
+      this.surveysCompleted,
+      this.creditHours,
+      this.criteria});
 
   UserBadges.fromJson(Map<String, dynamic> json) {
     available = json['available'];
@@ -819,6 +825,3 @@ class UserBadges {
     return data;
   }
 }
-
-
-

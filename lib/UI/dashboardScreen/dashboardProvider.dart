@@ -23,35 +23,36 @@ class DashboardProvider extends BaseProvider {
         .post(Endpoints.getVideos, queryParameters: qParams)
         .then((response) => getSuccessResponse(response))
         .catchError((onError) {
-      print(onError);
+      print('error 3213 - $onError');
     });
   }
 
   getSuccessResponse(Response response) {
-    // print("Got VideoResponse.JSON");
+    print("getSuccessResponse - 321 ");
+
     VideoResponse _response = VideoResponse.fromJson(response.data);
 
     // print("Response Data: vandhudhu");
     // print("Response Data:" + _response.toJson().toString());
-     listener.onSuccess(_response, reqId: ResponseIds.GET_VIDEO);
+    listener.onSuccess(_response, reqId: ResponseIds.GET_VIDEO);
     // print("Triggered listener for GetSUccessResponse");
   }
+
   // void setMemberList(List<Members> memberList){
   //   _members = memberList;
   //   notifyListeners();
   // }
   //
   // List<Members> get getMemberList => _members;
-  void setNextVideo(NextVideos _nextVideo){
+  void setNextVideo(NextVideos _nextVideo) {
     nextVideo = _nextVideo;
     notifyListeners();
   }
 
   NextVideos get getNextVideo => nextVideo;
 
-
   //set previous
-  void setPreviousVideo(PreviousVideo _previousVideo){
+  void setPreviousVideo(PreviousVideo _previousVideo) {
     previousVideo = _previousVideo;
     notifyListeners();
   }
@@ -59,7 +60,7 @@ class DashboardProvider extends BaseProvider {
   PreviousVideo get getPreviousVideo => previousVideo;
 
   //set survey
-  void setSurveyVideo(SurveyDetails _surveyDetails){
+  void setSurveyVideo(SurveyDetails _surveyDetails) {
     surveyDetails = _surveyDetails;
     notifyListeners();
   }
@@ -73,10 +74,11 @@ class DashboardProvider extends BaseProvider {
   // List<SpecialOffer> specialOffer;
   // List<Bonus> bonus;
   // List<Multiply> multiply;
-  void setUserBadge(List<UserBadges> _userbadge){
+  void setUserBadge(List<UserBadges> _userbadge) {
     userBadges = _userbadge;
     notifyListeners();
   }
+
   List<UserBadges> get getuserBadge => userBadges;
 
   // void setmultiply(List<Multiply> _mult){

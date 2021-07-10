@@ -60,7 +60,7 @@ class _DashBoardScreenState extends BaseState<DashBoardScreen> {
   void onSuccess(any, {int reqId}) {
     ProgressBar.instance.hideProgressBar();
     super.onSuccess(any);
-    print("in on sucess");
+    print("in on success dashboard");
     switch (reqId) {
       case ResponseIds.GET_VIDEO:
         VideoResponse _response = any as VideoResponse;
