@@ -1,0 +1,113 @@
+name: myads_app
+description: A new Flutter application.
+
+# The following line prevents the package from being accidentally published to
+# pub.dev using `pub publish`. This is preferred for private packages.
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+# The following defines the version and build number for your application.
+# A version number is three numbers separated by dots, like 1.2.43
+# followed by an optional build number separated by a +.
+# Both the version and the builder number may be overridden in flutter
+# build by specifying --build-name and --build-number, respectively.
+# In Android, build-name is used as versionName while build-number used as versionCode.
+# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
+# In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
+# Read more about iOS versioning at
+# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
+version: 1.0.0+4
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+
+  # The following adds the Cupertino Icons font to your application.
+  # Use with the CupertinoIcons class for iOS style icons.
+  cupertino_icons: ^1.0.0
+  rating_bar:
+  expandable:
+  smooth_star_rating: 1.1.1
+  percent_indicator: ^2.1.5
+  video_player:
+  menu_button:
+  configurable_expansion_tile:
+  webview_flutter:
+  flick_video_player: ^0.3.0
+  sizer: ^1.1.5
+  visibility_detector:
+  flutter_range_slider:
+  flutter_xlider:
+  charts_flutter:
+  flutter_slider_indicator:
+  step_progress_indicator:
+  font_awesome_flutter:
+  jiffy:
+  get_it:
+  dio: ^3.0.10
+  pretty_dio_logger: ^1.1.1
+  file_picker: ^1.12.0
+  shared_preferences: ^0.5.12+4
+  provider:
+  grouped_buttons: ^1.0.4
+  auto_orientation:
+  progress_indicator: ^0.2.0
+  intl: ^0.17.0
+  fluttertoast: ^8.0.7
+  carousel_slider: ^3.0.0
+  flutter_rating_bar: ^4.0.0
+  month_picker_dialog: ^0.4.0
+  table_sticky_headers: ^2.0.0
+#  chewie: ^1.0.0
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+# For information on the generic Dart part of this file, see the
+# following page: https://dart.dev/tools/pub/pubspec
+
+# The following section is specific to Flutter.
+flutter:
+
+  # The following line ensures that the Material Icons font is
+  # included with your application, so that you can use the icons in
+  # the material Icons class.
+  uses-material-design: true
+
+  # To add assets to your application, add an assets section, like this:
+  assets:
+    - assets/images/
+
+  fonts:
+    - family: RobotoRegular
+      fonts:
+        - asset: assets/fonts/Roboto-Regular.ttf
+
+    - family: RobotoMedium
+      fonts:
+        - asset: assets/fonts/Roboto-Medium.ttf
+
+    - family: RobotoBold
+      fonts:
+        - asset: assets/fonts/Roboto-Bold.ttf
+
+    - family: RobotoLight
+      fonts:
+        - asset: assets/fonts/Roboto-Light.ttf
+
+    - family: RobotoBlack
+      fonts:
+        - asset: assets/fonts/Roboto-Black.ttf
+
+    - family: RobotoItalic
+      fonts:
+        - asset: assets/fonts/Roboto-Italic.ttf
+
+    - family: RobotoItalic
+      fonts:
+        - asset: assets/fonts/Roboto-Italic.ttf
+
+

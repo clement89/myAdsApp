@@ -1,0 +1,54 @@
+{
+    "flag": false,
+    "user_id": "68",
+    "time_added": "0",
+    "time_balance": "0",
+    "badgeFlag": false,
+    "userBadges": [
+        {
+            "available": 0,
+            "notification": "",
+            "image": "",
+            "period": "",
+            "id": "",
+            "name": "",
+            "criteria": "",
+            "type": "",
+            "multiply": 0
+        }
+    ],
+    "rons": "",
+    "video_length": "",
+    "video_id": "",
+    "video_link": "",
+    "video_image": "",
+    "product_url": "",
+    "video_name": "",
+    "survey_details": "",
+    "next_video": {
+        "video_id": "",
+        "video_length": "",
+        "rons": "",
+        "video_name": "",
+        "video_image": "",
+        "video_link": ""
+    },
+    "watched_minutes": "0.0",
+    "to_watch_minutes": "208",
+    "totalSeconds": 12483,
+    "watched_time": {
+        "hrs": 0,
+        "mins": 0,
+        "sec": 0
+    },
+    "to_watch_time": {
+        "hrs": 3,
+        "mins": 28,
+        "sec": 3
+    },
+    "wtached_percentage": "0.00",
+    "days_left_this_month": "27",
+    "balance_time": "0",
+    "balance_reward": "0",
+    "reaction": ""
+}
