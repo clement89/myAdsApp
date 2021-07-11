@@ -17,4 +17,5 @@ class Endpoints {
   static final String survey = "add-survey.php";
   static final String graph = "get-graph.php";
   static final String activity = "my-activity.php";
+  static final String otpValidation = "verifyotp.php";
 }

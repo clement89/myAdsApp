@@ -25,10 +25,10 @@ class SignUp2Response {
       this.streamIn,
       this.playback);
 
-  SignUp2Response.fromJson(List<dynamic> jsonList) {
+  SignUp2Response.fromJson(Map<String, dynamic> json) {
     print("GOT USer");
 
-    Map<String, dynamic> json = jsonList.first; //cjc changed
+    // Map<String, dynamic> json = jsonList.first; //cjc changed
     // print(json);
     firstName = json['name'];
     lastName = json['last_name'];

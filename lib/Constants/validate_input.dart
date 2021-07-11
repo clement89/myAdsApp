@@ -45,6 +45,13 @@ class ValidateInput {
     return null;
   }
 
+  static String validateOtp(String value) {
+    if (value.length == 0) {
+      return "OTP is Required";
+    }
+    return null;
+  }
+
   static String validateSignupPassword(String value) {
     // Pattern pattern = r'^(?=.*[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{6,}$';
     String pattern = r'^[a-zA-Z]\w{5,15}$';

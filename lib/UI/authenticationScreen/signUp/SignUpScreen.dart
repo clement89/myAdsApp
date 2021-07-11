@@ -59,7 +59,7 @@ class _SignUpScreenState extends BaseState<SignUpScreen> {
     switch (reqId) {
       case ResponseIds.SIGN_UP1:
         SignUpResponse _response = any as SignUpResponse;
-        if (_response.useremail.isNotEmpty) {
+        if (_response.useremail != null) {
           await SharedPrefManager.instance
               .setString(Constants.userId, _response.userid.toString());
           await SharedPrefManager.instance

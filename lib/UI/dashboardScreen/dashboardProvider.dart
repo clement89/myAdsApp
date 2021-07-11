@@ -75,6 +75,7 @@ class DashboardProvider extends BaseProvider {
   // List<Bonus> bonus;
   // List<Multiply> multiply;
   void setUserBadge(List<UserBadges> _userbadge) {
+    print('setting badges - - $_userbadge');
     userBadges = _userbadge;
     notifyListeners();
   }

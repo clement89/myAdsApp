@@ -46,8 +46,14 @@ class _LoginScreenState extends BaseState<LoginScreen> {
   void initState() {
     super.initState();
     _loginProvider = Provider.of<LoginProvider>(context, listen: false);
-    _loginProvider.initialProvider();
     _loginProvider.listener = this;
+
+    if (widget.showOtp != null) {
+      //cjc added
+      _loginProvider.initialProviderNew();
+    } else {
+      _loginProvider.initialProvider();
+    }
   }
 
   String videoUrl;
@@ -64,7 +70,11 @@ class _LoginScreenState extends BaseState<LoginScreen> {
   void _performLogin() {
     _loginProvider.listener = this;
     ProgressBar.instance.showProgressbar(context);
-    _loginProvider.performSignIn();
+    if (widget.showOtp != null) {
+      _loginProvider.performOtpValidation();
+    } else {
+      _loginProvider.performSignIn();
+    }
   }
 
   @override
@@ -96,6 +106,11 @@ class _LoginScreenState extends BaseState<LoginScreen> {
           CodeSnippet.instance.showMsg(_response.username);
         }
         break;
+      case ResponseIds.OTP_SCREEN:
+        Map<String, dynamic> _response = any as Map<String, dynamic>;
+        CodeSnippet.instance.showMsg(_response['message']);
+        Navigator.of(context).push(PageRouteBuilder(
+            pageBuilder: (_, __, ___) => new DashBoardScreen()));
     }
   }
 
@@ -103,6 +118,11 @@ class _LoginScreenState extends BaseState<LoginScreen> {
   Widget build(BuildContext context) {
     final MediaQueryData media = MediaQuery.of(context);
     final double statusBarHeight = MediaQuery.of(context).padding.top;
+
+    // if (widget.showOtp != null) {
+    //   //cjc added
+    //   _loginProvider.initialProvider();
+    // }
 
     return Scaffold(
       backgroundColor: MyColors.white,
@@ -184,7 +204,7 @@ class _LoginScreenState extends BaseState<LoginScreen> {
                       ? CustomTextFormField(
                           labelText: 'Please Enter the OTP',
                           controller: provider.otpController,
-                          validator: ValidateInput.validatePassword,
+                          validator: ValidateInput.validateOtp,
                           isPwdType: _otpVisible,
                           onSave: (value) {
                             provider.otpController.text = value;

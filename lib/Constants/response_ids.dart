@@ -1,5 +1,4 @@
 class ResponseIds {
-
   static const int GET_VIDEO = 01;
   static const int CREDIT_BALANCE = 02;
   static const int GET_INTEREST = 03;
@@ -20,5 +19,5 @@ class ResponseIds {
   static const int ADD_SURVEY = 18;
   static const int GRAPH = 19;
   static const int GET_PERFORMANCE = 20;
-
+  static const int OTP_SCREEN = 21;
 }

@@ -494,12 +494,19 @@ class VideoResponse {
     //     ? new UserBadges.fromJson(json['userBadges'])
     //     : null;
 
-    if (json['userBadges'] != null) {
-      userBadges = new List<UserBadges>();
-      json['userBadges'].forEach((v) {
-        userBadges.add(new UserBadges.fromJson(v));
-      });
+    try {
+      if (json['userBadges'] != null) {
+        userBadges = [];
+        json['userBadges'].forEach((v) {
+          userBadges.add(new UserBadges.fromJson(v));
+        });
+        print('badges added - $userBadges');
+      }
+    } catch (e) {
+      print('error in getting badges - $e');
     }
+
+    print('ok...');
 
     surveyDetails = json['survey_details'] != null
         ? new SurveyDetails.fromJson(json['survey_details'])

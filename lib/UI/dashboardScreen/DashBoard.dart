@@ -10,7 +10,6 @@ import 'package:myads_app/Constants/images.dart';
 import 'package:myads_app/Constants/response_ids.dart';
 import 'package:myads_app/Constants/strings.dart';
 import 'package:myads_app/Constants/styles.dart';
-import 'package:myads_app/UI/RewardScreen.dart';
 import 'package:myads_app/UI/Widgets/progressbar.dart';
 import 'package:myads_app/UI/activity/activityScreen.dart';
 import 'package:myads_app/UI/portraitScreen/watchPortraitScreen.dart';
@@ -27,6 +26,7 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:provider/provider.dart';
 
 import '../CheckMyCoupons.dart';
+import '../RewardScreen.dart';
 import '../charts/BarChart.dart';
 import 'dashboardProvider.dart';
 

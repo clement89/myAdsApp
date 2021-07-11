@@ -8,6 +8,7 @@ import 'package:myads_app/service/api_manager.dart';
 import 'package:myads_app/service/dio_error_util.dart';
 import 'package:myads_app/service/endpoints.dart';
 import 'package:myads_app/utils/shared_pref_manager.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginProvider extends BaseProvider {
   TextEditingController usernameController;
@@ -18,10 +19,19 @@ class LoginProvider extends BaseProvider {
   bool _autoValidate;
 
   initialProvider() async {
+    print('initialising again');
+
     String emailid =
         await SharedPrefManager.instance.getString(Constants.userEmail);
     String pass =
         await SharedPrefManager.instance.getString(Constants.password);
+    print('email --- $emailid $pass');
+
+    if (emailid == null) {
+      final prefs = await SharedPreferences.getInstance();
+      emailid = prefs.getString('email_new');
+    }
+
     if (emailid != null && pass != null) {
       usernameController = TextEditingController(text: emailid);
       passwordController = TextEditingController(text: pass);
@@ -34,6 +44,29 @@ class LoginProvider extends BaseProvider {
       otpController = TextEditingController();
     }
     _autoValidate = false;
+  }
+
+  initialProviderNew() async {
+    print('initialising again');
+    otpController = TextEditingController();
+
+    String emailid =
+        await SharedPrefManager.instance.getString(Constants.userEmail);
+    String pass =
+        await SharedPrefManager.instance.getString(Constants.password);
+
+    if (emailid == null) {
+      final prefs = await SharedPreferences.getInstance();
+      emailid = prefs.getString('email_new');
+    }
+
+    print('new email --- $emailid $pass');
+
+    if (emailid != null && pass != null) {
+      usernameController = TextEditingController(text: emailid);
+      passwordController = TextEditingController(text: pass);
+    }
+    notifyListeners();
   }
 
   void setAutoValidate(bool value) {
@@ -89,9 +122,34 @@ class LoginProvider extends BaseProvider {
     }
   }
 
+  performOtpValidation() async {
+    print('otp validation...');
+
+    String userId =
+        await SharedPrefManager.instance.getString(Constants.userId);
+
+    print(usernameController.text);
+    print(passwordController.text);
+    Map<String, String> qParams = {'id': userId, "otp": otpController.text};
+
+    await ApiManager()
+        .getDio(isJsonType: false)
+        .post(Endpoints.otpValidation, queryParameters: qParams)
+        .then((response) => successResponseNew(response))
+        .catchError((onError) {
+      print('otp error - $onError');
+
+      listener.onFailure(DioErrorUtil.handleErrors(onError));
+    });
+  }
+
   void successResponse(Response response) {
     SignInResponse _response = SignInResponse.fromJson(response.data);
     listener.onSuccess(_response, reqId: ResponseIds.LOGIN_SCREEN);
+  }
+
+  void successResponseNew(Response response) {
+    listener.onSuccess(response.data, reqId: ResponseIds.OTP_SCREEN);
   }
 
   clearProvider() {
