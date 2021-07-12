@@ -6,6 +6,7 @@ import 'package:myads_app/Constants/images.dart';
 import 'package:myads_app/Constants/strings.dart';
 import 'package:myads_app/Constants/styles.dart';
 import 'package:myads_app/UI/authenticationScreen/signIn/LogInScreen.dart';
+import 'package:myads_app/UI/authenticationScreen/signUp/Demo/DemographicsScreen.dart';
 import 'package:myads_app/UI/authenticationScreen/signUp/SignUpScreen.dart';
 import 'package:myads_app/UI/dashboardScreen/DashBoard.dart';
 import 'package:myads_app/utils/shared_pref_manager.dart';
@@ -157,6 +158,17 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     String uid = await SharedPrefManager.instance.getString(Constants.userId);
     if (emailid != null && pass != null && uid != null) {
       //cjc staging..
+
+      String staging =
+          await SharedPrefManager.instance.getString('signUp_staging');
+      if (staging == 'DemographicsScreen') {
+        Navigator.of(context).push(PageRouteBuilder(
+            pageBuilder: (_, __, ___) => new DemographicsScreen()));
+      } else if (staging == 'DemographicsScreen') {
+        Navigator.of(context).push(PageRouteBuilder(
+            pageBuilder: (_, __, ___) => new DemographicsScreen()));
+      }
+
       print(emailid + pass + uid);
       Navigator.of(context).push(
           PageRouteBuilder(pageBuilder: (_, __, ___) => new DashBoardScreen()));

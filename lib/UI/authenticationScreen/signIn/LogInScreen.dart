@@ -109,6 +109,8 @@ class _LoginScreenState extends BaseState<LoginScreen> {
       case ResponseIds.OTP_SCREEN:
         Map<String, dynamic> _response = any as Map<String, dynamic>;
         CodeSnippet.instance.showMsg(_response['message']);
+        SharedPrefManager.instance
+            .setString('signUp_staging', 'completed'); //cjc staging..
         Navigator.of(context).push(PageRouteBuilder(
             pageBuilder: (_, __, ___) => new DashBoardScreen()));
     }
