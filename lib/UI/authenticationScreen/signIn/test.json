@@ -1,0 +1,86 @@
+{
+    "flag": true,
+    "user_id": "1",
+    "time_added": "0",
+    "time_balance": "0",
+    "badgeFlag": true,
+    "userBadges": [
+        {
+            "available": 1,
+            "type": "special_offer",
+            "criteria": "3 Minutes",
+            "id": "5",
+            "name": "Special Offer for Premium User",
+            "promoUrl": "https://www.cashup.com/promo",
+            "promoCode": "FREE5",
+            "image": "http://myads-web.vitruvian-test.com.au/new/uploads/1621795063-special-offer-for-premium-user.png",
+            "totViewMinutes": "5.13",
+            "notification": "Congratulation! 5$ Rewards"
+        },
+        {
+            "available": 1,
+            "criteria": "1 Surveys",
+            "type": "bonus",
+            "name": "Credit System on Survey",
+            "id": "6",
+            "image": "http://myads-web.vitruvian-test.com.au/new/uploads/1622162976-credit-system-on-survey.png",
+            "surveysCompleted": "6",
+            "creditHours": "1",
+            "notification": "Congratulation 1 Hrs Credited"
+        }
+    ],
+    "survey_details": {
+        "name": "Universal Survey",
+        "id": "1",
+        "question": [
+            {
+                "question": "How do you like about the BRAND?",
+                "type": "Star Rating",
+                "answer": "3.0"
+            },
+            {
+                "question": "Will you Purchase this Product",
+                "type": "Yes / No",
+                "answer": "Yes"
+            },
+            {
+                "question": "Will you Refer this Product to Others",
+                "type": "Unlikely / Fairly likely / Very Likely",
+                "answer": "Fairly likely"
+            }
+        ]
+    },
+    "video_name": "Growfunding be Sour",
+    "product_url": "http://myads-web.vitruvian-test.com.au/new/api",
+    "video_image": "http://myads-web.vitruvian-test.com.au/new/uploads/Growfunding Be Sour.jpeg",
+    "video_link": "http://myads-web.vitruvian-test.com.au/new/uploads/Growfunding.be - Sour.mp4",
+    "video_id": "1",
+    "video_length": "30",
+    "rons": "2.0",
+    "next_video": {
+        "video_id": "2",
+        "video_length": "15",
+        "rons": "1.0",
+        "video_name": "Seagram Concert",
+        "video_image": "http://myads-web.vitruvian-test.com.au/new/uploads/Seagram Concert.jpeg",
+        "video_link": "http://myads-web.vitruvian-test.com.au/new/uploads/Seagram - Concert.mp4"
+    },
+    "watched_minutes": "3.50",
+    "to_watch_minutes": "663",
+    "totalSeconds": 39967,
+    "watched_time": {
+        "hrs": 0,
+        "mins": 3,
+        "sec": 50
+    },
+    "to_watch_time": {
+        "hrs": 11,
+        "mins": 2,
+        "sec": 17
+    },
+    "wtached_percentage": "0.52",
+    "days_left_this_month": "27",
+    "balance_time": "0",
+    "balance_reward": "11",
+    "reaction": "1"
+}
