@@ -11,7 +11,6 @@ import 'package:myads_app/Constants/response_ids.dart';
 import 'package:myads_app/Constants/strings.dart';
 import 'package:myads_app/Constants/styles.dart';
 import 'package:myads_app/UI/Widgets/progressbar.dart';
-import 'package:myads_app/UI/activity/activityScreen.dart';
 import 'package:myads_app/UI/portraitScreen/watchPortraitScreen.dart';
 import 'package:myads_app/UI/settings/SettingScreen.dart';
 import 'package:myads_app/UI/welcomeScreen/welcomeScreen.dart';
@@ -24,7 +23,6 @@ import 'package:myads_app/utils/code_snippet.dart';
 import 'package:myads_app/utils/shared_pref_manager.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:provider/provider.dart';
-
 import '../CheckMyCoupons.dart';
 import '../RewardScreen.dart';
 import '../charts/BarChart.dart';
@@ -83,7 +81,11 @@ class _DashBoardScreenState extends BaseState<DashBoardScreen> {
             rons = _response.rons;
             watchTime = three;
             print("Current to Watch time" + s2);
-            percentage = double.parse(_response.wtachedPercentage) / 1000;
+            print("Current to Watch " + _response.wtachedPercentage.toString());
+            percentage = double.parse(_response.wtachedPercentage) < 100
+                ? double.parse(_response.wtachedPercentage) / 100
+                : 1000;
+            print("Current to Percentage time" + percentage.toString());
             per = _response.wtachedPercentage;
             daysLeft = _response.daysLeftThisMonth.toString();
             Videoid = _response.videoId;
@@ -124,161 +126,202 @@ class _DashBoardScreenState extends BaseState<DashBoardScreen> {
     }
   }
 
+  _appBar(height) => PreferredSize(
+        preferredSize: Size(MediaQuery.of(context).size.width, 80),
+        child: Stack(
+          children: <Widget>[
+            Container(
+              // Background
+              child: Center(
+                child: Text(
+                  "",
+                ),
+              ),
+              color: MyColors.colorLight,
+              height: 60,
+              width: MediaQuery.of(context).size.width,
+            ),
+
+            Container(), // Required some widget in between to float AppBar
+
+            Positioned(
+              // To take AppBar Size only
+              top: 20.0,
+              left: 20.0,
+              right: 20.0,
+              child: Image.asset(
+                MyImages.appBarLogo,
+                height: 60,
+              ),
+            ),
+            Positioned(
+              // To take AppBar Size only
+              top: 10.0,
+              left: 320.0,
+              right: 20.0,
+              child: _DividerPopMenu(),
+            )
+          ],
+        ),
+      );
   @override
   Widget build(BuildContext context) {
     final MediaQueryData media = MediaQuery.of(context);
     final double statusBarHeight = MediaQuery.of(context).padding.top;
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: MyColors.colorLight,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(''),
-            Padding(
-              padding: const EdgeInsets.only(left: 26.0),
-              child: Image.asset(MyImages.appBarLogo),
-            ),
-            _DividerPopMenu(),
-          ],
-        ),
-      ),
-      body: SingleChildScrollView(
-          child: Consumer<DashboardProvider>(builder: (context, provider, _) {
-        return Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 30.0),
-              child: Center(
-                child: Text(
-                  MyStrings.yourDashBoard,
-                  style: MyStyles.robotoMedium28.copyWith(
-                      letterSpacing: 1.0,
-                      color: MyColors.accentsColors,
-                      fontWeight: FontWeight.w100),
+    return SafeArea(
+      child: Scaffold(
+        // appBar: AppBar(
+        //   automaticallyImplyLeading: false,
+        //   backgroundColor: MyColors.colorLight,
+        //   title: Row(
+        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //     crossAxisAlignment: CrossAxisAlignment.start,
+        //     children: [
+        //       Text(''),
+        //       Padding(
+        //         padding: const EdgeInsets.only(left: 26.0),
+        //         child: Image.asset(MyImages.appBarLogo,height: 60,),
+        //       ),
+        //       Padding(
+        //         padding: const EdgeInsets.only(top:8.0),
+        //         child: _DividerPopMenu(),
+        //       ),
+        //     ],
+        //   ),
+        // ),
+        appBar: _appBar(AppBar().preferredSize.height),
+        body: SingleChildScrollView(
+            child: Consumer<DashboardProvider>(builder: (context, provider, _) {
+          return Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 30.0),
+                child: Center(
+                  child: Text(
+                    MyStrings.yourDashBoard,
+                    style: MyStyles.robotoLight26.copyWith(
+                        letterSpacing: 1.0,
+                        color: MyColors.accentsColors,
+                        fontWeight: FontWeight.w100),
+                  ),
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 30.0, bottom: 10.0),
-              child: Row(
-                children: [
-                  Container(
-                    height: MediaQuery.of(context).size.height / 6,
-                    width: MediaQuery.of(context).size.width / 3,
-                    color: MyColors.accentsColors,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: 15.0),
-                          child: Text(
-                            '$watchTime',
-                            style: MyStyles.robotoLight28.copyWith(
-                                color: MyColors.white,
-                                fontWeight: FontWeight.w100),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 12.0),
-                          child: Text(
-                            'yet to watch',
-                            style: MyStyles.robotoMedium14.copyWith(
-                                color: MyColors.colorLight,
-                                fontWeight: FontWeight.w100),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    height: MediaQuery.of(context).size.height / 6,
-                    width: MediaQuery.of(context).size.width / 3,
-                    color: MyColors.primaryColor,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Center(
-                            child: Padding(
-                          padding: const EdgeInsets.only(bottom: 1),
-                          child: CircularPercentIndicator(
-                            radius: 75.0,
-                            lineWidth: 5.0,
-                            backgroundColor: MyColors.accentsColors,
-                            animation: true,
-                            percent: percentage,
-                            center: new Text(
-                              "${per.toString()}%",
-                              style: MyStyles.robotoMedium20.copyWith(
+              Padding(
+                padding: const EdgeInsets.only(top: 30.0, bottom: 10.0),
+                child: Row(
+                  children: [
+                    Container(
+                      height: MediaQuery.of(context).size.height / 6,
+                      width: MediaQuery.of(context).size.width / 3,
+                      color: MyColors.accentsColors,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(top: 20.0),
+                            child: Text(
+                              '$watchTime',
+                              style: MyStyles.robotoLight28.copyWith(
                                   color: MyColors.white,
                                   fontWeight: FontWeight.w100),
                             ),
-                            // circularStrokeCap: CircularStrokeCap.round,
-                            progressColor: Colors.white,
                           ),
-                        )),
-                        Text(
-                          "monthly progress",
-                          style: MyStyles.robotoMedium14.copyWith(
-                              color: MyColors.white,
-                              fontWeight: FontWeight.w100),
-                        )
-                      ],
+                          Padding(
+                            padding: const EdgeInsets.only(top: 24.0),
+                            child: Text(
+                              'yet to watch',
+                              style: MyStyles.robotoMedium14.copyWith(
+                                  color: MyColors.colorLight,
+                                  fontWeight: FontWeight.w100),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  Container(
-                    height: MediaQuery.of(context).size.height / 6,
-                    width: MediaQuery.of(context).size.width / 3,
-                    color: MyColors.accentsColors,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: 15.0),
-                          child: Text(
-                            '$daysLeft',
-                            style: MyStyles.robotoLight45.copyWith(
+                    Container(
+                      height: MediaQuery.of(context).size.height / 6,
+                      width: MediaQuery.of(context).size.width / 3,
+                      color: MyColors.primaryColor,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Center(
+                              child: Padding(
+                            padding: const EdgeInsets.only(bottom: 2),
+                            child: CircularPercentIndicator(
+                              radius: 80.0,
+                              lineWidth: 5.0,
+                              backgroundColor: MyColors.accentsColors,
+                              animation: true,
+                              percent: percentage,
+                              center: new Text(
+                                "${per.toString()}%",
+                                style: MyStyles.robotoMedium20.copyWith(
+                                    color: MyColors.white,
+                                    fontWeight: FontWeight.w100),
+                              ),
+                              // circularStrokeCap: CircularStrokeCap.round,
+                              progressColor: Colors.white,
+                            ),
+                          )),
+                          Text(
+                            "monthly progress",
+                            style: MyStyles.robotoMedium14.copyWith(
                                 color: MyColors.white,
                                 fontWeight: FontWeight.w100),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 12.0),
-                          child: Text(
-                            'days left in month',
-                            style: MyStyles.robotoMedium14.copyWith(
-                                color: MyColors.colorLight,
-                                fontWeight: FontWeight.w100),
-                          ),
-                        ),
-                      ],
+                          )
+                        ],
+                      ),
                     ),
-                  )
-                ],
+                    Container(
+                      height: MediaQuery.of(context).size.height / 6,
+                      width: MediaQuery.of(context).size.width / 3,
+                      color: MyColors.accentsColors,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(top: 15.0),
+                            child: Text(
+                              '$daysLeft',
+                              style: MyStyles.robotoLight45.copyWith(
+                                  color: MyColors.white,
+                                  fontWeight: FontWeight.w100),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 12.0),
+                            child: Text(
+                              'days left in month',
+                              style: MyStyles.robotoMedium14.copyWith(
+                                  color: MyColors.colorLight,
+                                  fontWeight: FontWeight.w100),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
               ),
-            ),
-            flag == false
-                ? Padding(
-                    padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-                    child: Container(
-                        height: 200,
-                        width: MediaQuery.of(context).size.width,
-                        child: Center(
-                            child: Text("No Preview",
-                                style: TextStyle(
-                                    color: Colors.red,
-                                    fontWeight: FontWeight.bold)))),
-                  )
-                : Stack(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-                        child: Container(
+              flag == false
+                  ? Padding(
+                      padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                      child: Container(
+                          height: 200,
+                          width: MediaQuery.of(context).size.width,
+                          child: Center(
+                              child: Text("No Preview",
+                                  style: TextStyle(
+                                      color: Colors.red,
+                                      fontWeight: FontWeight.bold)))),
+                    )
+                  : Stack(
+                      children: [
+                        Container(
                           height: 200,
                           width: MediaQuery.of(context).size.width,
                           child: Image.network(
@@ -286,405 +329,343 @@ class _DashBoardScreenState extends BaseState<DashBoardScreen> {
                             fit: BoxFit.fill,
                           ),
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 70.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            _dashboardProvider.getPreviousVideo != null
-                                ? Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Container(
-                                      width: 50,
-                                      height: 70,
-                                      color: Color.fromRGBO(112, 174, 222, 90),
-                                      child: IconButton(
-                                        icon: Icon(
-                                          CupertinoIcons.chevron_compact_left,
-                                          size: 50,
-                                          color: Colors.white,
-                                        ),
-                                        onPressed: () async {
-                                          if (_dashboardProvider
-                                                  .getPreviousVideo !=
-                                              null) {
-                                            setState(() {
-                                              videoUrl = _dashboardProvider
-                                                  .getPreviousVideo.videoLink;
-                                              imageUrl = _dashboardProvider
-                                                  .getPreviousVideo.videoImage;
-                                              Videoid = _dashboardProvider
-                                                  .getPreviousVideo.videoId;
-                                            });
-                                            _dashboardProvider.listener = this;
-                                            _dashboardProvider
-                                                .performGetVideos(Videoid);
-                                          }
-                                          // _dashboardProvider.performGetVideos(
-                                          //     ((videoResponseList[index].nextVideos)[0]).videoId);
-                                        },
-                                      ),
-                                    ),
-                                  )
-                                : SizedBox(),
-                            _dashboardProvider.getNextVideo != null
-                                ? Align(
-                                    alignment: Alignment.centerRight,
-                                    child: Container(
-                                      width: 50,
-                                      height: 70,
-                                      color: Color.fromRGBO(112, 174, 222, 90),
-                                      child: IconButton(
-                                        icon: Icon(
-                                          CupertinoIcons.chevron_compact_right,
-                                          size: 50,
-                                          color: Colors.white,
-                                        ),
-                                        onPressed: () async {
-                                          if (_dashboardProvider.getNextVideo !=
-                                              null) {
-                                            setState(() {
-                                              videoUrl = _dashboardProvider
-                                                  .getNextVideo.videoLink;
-                                              imageUrl = _dashboardProvider
-                                                  .getNextVideo.videoImage;
-                                              Videoid = _dashboardProvider
-                                                  .getNextVideo.videoId;
-                                              // Videoid = _dashboardProvider.getNextVideo.videoId;
-                                            });
-                                          }
-                                          _dashboardProvider.listener = this;
-                                          _dashboardProvider
-                                              .performGetVideos(Videoid);
-                                          // _dashboardProvider.performGetVideos(
-                                          //     ((videoResponseList[index].nextVideos)[0]).videoId);
-                                        },
-                                      ),
-                                    ),
-                                  )
-                                : SizedBox(),
-                          ],
+                        // Padding(
+                        //   padding: const EdgeInsets.only(top: 70.0),
+                        //   child: Row(
+                        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //     children: [
+                        //       _dashboardProvider.getPreviousVideo != null
+                        //           ? Align(
+                        //               alignment: Alignment.centerLeft,
+                        //               child: Container(
+                        //                 width: 50,
+                        //                 height: 70,
+                        //                 color: Color.fromRGBO(112, 174, 222, 90),
+                        //                 child: IconButton(
+                        //                   icon: Icon(
+                        //                     CupertinoIcons.chevron_compact_left,
+                        //                     size: 50,
+                        //                     color: Colors.white,
+                        //                   ),
+                        //                   onPressed: () async {
+                        //                     if (_dashboardProvider
+                        //                             .getPreviousVideo !=
+                        //                         null) {
+                        //                       setState(() {
+                        //                         videoUrl = _dashboardProvider
+                        //                             .getPreviousVideo.videoLink;
+                        //                         imageUrl = _dashboardProvider
+                        //                             .getPreviousVideo.videoImage;
+                        //                         Videoid = _dashboardProvider
+                        //                             .getPreviousVideo.videoId;
+                        //                       });
+                        //                       _dashboardProvider.listener = this;
+                        //                       _dashboardProvider
+                        //                           .performGetVideos(Videoid);
+                        //                     }
+                        //                     // _dashboardProvider.performGetVideos(
+                        //                     //     ((videoResponseList[index].nextVideos)[0]).videoId);
+                        //                   },
+                        //                 ),
+                        //               ),
+                        //             )
+                        //           : SizedBox(),
+                        //       _dashboardProvider.getNextVideo != null
+                        //           ? Align(
+                        //               alignment: Alignment.centerRight,
+                        //               child: Container(
+                        //                 width: 50,
+                        //                 height: 70,
+                        //                 color: Color.fromRGBO(112, 174, 222, 90),
+                        //                 child: IconButton(
+                        //                   icon: Icon(
+                        //                     CupertinoIcons.chevron_compact_right,
+                        //                     size: 50,
+                        //                     color: Colors.white,
+                        //                   ),
+                        //                   onPressed: () async {
+                        //                     if (_dashboardProvider.getNextVideo !=
+                        //                         null) {
+                        //                       setState(() {
+                        //                         videoUrl = _dashboardProvider
+                        //                             .getNextVideo.videoLink;
+                        //                         imageUrl = _dashboardProvider
+                        //                             .getNextVideo.videoImage;
+                        //                         Videoid = _dashboardProvider
+                        //                             .getNextVideo.videoId;
+                        //                         // Videoid = _dashboardProvider.getNextVideo.videoId;
+                        //                       });
+                        //                     }
+                        //                     _dashboardProvider.listener = this;
+                        //                     _dashboardProvider
+                        //                         .performGetVideos(Videoid);
+                        //                     // _dashboardProvider.performGetVideos(
+                        //                     //     ((videoResponseList[index].nextVideos)[0]).videoId);
+                        //                   },
+                        //                 ),
+                        //               ),
+                        //             )
+                        //           : SizedBox(),
+                        //     ],
+                        //   ),
+                        // ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8.0, left: 15),
+                          child: Container(
+                              width: 60,
+                              height: 30,
+                              color: MyColors.blueShade.withOpacity(0.3),
+                              child: Text(
+                                "$rons\nRons",
+                                style: MyStyles.robotoBold12.copyWith(
+                                    color: MyColors.black,
+                                    fontWeight: FontWeight.w100),
+                              )),
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 8.0, left: 15),
-                        child: Container(
-                            width: 60,
-                            height: 30,
-                            color: MyColors.blueShade.withOpacity(0.3),
-                            child: Text(
-                              "$rons\nRons",
-                              style: MyStyles.robotoBold12.copyWith(
-                                  color: MyColors.black,
-                                  fontWeight: FontWeight.w100),
-                            )),
-                      ),
-                      // Padding(
-                      //   padding: const EdgeInsets.only(top:8.0,left: 15),
-                      //   child: Image(image: NetworkImage(_dashboardProvider.getmultiple.image),height: 20,),
-                      // )
+                        // Padding(
+                        //   padding: const EdgeInsets.only(top:8.0,left: 15),
+                        //   child: Image(image: NetworkImage(_dashboardProvider.getmultiple.image),height: 20,),
+                        // )
+                      ],
+                    ),
+              // PrefetchImageDemo(listOfVideos),
+              SizedBox(height: 10),
+              Stack(
+                children: <Widget>[
+                  //First thing in the stack is the background
+                  //For the backgroud i create a column
+                  Column(
+                    children: <Widget>[
+                      //first element in the column is the white background (the Image.asset in your case)
+                      flag == true
+                          ? Container(
+                              color: MyColors.blueShade,
+                              width: MediaQuery.of(context).size.width,
+                              height: 130.0,
+                              child: InkWell(
+                                  onTap: () {
+                                    Navigator.of(context).push(PageRouteBuilder(
+                                      pageBuilder: (_, __, ___) => new
+                                          // CustomOrientationPlayer(
+                                          //     videoUrl: videoUrl,
+                                          //     VideoId: Videoid,
+                                          //     watchtime: watchTime,
+                                          //     productUrl: producturl,
+                                          //     rons: rons,
+                                          //     surveyid: _dashboardProvider.getSurveyVideo.id
+                                          // )
+                                          WatchPortrait(
+                                        videoUrl: videoUrl,
+                                        VideoId: Videoid,
+                                        watchtime: watchTime,
+                                        productUrl: producturl,
+                                        rons: rons,
+                                        surveyid:
+                                            _dashboardProvider.getSurveyVideo.id,
+                                        // multiplyId: _dashboardProvider.getmultiple[0].id,
+                                        // badgeId: _dashboardProvider.getbonus[0].id,
+                                      ),
+                                    ));
+                                    // Navigator.push(context, MaterialPageRoute(builder: (context) => WatchPortrait()));
+                                  },
+                                  child: Center(
+                                      child: _submitButton('WATCH MYADS'))),
+                            )
+                          : Container(),
+                      //second item in the column is a transparent space of 20
+                      Container(height: 10.0)
                     ],
                   ),
-            // PrefetchImageDemo(listOfVideos),
-            SizedBox(height: 10),
-            Stack(
-              children: <Widget>[
-                //First thing in the stack is the background
-                //For the backgroud i create a column
-                Column(
-                  children: <Widget>[
-                    //first element in the column is the white background (the Image.asset in your case)
-                    flag == true
-                        ? Container(
-                            color: MyColors.lightBlueShade,
-                            width: MediaQuery.of(context).size.width,
-                            height: 140.0,
-                            child: InkWell(
-                                onTap: () {
-                                  Navigator.of(context).push(PageRouteBuilder(
-                                    pageBuilder: (_, __, ___) => new
-                                        // CustomOrientationPlayer(
-                                        //     videoUrl: videoUrl,
-                                        //     VideoId: Videoid,
-                                        //     watchtime: watchTime,
-                                        //     productUrl: producturl,
-                                        //     rons: rons,
-                                        //     surveyid: _dashboardProvider.getSurveyVideo.id
-                                        // )
-                                        WatchPortrait(
-                                      videoUrl: videoUrl,
-                                      VideoId: Videoid,
-                                      watchtime: watchTime,
-                                      productUrl: producturl,
-                                      rons: rons,
-                                      surveyid:
-                                          _dashboardProvider.getSurveyVideo.id,
-                                      // multiplyId: _dashboardProvider.getmultiple[0].id,
-                                      // badgeId: _dashboardProvider.getbonus[0].id,
-                                    ),
-                                  ));
-                                  // Navigator.push(context, MaterialPageRoute(builder: (context) => WatchPortrait()));
-                                },
-                                child: Center(
-                                    child: _submitButton('WATCH MYADS'))),
-                          )
-                        : Container(),
-                    //second item in the column is a transparent space of 20
-                    Container(height: 10.0)
-                  ],
-                ),
-                //for the button i create another column
-                Column(children: <Widget>[
-                  //first element in column is the transparent offset
-                  Container(height: 100.0),
-                  Center(
-                    child: badgeFlag == true
-                        ? Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 0.0, horizontal: 16.0),
-                                child: Row(
-                                  children: [
-                                    InkWell(
-                                      onTap: () {
-                                        _dashboardProvider
-                                                .getuserBadge.isNotEmpty
-                                            ? Navigator.of(context).push(
-                                                PageRouteBuilder(
-                                                    pageBuilder: (_, __, ___) =>
-                                                        new RewardsScreen(
-                                                            userbadge:
-                                                                _dashboardProvider
-                                                                    .getuserBadge)))
-                                            : Fluttertoast.showToast(
-                                                msg:
-                                                    "No Rewards Available Try Again later",
-                                                toastLength: Toast.LENGTH_SHORT,
-                                                backgroundColor:
-                                                    MyColors.primaryColor,
-                                                textColor: Colors.white,
-                                                timeInSecForIosWeb: 5,
-                                              );
-                                        // Navigator.push(context, MaterialPageRoute(builder: (context) => RewardsScreen()));
-                                      },
-                                      child: Stack(
-                                        children: [
-                                          Container(
-                                            height: 70,
-                                            width: 70.0,
-                                            child:
-                                                Image.asset(MyImages.goldIcon),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.all(19.0),
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Text(
-                                                  '100',
-                                                  style: MyStyles.robotoBold14
-                                                      .copyWith(
-                                                          color: MyColors
-                                                              .accentsColors,
-                                                          fontWeight:
-                                                              FontWeight.w100),
-                                                ),
-                                                Text(
-                                                  'minutes',
-                                                  style: MyStyles.robotoMedium8
-                                                      .copyWith(
-                                                          color: MyColors
-                                                              .accentsColors,
-                                                          fontWeight:
-                                                              FontWeight.w100),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    InkWell(
-                                      onTap: () {
-                                        _dashboardProvider
-                                                .getuserBadge.isNotEmpty
-                                            ? Navigator.of(context).push(
-                                                PageRouteBuilder(
-                                                    pageBuilder: (_, __, ___) =>
-                                                        new RewardsScreen(
-                                                            userbadge:
-                                                                _dashboardProvider
-                                                                    .getuserBadge)))
-                                            : Fluttertoast.showToast(
-                                                msg:
-                                                    "No Rewards Available Try Again later",
-                                                toastLength: Toast.LENGTH_SHORT,
-                                                backgroundColor:
-                                                    MyColors.primaryColor,
-                                                textColor: Colors.white,
-                                                timeInSecForIosWeb: 5,
-                                              );
-                                      },
-                                      child: Stack(
-                                        children: [
-                                          Container(
-                                            height: 70,
-                                            width: 70.0,
-                                            child:
-                                                Image.asset(MyImages.goldIcon),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.all(22.0),
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Text(
-                                                  '500',
-                                                  style: MyStyles.robotoBold14
-                                                      .copyWith(
-                                                          letterSpacing: 1.0,
-                                                          color: MyColors
-                                                              .accentsColors,
-                                                          fontWeight:
-                                                              FontWeight.w100),
-                                                ),
-                                                Text(
-                                                  "minutes",
-                                                  style: MyStyles.robotoMedium8
-                                                      .copyWith(
-                                                          color: MyColors
-                                                              .accentsColors,
-                                                          fontWeight:
-                                                              FontWeight.w100),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    InkWell(
-                                      onTap: () {
-                                        _dashboardProvider
-                                                .getuserBadge.isNotEmpty
-                                            ? Navigator.of(context).push(
-                                                PageRouteBuilder(
-                                                    pageBuilder: (_, __, ___) =>
-                                                        new RewardsScreen(
-                                                            userbadge:
-                                                                _dashboardProvider
-                                                                    .getuserBadge)))
-                                            : Fluttertoast.showToast(
-                                                msg:
-                                                    "No Rewards Available Try Again later",
-                                                toastLength: Toast.LENGTH_SHORT,
-                                                backgroundColor:
-                                                    MyColors.primaryColor,
-                                                textColor: Colors.white,
-                                                timeInSecForIosWeb: 5,
-                                              );
-                                      },
-                                      child: Stack(
-                                        children: [
-                                          Container(
-                                            height: 70,
-                                            width: 70.0,
-                                            child:
-                                                Image.asset(MyImages.goldIcon),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.all(20.0),
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Text(
-                                                  '1000',
-                                                  style: MyStyles.robotoBold14
-                                                      .copyWith(
-                                                          color: MyColors
-                                                              .accentsColors,
-                                                          fontWeight:
-                                                              FontWeight.w100),
-                                                ),
-                                                Text(
-                                                  'minutes',
-                                                  style: MyStyles.robotoMedium8
-                                                      .copyWith(
-                                                          color: MyColors
-                                                              .accentsColors,
-                                                          fontWeight:
-                                                              FontWeight.w100),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 0.0, horizontal: 16.0),
-                                child: InkWell(
-                                  onTap: () {
-                                    _dashboardProvider.getuserBadge.isNotEmpty
-                                        ? Navigator.of(context).push(
-                                            PageRouteBuilder(
-                                                pageBuilder: (_, __, ___) =>
-                                                    new RewardsScreen(
-                                                        userbadge:
-                                                            _dashboardProvider
-                                                                .getuserBadge)))
-                                        : Fluttertoast.showToast(
-                                            msg:
-                                                "No Rewards Available Try Again later",
-                                            toastLength: Toast.LENGTH_SHORT,
-                                            backgroundColor:
-                                                MyColors.primaryColor,
-                                            textColor: Colors.white,
-                                            timeInSecForIosWeb: 5,
-                                          );
-                                  },
-                                  child: Stack(
+                  //for the button i create another column
+                  Column(children: <Widget>[
+                    //first element in column is the transparent offset
+                    Container(height: 100.0),
+                    Center(
+                      child: badgeFlag == true
+                          ? Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 0.0, horizontal: 6.0),
+                                  child: Row(
                                     children: [
-                                      Container(
-                                        height: 70,
-                                        width: 70.0,
-                                        child: Image.asset(MyImages.goldShield),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(20.0),
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
+                                      InkWell(
+                                        onTap: () {
+                                          _dashboardProvider
+                                                  .getuserBadge.isNotEmpty
+                                              ? Navigator.of(context).push(
+                                                  PageRouteBuilder(
+                                                      pageBuilder: (_, __, ___) =>
+                                                          new RewardsScreen(
+                                                              userbadge:
+                                                                  _dashboardProvider
+                                                                      .getuserBadge)))
+                                              : Fluttertoast.showToast(
+                                                  msg:
+                                                      "No Rewards Available Try Again later",
+                                                  toastLength: Toast.LENGTH_SHORT,
+                                                  backgroundColor:
+                                                      MyColors.primaryColor,
+                                                  textColor: Colors.white,
+                                                  timeInSecForIosWeb: 5,
+                                                );
+                                          // Navigator.push(context, MaterialPageRoute(builder: (context) => RewardsScreen()));
+                                        },
+                                        child: Stack(
                                           children: [
-                                            Text(
-                                              "0",
-                                              // _dashboardProvider.getuserBadge.isNotEmpty ?(_dashboardProvider.getuserBadge[0].multiply - 100).toString() : '0',
-                                              style: MyStyles.robotoBold14
-                                                  .copyWith(
-                                                      color: MyColors
-                                                          .accentsColors,
-                                                      fontWeight:
-                                                          FontWeight.w100),
+                                            Container(
+                                              height: 70,
+                                              width: 70.0,
+                                              child:
+                                                  Image.asset(MyImages.goldIcon),
                                             ),
-                                            Text(
-                                              MyStrings.multipliers,
-                                              style: MyStyles.robotoMedium8
-                                                  .copyWith(
-                                                      color: MyColors
-                                                          .accentsColors,
-                                                      fontWeight:
-                                                          FontWeight.w100),
+                                            Padding(
+                                              padding: const EdgeInsets.all(19.0),
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    '100',
+                                                    style: MyStyles.robotoBold14
+                                                        .copyWith(
+                                                            color: MyColors
+                                                                .accentsColors,
+                                                            fontWeight:
+                                                                FontWeight.w100),
+                                                  ),
+                                                  Text(
+                                                    'minutes',
+                                                    style: MyStyles.robotoMedium8
+                                                        .copyWith(
+                                                            color: MyColors
+                                                                .accentsColors,
+                                                            fontWeight:
+                                                                FontWeight.w100),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      InkWell(
+                                        onTap: () {
+                                          _dashboardProvider
+                                                  .getuserBadge.isNotEmpty
+                                              ? Navigator.of(context).push(
+                                                  PageRouteBuilder(
+                                                      pageBuilder: (_, __, ___) =>
+                                                          new RewardsScreen(
+                                                              userbadge:
+                                                                  _dashboardProvider
+                                                                      .getuserBadge)))
+                                              : Fluttertoast.showToast(
+                                                  msg:
+                                                      "No Rewards Available Try Again later",
+                                                  toastLength: Toast.LENGTH_SHORT,
+                                                  backgroundColor:
+                                                      MyColors.primaryColor,
+                                                  textColor: Colors.white,
+                                                  timeInSecForIosWeb: 5,
+                                                );
+                                        },
+                                        child: Stack(
+                                          children: [
+                                            Container(
+                                              height: 70,
+                                              width: 70.0,
+                                              child:
+                                                  Image.asset(MyImages.goldIcon),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.all(22.0),
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    '500',
+                                                    style: MyStyles.robotoBold14
+                                                        .copyWith(
+                                                            letterSpacing: 1.0,
+                                                            color: MyColors
+                                                                .accentsColors,
+                                                            fontWeight:
+                                                                FontWeight.w100),
+                                                  ),
+                                                  Text(
+                                                    "minutes",
+                                                    style: MyStyles.robotoMedium8
+                                                        .copyWith(
+                                                            color: MyColors
+                                                                .accentsColors,
+                                                            fontWeight:
+                                                                FontWeight.w100),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      InkWell(
+                                        onTap: () {
+                                          _dashboardProvider
+                                                  .getuserBadge.isNotEmpty
+                                              ? Navigator.of(context).push(
+                                                  PageRouteBuilder(
+                                                      pageBuilder: (_, __, ___) =>
+                                                          new RewardsScreen(
+                                                              userbadge:
+                                                                  _dashboardProvider
+                                                                      .getuserBadge)))
+                                              : Fluttertoast.showToast(
+                                                  msg:
+                                                      "No Rewards Available Try Again later",
+                                                  toastLength: Toast.LENGTH_SHORT,
+                                                  backgroundColor:
+                                                      MyColors.primaryColor,
+                                                  textColor: Colors.white,
+                                                  timeInSecForIosWeb: 5,
+                                                );
+                                        },
+                                        child: Stack(
+                                          children: [
+                                            Container(
+                                              height: 70,
+                                              width: 70.0,
+                                              child:
+                                                  Image.asset(MyImages.goldIcon),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.all(20.0),
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    '1,000',
+                                                    style: MyStyles.robotoBold12
+                                                        .copyWith(
+                                                            color: MyColors
+                                                                .accentsColors,
+                                                            fontWeight:
+                                                                FontWeight.w100),
+                                                  ),
+                                                  Text(
+                                                    'minutes',
+                                                    style: MyStyles.robotoMedium8
+                                                        .copyWith(
+                                                            color: MyColors
+                                                                .accentsColors,
+                                                            fontWeight:
+                                                                FontWeight.w100),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           ],
                                         ),
@@ -692,42 +673,104 @@ class _DashBoardScreenState extends BaseState<DashBoardScreen> {
                                     ],
                                   ),
                                 ),
-                              ),
-                            ],
-                          )
-                        : Container(),
-                  )
-                ])
-              ],
-            ),
-            SizedBox(
-              height: 20.0,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                InkWell(
-                    onTap: () {
-                      Navigator.of(context).push(PageRouteBuilder(
-                          pageBuilder: (_, __, ___) => new SettingScreen()));
-                      // Navigator.push(context, MaterialPageRoute(builder: (context) => SettingScreen()));
-                    },
-                    child: _submitButton1('SETTINGS')),
-                InkWell(
-                    onTap: () {
-                      Navigator.of(context).push(PageRouteBuilder(
-                          pageBuilder: (_, __, ___) => new ChartsDemo()));
-                      // Navigator.push(context, MaterialPageRoute(builder: (context) => ChartsDemo()));
-                    },
-                    child: _submitButton1('GRAPHS')),
-              ],
-            ),
-            SizedBox(
-              height: 20.0,
-            ),
-          ],
-        );
-      })),
+                                Container(
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 0.0, horizontal: 16.0),
+                                  child: InkWell(
+                                    onTap: () {
+                                      _dashboardProvider.getuserBadge.isNotEmpty
+                                          ? Navigator.of(context).push(
+                                              PageRouteBuilder(
+                                                  pageBuilder: (_, __, ___) =>
+                                                      new RewardsScreen(
+                                                          userbadge:
+                                                              _dashboardProvider
+                                                                  .getuserBadge)))
+                                          : Fluttertoast.showToast(
+                                              msg:
+                                                  "No Rewards Available Try Again later",
+                                              toastLength: Toast.LENGTH_SHORT,
+                                              backgroundColor:
+                                                  MyColors.primaryColor,
+                                              textColor: Colors.white,
+                                              timeInSecForIosWeb: 5,
+                                            );
+                                    },
+                                    child: Stack(
+                                      children: [
+                                        Container(
+                                          height: 70,
+                                          width: 70.0,
+                                          child: Image.asset(MyImages.goldShield),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(20.0),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                "10%",
+                                                // _dashboardProvider.getuserBadge.isNotEmpty ?(_dashboardProvider.getuserBadge[0].multiply - 100).toString() : '0',
+                                                style: MyStyles.robotoBold14
+                                                    .copyWith(
+                                                        color: MyColors
+                                                            .accentsColors,
+                                                        fontWeight:
+                                                            FontWeight.w100),
+                                              ),
+                                              Text(
+                                                MyStrings.multipliers,
+                                                style: MyStyles.robotoMedium8
+                                                    .copyWith(
+                                                        color: MyColors
+                                                            .accentsColors,
+                                                        fontWeight:
+                                                            FontWeight.w100),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )
+                          : Container(),
+                    )
+                  ])
+                ],
+              ),
+              SizedBox(
+                height: 20.0,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  InkWell(
+                      onTap: () {
+                        Navigator.of(context).push(PageRouteBuilder(
+                            pageBuilder: (_, __, ___) => new SettingScreen()));
+                        // Navigator.push(context, MaterialPageRoute(builder: (context) => SettingScreen()));
+                      },
+                      child: _submitButton1('SETTINGS')),
+                  InkWell(
+                      onTap: () {
+                        Navigator.of(context).push(PageRouteBuilder(
+                            pageBuilder: (_, __, ___) => new ChartsPage()));
+                        // Navigator.push(context, MaterialPageRoute(builder: (context) => ChartsDemo()));
+                      },
+                      child: _submitButton1('GRAPHS')),
+                ],
+              ),
+              SizedBox(
+                height: 20.0,
+              ),
+            ],
+          );
+        })),
+      ),
     );
   }
 
@@ -804,7 +847,7 @@ class _DashBoardScreenState extends BaseState<DashBoardScreen> {
                 child: InkWell(
                   onTap: () {
                     Navigator.of(context).push(PageRouteBuilder(
-                        pageBuilder: (_, __, ___) => new ChartsDemo()));
+                        pageBuilder: (_, __, ___) => new ChartsPage()));
                     // Navigator.push(
                     //     context,
                     //     MaterialPageRoute(
@@ -819,21 +862,21 @@ class _DashBoardScreenState extends BaseState<DashBoardScreen> {
                   ),
                 )),
             new PopupMenuDivider(height: 3.0),
-            new PopupMenuItem<String>(
-                value: 'value05',
-                child: InkWell(
-                  onTap: () {
-                    Navigator.of(subcontext).push(PageRouteBuilder(
-                        pageBuilder: (_, __, ___) => new ActivityScreen()));
-                  },
-                  child: new Text(
-                    'My Activity',
-                    style: MyStyles.robotoMedium16.copyWith(
-                        letterSpacing: 1.0,
-                        color: MyColors.black,
-                        fontWeight: FontWeight.w100),
-                  ),
-                )),
+            // new PopupMenuItem<String>(
+            //     value: 'value05',
+            //     child: InkWell(
+            //       onTap: () {
+            //         Navigator.of(subcontext).push(PageRouteBuilder(
+            //             pageBuilder: (_, __, ___) => new ActivityScreen()));
+            //       },
+            //       child: new Text(
+            //         'My Activity',
+            //         style: MyStyles.robotoMedium16.copyWith(
+            //             letterSpacing: 1.0,
+            //             color: MyColors.black,
+            //             fontWeight: FontWeight.w100),
+            //       ),
+            //     )),
             new PopupMenuDivider(height: 3.0),
             new PopupMenuItem<String>(
                 value: 'value06',
@@ -874,10 +917,10 @@ class _DashBoardScreenState extends BaseState<DashBoardScreen> {
                 pageBuilder: (_, __, ___) => new MyCouponScreen()));
           } else if (value == 'value04') {
             Navigator.of(subcontext).push(PageRouteBuilder(
-                pageBuilder: (_, __, ___) => new ChartsDemo()));
-          } else if (value == 'value05') {
-            Navigator.of(subcontext).push(PageRouteBuilder(
-                pageBuilder: (_, __, ___) => new ActivityScreen()));
+                pageBuilder: (_, __, ___) => new ChartsPage()));
+            // } else if (value == 'value05') {
+            //   Navigator.of(subcontext).push(PageRouteBuilder(
+            //       pageBuilder: (_, __, ___) => new ActivityScreen()));
           } else if (value == 'value06') {
             await SharedPrefManager.instance
                 .clearAll()
@@ -971,8 +1014,8 @@ Widget _submitButton(String buttonName) {
 
 Widget _submitButton1(String buttonName) {
   return Container(
-    width: 100.0,
-    height: 40.0,
+    width: 110.0,
+    height: 38.0,
     padding: EdgeInsets.symmetric(vertical: 13),
     alignment: Alignment.center,
     decoration: BoxDecoration(

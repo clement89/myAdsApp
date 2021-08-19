@@ -3,6 +3,8 @@ class MyImages {
   static const imageRoot = "assets/images/";
 
   static const appLogo = imageRoot+"FoziSmall.png";
+  static const aLogo = imageRoot+"logo.jpg";
+  static const Logo = imageRoot+"logob.png";
   static const appBarLogo = imageRoot+"FoziSmallicon.png";
   static const signInPic = imageRoot+"SignInPic.png";
   static const menSFashion = imageRoot+"mens-fashion.png";

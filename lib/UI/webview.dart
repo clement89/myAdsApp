@@ -17,6 +17,31 @@ class WebViewScreen extends StatefulWidget {
 
 class _WebViewScreenState extends State<WebViewScreen> {
   bool isLoading = true;
+  _appBar(height) => PreferredSize(
+    preferredSize:  Size(MediaQuery.of(context).size.width, 80 ),
+    child: Stack(
+      children: <Widget>[
+        Container(     // Background
+          child: Center(
+            child: Text("",),),
+          color: MyColors.colorLight,
+          height: 50,
+          width: MediaQuery.of(context).size.width,
+        ),
+
+        Container(),   // Required some widget in between to float AppBar
+
+        Positioned(    // To take AppBar Size only
+          top: 10.0,
+          left: 20.0,
+          right: 20.0,
+          child: Image.asset(MyImages.appBarLogo,height: 60,),
+        ),
+
+
+      ],
+    ),
+  );
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,7 +63,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
             ),
             Padding(
               padding: const EdgeInsets.only(left: 0.0),
-              child: Image.asset(MyImages.appBarLogo),
+              child: Image.asset(MyImages.appBarLogo,height: 60,),
             ),
             IconButton(
               icon: Icon(

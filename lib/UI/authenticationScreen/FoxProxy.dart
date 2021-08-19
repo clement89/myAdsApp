@@ -5,8 +5,8 @@ import 'package:myads_app/Constants/strings.dart';
 import 'package:myads_app/Constants/styles.dart';
 import 'package:myads_app/UI/authenticationScreen/signUp/Demo/DemographicsScreen.dart';
 
-import '../charts/BarChart.dart';
 import '../CheckMyCoupons.dart';
+import '../charts/BarChart.dart';
 import '../settings/SettingScreen.dart';
 
 class FoxProxyScreen extends StatefulWidget {
@@ -15,37 +15,59 @@ class FoxProxyScreen extends StatefulWidget {
 }
 
 class _FoxProxyScreenState extends State<FoxProxyScreen> {
+  _appBar(height) => PreferredSize(
+        preferredSize: Size(MediaQuery.of(context).size.width, 80),
+        child: Stack(
+          children: <Widget>[
+            Container(
+              // Background
+              child: Center(
+                child: Text(
+                  "",
+                ),
+              ),
+              color: MyColors.colorLight,
+              height: 60,
+              width: MediaQuery.of(context).size.width,
+            ),
+
+            Container(), // Required some widget in between to float AppBar
+
+            Positioned(
+              // To take AppBar Size only
+              top: 20.0,
+              left: 20.0,
+              right: 20.0,
+              child: Image.asset(
+                MyImages.appBarLogo,
+                height: 60,
+              ),
+            ),
+            // Positioned(    // To take AppBar Size only
+            //   top: 10.0,
+            //   left:320.0,
+            //   right: 20.0,
+            //   child: _DividerPopMenu(),
+            // )
+          ],
+        ),
+      );
   @override
   Widget build(BuildContext context) {
     final MediaQueryData media = MediaQuery.of(context);
     final double statusBarHeight = MediaQuery.of(context).padding.top;
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: MyColors.colorLight,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(''),
-            Padding(
-              padding: const EdgeInsets.only(left: 26.0),
-              child: Image.asset(MyImages.appBarLogo),
-            ),
-            _DividerPopMenu(),
-          ],
-        ),
-      ),
+      appBar: _appBar(AppBar().preferredSize.height),
       body: Container(
         height: media.size.height * 2.3,
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
+              padding: const EdgeInsets.only(top: 0.0, bottom: 0.0),
               child: Center(
                 child: Text(
                   MyStrings.foxPrivacy,
-                  style: MyStyles.robotoLight58.copyWith(
+                  style: MyStyles.robotoLight54.copyWith(
                       letterSpacing: 1.0,
                       color: MyColors.accentsColors,
                       fontWeight: FontWeight.w100),
@@ -65,63 +87,64 @@ class _FoxProxyScreenState extends State<FoxProxyScreen> {
                       children: [
                         Text(
                           MyStrings.introduction,
-                          style: MyStyles.robotoBold14.copyWith(
+                          style: MyStyles.robotoBold12.copyWith(
                               letterSpacing: 1.0,
-                              color: MyColors.black,
+                              color: MyColors.textdColor,
                               fontWeight: FontWeight.w100),
                         ),
                         SizedBox(
-                          height: media.size.height / 28,
+                          height: media.size.height / 40,
                         ),
                         Text(
                           MyStrings.introduction1,
-                          style: MyStyles.robotoMedium14.copyWith(
+                          style: MyStyles.robotoLight13.copyWith(
                               color: MyColors.lightGray,
+                              letterSpacing: 0.5,
+                              height: 1.4,
                               fontWeight: FontWeight.w100),
                         ),
                         SizedBox(
-                          height: media.size.height / 32,
+                          height: media.size.height / 35,
                         ),
                         Text(
                           MyStrings.introduction2,
-                          style: MyStyles.robotoMedium14.copyWith(
+                          style: MyStyles.robotoLight13.copyWith(
                               color: MyColors.lightGray,
+                              letterSpacing: 0.5,
+                              height: 1.4,
                               fontWeight: FontWeight.w100),
                         ),
                         SizedBox(
-                          height: media.size.height / 32,
+                          height: media.size.height / 35,
                         ),
                         Text(
                           MyStrings.introduction3,
-                          style: MyStyles.robotoMedium14.copyWith(
+                          style: MyStyles.robotoLight13.copyWith(
                               color: MyColors.lightGray,
+                              letterSpacing: 0.5,
+                              height: 1.4,
                               fontWeight: FontWeight.w100),
                         ),
                         SizedBox(
-                          height: media.size.height / 32,
-                        ),
-                        Text(
-                          MyStrings.introduction3,
-                          style: MyStyles.robotoMedium14.copyWith(
-                              color: MyColors.lightGray,
-                              fontWeight: FontWeight.w100),
-                        ),
-                        SizedBox(
-                          height: media.size.height / 32,
+                          height: media.size.height / 35,
                         ),
                         Text(
                           MyStrings.introduction4,
-                          style: MyStyles.robotoMedium14.copyWith(
+                          style: MyStyles.robotoLight13.copyWith(
                               color: MyColors.lightGray,
+                              letterSpacing: 0.5,
+                              height: 1.4,
                               fontWeight: FontWeight.w100),
                         ),
                         SizedBox(
-                          height: media.size.height / 32,
+                          height: media.size.height / 35,
                         ),
                         Text(
                           MyStrings.introduction5,
-                          style: MyStyles.robotoMedium14.copyWith(
+                          style: MyStyles.robotoLight13.copyWith(
                               color: MyColors.lightGray,
+                              letterSpacing: 0.5,
+                              height: 1.4,
                               fontWeight: FontWeight.w100),
                         ),
                       ],
@@ -131,7 +154,7 @@ class _FoxProxyScreenState extends State<FoxProxyScreen> {
                     height: 20.0,
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left:100.0,right: 100),
+                    padding: const EdgeInsets.only(left: 100.0, right: 100),
                     child: InkWell(
                         onTap: () {
                           Navigator.of(context).push(PageRouteBuilder(
@@ -140,6 +163,9 @@ class _FoxProxyScreenState extends State<FoxProxyScreen> {
                           // Navigator.push(context, MaterialPageRoute(builder: (context) => WelcomeScreen()));
                         },
                         child: _submitButton(MyStrings.agree)),
+                  ),
+                  SizedBox(
+                    height: 20.0,
                   ),
                 ],
               ),
@@ -218,7 +244,7 @@ Widget _DividerPopMenu() {
                 child: InkWell(
                   onTap: () {
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => ChartsDemo()));
+                        MaterialPageRoute(builder: (context) => ChartsPage()));
                   },
                   child: new Text(
                     'Graphs',
@@ -236,8 +262,8 @@ Widget _DividerPopMenu() {
 
 Widget _submitButton(String buttonName) {
   return Container(
-    width: 200.0,
-    height: 45.0,
+    width: 170.0,
+    height: 40.0,
     padding: EdgeInsets.symmetric(vertical: 13),
     alignment: Alignment.center,
     decoration: BoxDecoration(

@@ -7,7 +7,6 @@ import 'package:myads_app/Constants/response_ids.dart';
 import 'package:myads_app/Constants/strings.dart';
 import 'package:myads_app/Constants/styles.dart';
 import 'package:myads_app/UI/Widgets/progressbar.dart';
-import 'package:myads_app/UI/activity/activityScreen.dart';
 import 'package:myads_app/UI/authenticationScreen/signIn/LogInScreen.dart';
 import 'package:myads_app/UI/dashboardScreen/DashBoard.dart';
 import 'package:myads_app/UI/streams/streamProvider.dart';
@@ -172,8 +171,7 @@ class _StreamingGoalsState extends BaseState<StreamingGoals> {
         UpdateStreamResponse _response = any as UpdateStreamResponse;
         if (_response.streams.isNotEmpty) {
           print("success");
-          SharedPrefManager.instance
-              .setString('signUp_staging', 'completed');
+          SharedPrefManager.instance.setString('signUp_staging', 'completed');
           String intent = await SharedPrefManager.instance
               .getString("settingsInterestIntent")
               .whenComplete(() => print("SetInterestIntentToggler True"));
@@ -228,375 +226,422 @@ class _StreamingGoalsState extends BaseState<StreamingGoals> {
           fontSize: 16.0);
     }
     if (selected == true && _selecteCategorys.length < 3) {
-      print("selectedt $selected");
+      print("okokok $selected");
       setState(() {
         _selecteCategorys.add(category_name);
         print(_selecteCategorys);
         print(_selecteCategorys.length);
       });
     } else {
-      print("selectedff $selected");
+      print("okokokok 11 $selected");
       setState(() {
         _selecteCategorys.remove(category_name);
       });
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: MyColors.colorLight,
-        automaticallyImplyLeading: false,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(''),
-            Padding(
-              padding: const EdgeInsets.only(left: 26.0),
-              child: Image.asset(MyImages.appBarLogo),
-            ),
-            _DividerPopMenu(),
-          ],
-        ),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 40.0),
+  _appBar(height) => PreferredSize(
+        preferredSize: Size(MediaQuery.of(context).size.width, 80),
+        child: Stack(
+          children: <Widget>[
+            Container(
+              // Background
               child: Center(
                 child: Text(
-                  MyStrings.okLetsGetIntoIt,
-                  style: MyStyles.robotoMedium28.copyWith(
+                  '',
+                ),
+              ),
+              color: MyColors.colorLight,
+              height: 60,
+              width: MediaQuery.of(context).size.width,
+            ),
+
+            Container(), // Required some widget in between to float AppBar
+
+            Positioned(
+              // To take AppBar Size only
+              top: 20.0,
+              left: 20.0,
+              right: 20.0,
+              child: Image.asset(
+                MyImages.appBarLogo,
+                height: 60,
+              ),
+            ),
+            // Positioned(    // To take AppBar Size only
+            //   top: 10.0,
+            //   left:320.0,
+            //   right: 20.0,
+            //   child: _DividerPopMenu(),
+            // )
+          ],
+        ),
+      );
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Scaffold(
+        appBar: _appBar(AppBar().preferredSize.height),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 20.0),
+                child: Center(
+                  child: Text(
+                    MyStrings.okLetsGetIntoIt,
+                    style: MyStyles.robotoLight30.copyWith(
+                        letterSpacing: 1.0,
+                        color: MyColors.primaryColor,
+                        fontWeight: FontWeight.w100),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 25.0),
+                child: Text(
+                  MyStrings.selectStream,
+                  style: MyStyles.robotoLight22.copyWith(
                       letterSpacing: 1.0,
                       color: MyColors.accentsColors,
                       fontWeight: FontWeight.w100),
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 25.0),
-              child: Text(
-                MyStrings.selectStream,
-                style: MyStyles.robotoLight20.copyWith(
-                    letterSpacing: 1.0,
-                    color: MyColors.accentsColors,
-                    fontWeight: FontWeight.w100),
+              Padding(
+                padding: const EdgeInsets.only(top: 10.0, bottom: 20),
+                child: Text(
+                  MyStrings.thatYouLike,
+                  style: MyStyles.robotoLight20.copyWith(
+                      letterSpacing: 1.0,
+                      color: MyColors.accentsColors,
+                      fontWeight: FontWeight.w100),
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 10.0),
-              child: Text(
-                MyStrings.thatYouLike,
-                style: MyStyles.robotoLight20.copyWith(
-                    letterSpacing: 1.0,
-                    color: MyColors.accentsColors,
-                    fontWeight: FontWeight.w100),
+              ListView.builder(
+                  physics: NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: streamList.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return CheckboxListTile(
+                      dense: true,
+                      contentPadding: EdgeInsets.only(bottom: 0, left: 20),
+                      controlAffinity: ListTileControlAffinity.leading,
+                      value: _selecteCategorys.contains(streamList[index].value),
+                      onChanged: (bool selected) {
+                        _onCategorySelected(selected, streamList[index].value);
+                        if (_selecteCategorys.length == 1) {
+                          num x = 208.3;
+                          int seconds = (x * 60).round();
+                          int tempHours = seconds ~/ 3600;
+                          seconds = seconds % 3600;
+                          int tempMins = seconds ~/ 60;
+                          seconds = seconds % 60;
+                          int tempsecs = seconds;
+                          String hours, mins, secs;
+                          if (tempHours.toString().length < 2) {
+                            hours = "0" + tempHours.toString();
+                          } else {
+                            hours = tempHours.toString();
+                          }
+                          if (tempMins.toString().length < 2) {
+                            mins = "0" + tempMins.toString();
+                          } else {
+                            mins = tempMins.toString();
+                          }
+                          if (tempsecs.toString().length < 2) {
+                            secs = "0" + tempsecs.toString();
+                          } else {
+                            secs = tempsecs.toString();
+                          }
+                          setState(() {
+                            HH = hours;
+                            MM = mins;
+                            SS = secs;
+                          });
+                        }
+                        if (_selecteCategorys.length == 2) {
+                          num x = 208.3;
+                          int seconds = (x * 60 * 2).round();
+                          int tempHours = seconds ~/ 3600;
+                          seconds = seconds % 3600;
+                          int tempMins = seconds ~/ 60;
+                          seconds = seconds % 60;
+                          int tempsecs = seconds;
+                          String hours, mins, secs;
+                          if (tempHours.toString().length < 2) {
+                            hours = "0" + tempHours.toString();
+                          } else {
+                            hours = tempHours.toString();
+                          }
+                          if (tempMins.toString().length < 2) {
+                            mins = "0" + tempMins.toString();
+                          } else {
+                            mins = tempMins.toString();
+                          }
+                          if (tempsecs.toString().length < 2) {
+                            secs = "0" + tempsecs.toString();
+                          } else {
+                            secs = tempsecs.toString();
+                          }
+                          setState(() {
+                            HH = hours;
+                            MM = mins;
+                            SS = secs;
+                          });
+                        }
+                        if (_selecteCategorys.length == 3) {
+                          num x = 208.3;
+                          int seconds = (x * 60 * 3).round();
+                          int tempHours = seconds ~/ 3600;
+                          seconds = seconds % 3600;
+                          int tempMins = seconds ~/ 60;
+                          seconds = seconds % 60;
+                          int tempsecs = seconds;
+                          String hours, mins, secs;
+                          if (tempHours.toString().length < 2) {
+                            hours = "0" + tempHours.toString();
+                          } else {
+                            hours = tempHours.toString();
+                          }
+                          if (tempMins.toString().length < 2) {
+                            mins = "0" + tempMins.toString();
+                          } else {
+                            mins = tempMins.toString();
+                          }
+                          if (tempsecs.toString().length < 2) {
+                            secs = "0" + tempsecs.toString();
+                          } else {
+                            secs = tempsecs.toString();
+                          }
+                          setState(() {
+                            HH = hours;
+                            MM = mins;
+                            SS = secs;
+                          });
+                        }
+                        if (_selecteCategorys.length == 0) {
+                          setState(() {
+                            HH = "00";
+                            MM = "00";
+                            SS = "00";
+                          });
+                        }
+                      },
+                      title: Text(
+                        streamList[index].value,
+                        style: MyStyles.robotoLight24.copyWith(
+                            letterSpacing: Dimens.letterSpacing_14,
+                            color: MyColors.accentsColors,
+                            fontWeight: FontWeight.w100),
+                      ),
+                    );
+                  }),
+              SizedBox(
+                height: 20.0,
               ),
-            ),
-            ListView.builder(
-                physics: NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: streamList.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return CheckboxListTile(
-                    controlAffinity: ListTileControlAffinity.leading,
-                    value: _selecteCategorys.contains(streamList[index].value),
-                    onChanged: (bool selected) {
-                      _onCategorySelected(selected, streamList[index].value);
-                      if (_selecteCategorys.length == 1) {
-                        num x = 208.3;
-                        int seconds = (x * 60).round();
-                        int tempHours = seconds ~/ 3600;
-                        seconds = seconds % 3600;
-                        int tempMins = seconds ~/ 60;
-                        seconds = seconds % 60;
-                        int tempsecs = seconds;
-                        String hours, mins, secs;
-                        if (tempHours.toString().length < 2) {
-                          hours = "0" + tempHours.toString();
-                        } else {
-                          hours = tempHours.toString();
-                        }
-                        if (tempMins.toString().length < 2) {
-                          mins = "0" + tempMins.toString();
-                        } else {
-                          mins = tempMins.toString();
-                        }
-                        if (tempsecs.toString().length < 2) {
-                          secs = "0" + tempsecs.toString();
-                        } else {
-                          secs = tempsecs.toString();
-                        }
-                        setState(() {
-                          HH = hours;
-                          MM = mins;
-                          SS = secs;
-                        });
-                      }
-                      if (_selecteCategorys.length == 2) {
-                        num x = 208.3;
-                        int seconds = (x * 60 * 2).round();
-                        int tempHours = seconds ~/ 3600;
-                        seconds = seconds % 3600;
-                        int tempMins = seconds ~/ 60;
-                        seconds = seconds % 60;
-                        int tempsecs = seconds;
-                        String hours, mins, secs;
-                        if (tempHours.toString().length < 2) {
-                          hours = "0" + tempHours.toString();
-                        } else {
-                          hours = tempHours.toString();
-                        }
-                        if (tempMins.toString().length < 2) {
-                          mins = "0" + tempMins.toString();
-                        } else {
-                          mins = tempMins.toString();
-                        }
-                        if (tempsecs.toString().length < 2) {
-                          secs = "0" + tempsecs.toString();
-                        } else {
-                          secs = tempsecs.toString();
-                        }
-                        setState(() {
-                          HH = hours;
-                          MM = mins;
-                          SS = secs;
-                        });
-                      }
-                      if (_selecteCategorys.length == 3) {
-                        num x = 208.3;
-                        int seconds = (x * 60 * 3).round();
-                        int tempHours = seconds ~/ 3600;
-                        seconds = seconds % 3600;
-                        int tempMins = seconds ~/ 60;
-                        seconds = seconds % 60;
-                        int tempsecs = seconds;
-                        String hours, mins, secs;
-                        if (tempHours.toString().length < 2) {
-                          hours = "0" + tempHours.toString();
-                        } else {
-                          hours = tempHours.toString();
-                        }
-                        if (tempMins.toString().length < 2) {
-                          mins = "0" + tempMins.toString();
-                        } else {
-                          mins = tempMins.toString();
-                        }
-                        if (tempsecs.toString().length < 2) {
-                          secs = "0" + tempsecs.toString();
-                        } else {
-                          secs = tempsecs.toString();
-                        }
-                        setState(() {
-                          HH = hours;
-                          MM = mins;
-                          SS = secs;
-                        });
-                      }
-                      if (_selecteCategorys.length == 0) {
-                        setState(() {
-                          HH = "00";
-                          MM = "00";
-                          SS = "00";
-                        });
-                      }
-                    },
-                    title: Text(
-                      streamList[index].value,
-                      style: MyStyles.robotoMedium24.copyWith(
-                          letterSpacing: Dimens.letterSpacing_14,
-                          color: MyColors.accentsColors,
-                          fontWeight: FontWeight.w100),
-                    ),
-                  );
-                }),
-            SizedBox(
-              height: 20.0,
-            ),
-            Column(
-              children: [
-                Container(
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 20.0),
-                    child: Column(
-                      children: [
-                        Text(
-                          MyStrings.basedOnSelection,
-                          style: MyStyles.robotoMedium14.copyWith(
-                              letterSpacing: 1.0,
-                              color: MyColors.white,
-                              fontWeight: FontWeight.w100),
-                        ),
-                        Text(
-                          MyStrings.YouWillNeed,
-                          style: MyStyles.robotoMedium14.copyWith(
-                              letterSpacing: 1.0,
-                              color: MyColors.white,
-                              fontWeight: FontWeight.w100),
-                        ),
-                        Text(
-                          MyStrings.myAdsContent,
-                          style: MyStyles.robotoMedium14.copyWith(
-                              letterSpacing: 1.0,
-                              color: MyColors.white,
-                              fontWeight: FontWeight.w100),
-                        ),
-                      ],
-                    ),
-                  ),
-                  width: MediaQuery.of(context).size.width,
-                  height: 90.0,
-                  color: MyColors.lightBlueShade,
-                ),
-                Container(
-                  child: Column(
-                    children: [
-                      Center(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            RichText(
-                              textAlign: TextAlign.center,
-                              text: TextSpan(
-                                  text: HH,
-                                  style: MyStyles.robotoMedium60.copyWith(
-                                      letterSpacing: 1.0,
-                                      color: MyColors.white,
-                                      fontWeight: FontWeight.w100),
-                                  children: [
-                                    TextSpan(
-                                      text: 'hr',
-                                      style: MyStyles.robotoMedium14.copyWith(
-                                          letterSpacing: 1.0,
-                                          color: MyColors.white,
-                                          fontWeight: FontWeight.w100),
-                                    ),
-                                  ]),
-                            ),
-                            RichText(
-                              textAlign: TextAlign.center,
-                              text: TextSpan(
-                                  text: MM,
-                                  style: MyStyles.robotoMedium60.copyWith(
-                                      letterSpacing: 1.0,
-                                      color: MyColors.white,
-                                      fontWeight: FontWeight.w100),
-                                  children: [
-                                    TextSpan(
-                                      text: 'mins',
-                                      style: MyStyles.robotoMedium14.copyWith(
-                                          letterSpacing: 1.0,
-                                          color: MyColors.white,
-                                          fontWeight: FontWeight.w100),
-                                    ),
-                                  ]),
-                            ),
-                            RichText(
-                              textAlign: TextAlign.center,
-                              text: TextSpan(
-                                  text: SS,
-                                  style: MyStyles.robotoMedium60.copyWith(
-                                      letterSpacing: 1.0,
-                                      color: MyColors.white,
-                                      fontWeight: FontWeight.w100),
-                                  children: [
-                                    TextSpan(
-                                      text: 'sec',
-                                      style: MyStyles.robotoMedium14.copyWith(
-                                          letterSpacing: 1.0,
-                                          color: MyColors.white,
-                                          fontWeight: FontWeight.w100),
-                                    ),
-                                  ]),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Center(
-                        child: Text(
-                          MyStrings.monthlyEstimate,
-                          style: MyStyles.robotoLight12.copyWith(
-                              letterSpacing: 1.0,
-                              color: MyColors.colorLight,
-                              fontWeight: FontWeight.w100),
-                        ),
-                      ),
-                    ],
-                  ),
-                  width: MediaQuery.of(context).size.width,
-                  height: 120.0,
-                  color: MyColors.accentsColors,
-                ),
-                SizedBox(
-                  height: 10.0,
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 30.0,
-            ),
-            InkWell(
-                onTap: () {
-                  print(_selecteCategorys.length);
-                  if (_selecteCategorys.length != 0) {
-                    String finalSTr = "";
-                    for (var Str in _selecteCategorys) {
-                      finalSTr += Str + ",";
-                    }
-                    print(finalSTr.substring(0, finalSTr.length - 1));
-                    _streamsProvider.listener = this;
-                    _streamsProvider.performUpdateStream(
-                        finalSTr.substring(0, finalSTr.length - 1));
-                  } else {
-                    Fluttertoast.showToast(
-                        msg: "Please Select Minimum 1 Streaming",
-                        toastLength: Toast.LENGTH_SHORT,
-                        gravity: ToastGravity.CENTER,
-                        timeInSecForIosWeb: 1,
-                        backgroundColor: Colors.red,
-                        textColor: Colors.white,
-                        fontSize: 16.0);
-                  }
-                },
-                child: _submitButton(MyStrings.goodToGO)),
-            SizedBox(
-              height: 30.0,
-            ),
-            Center(
-              child: Column(
+              Column(
                 children: [
-                  Text(
-                    MyStrings.estimateOnly,
-                    style: MyStyles.robotoLight14.copyWith(
-                        letterSpacing: 1.0,
-                        color: MyColors.lightGray,
-                        fontWeight: FontWeight.w100),
+                  Container(
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 20.0),
+                      child: Column(
+                        children: [
+                          Text(
+                            MyStrings.basedOnSelection,
+                            style: MyStyles.robotoMedium16.copyWith(
+                                letterSpacing: 1.0,
+                                color: MyColors.white,
+                                fontWeight: FontWeight.w100),
+                          ),
+                          SizedBox(
+                            height: 5.0,
+                          ),
+                          Text(
+                            MyStrings.YouWillNeed,
+                            style: MyStyles.robotoMedium16.copyWith(
+                                letterSpacing: 1.0,
+                                color: MyColors.white,
+                                fontWeight: FontWeight.w100),
+                          ),
+                          SizedBox(
+                            height: 5.0,
+                          ),
+                          Text(
+                            MyStrings.myAdsContent,
+                            style: MyStyles.robotoMedium16.copyWith(
+                                letterSpacing: 1.0,
+                                color: MyColors.white,
+                                fontWeight: FontWeight.w100),
+                          ),
+                        ],
+                      ),
+                    ),
+                    width: MediaQuery.of(context).size.width,
+                    height: 100.0,
+                    color: MyColors.lightBlueShade,
                   ),
-                  Text(
-                    MyStrings.participating,
-                    style: MyStyles.robotoLight14.copyWith(
-                        letterSpacing: 1.0,
-                        color: MyColors.lightGray,
-                        fontWeight: FontWeight.w100),
+                  Container(
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 30.0),
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 5.0),
+                            child: Center(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  RichText(
+                                    textAlign: TextAlign.center,
+                                    text: TextSpan(
+                                        text: HH,
+                                        style: MyStyles.robotoLight60.copyWith(
+                                            letterSpacing: 1.0,
+                                            color: MyColors.white,
+                                            fontWeight: FontWeight.w100),
+                                        children: [
+                                          TextSpan(
+                                            text: 'hr',
+                                            style: MyStyles.robotoLight14
+                                                .copyWith(
+                                                    letterSpacing: 1.0,
+                                                    color: MyColors.white,
+                                                    fontWeight: FontWeight.w100),
+                                          ),
+                                        ]),
+                                  ),
+                                  RichText(
+                                    textAlign: TextAlign.center,
+                                    text: TextSpan(
+                                        text: MM,
+                                        style: MyStyles.robotoLight60.copyWith(
+                                            letterSpacing: 1.0,
+                                            color: MyColors.white,
+                                            fontWeight: FontWeight.w100),
+                                        children: [
+                                          TextSpan(
+                                            text: 'mins',
+                                            style: MyStyles.robotoLight14
+                                                .copyWith(
+                                                    letterSpacing: 1.0,
+                                                    color: MyColors.white,
+                                                    fontWeight: FontWeight.w100),
+                                          ),
+                                        ]),
+                                  ),
+                                  RichText(
+                                    textAlign: TextAlign.center,
+                                    text: TextSpan(
+                                        text: SS,
+                                        style: MyStyles.robotoLight60.copyWith(
+                                            letterSpacing: 1.0,
+                                            color: MyColors.white,
+                                            fontWeight: FontWeight.w100),
+                                        children: [
+                                          TextSpan(
+                                            text: 'sec',
+                                            style: MyStyles.robotoLight14
+                                                .copyWith(
+                                                    letterSpacing: 1.0,
+                                                    color: MyColors.white,
+                                                    fontWeight: FontWeight.w100),
+                                          ),
+                                        ]),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Center(
+                            child: Text(
+                              MyStrings.monthlyEstimate,
+                              style: MyStyles.robotoLight12.copyWith(
+                                  letterSpacing: 1.0,
+                                  color: MyColors.colorLight,
+                                  fontWeight: FontWeight.w100),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    width: MediaQuery.of(context).size.width,
+                    height: 140.0,
+                    color: MyColors.accentsColors,
                   ),
-                  Text(
-                    MyStrings.interaction,
-                    style: MyStyles.robotoLight14.copyWith(
-                        letterSpacing: 1.0,
-                        color: MyColors.lightGray,
-                        fontWeight: FontWeight.w100),
+                  SizedBox(
+                    height: 10.0,
                   ),
                 ],
               ),
-            ),
-            SizedBox(
-              height: 30.0,
-            ),
-          ],
+              SizedBox(
+                height: 35.0,
+              ),
+              InkWell(
+                  onTap: () {
+                    print(_selecteCategorys.length);
+                    if (_selecteCategorys.length != 0) {
+                      String finalSTr = "";
+                      for (var Str in _selecteCategorys) {
+                        finalSTr += Str + ",";
+                      }
+                      print(finalSTr.substring(0, finalSTr.length - 1));
+                      _streamsProvider.listener = this;
+                      _streamsProvider.performUpdateStream(
+                          finalSTr.substring(0, finalSTr.length - 1));
+                    } else {
+                      Fluttertoast.showToast(
+                          msg: "Please Select Minimum 1 Streaming",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.CENTER,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Colors.red,
+                          textColor: Colors.white,
+                          fontSize: 16.0);
+                    }
+                  },
+                  child: _submitButton(MyStrings.goodToGO)),
+              SizedBox(
+                height: 35.0,
+              ),
+              Center(
+                child: Column(
+                  children: [
+                    Text(
+                      MyStrings.estimateOnly,
+                      style: MyStyles.robotoLight14.copyWith(
+                          letterSpacing: 1.0,
+                          color: MyColors.lightGray,
+                          fontWeight: FontWeight.w100),
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Text(
+                      MyStrings.participating,
+                      style: MyStyles.robotoLight14.copyWith(
+                          letterSpacing: 1.0,
+                          color: MyColors.lightGray,
+                          fontWeight: FontWeight.w100),
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Text(
+                      MyStrings.interaction,
+                      style: MyStyles.robotoLight14.copyWith(
+                          letterSpacing: 1.0,
+                          color: MyColors.lightGray,
+                          fontWeight: FontWeight.w100),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 30.0,
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -682,7 +727,7 @@ class _StreamingGoalsState extends BaseState<StreamingGoals> {
                 child: InkWell(
                   onTap: () {
                     Navigator.of(context).push(PageRouteBuilder(
-                        pageBuilder: (_, __, ___) => new ChartsDemo()));
+                        pageBuilder: (_, __, ___) => new ChartsPage()));
                     // Navigator.push(
                     //     context,
                     //     MaterialPageRoute(
@@ -697,21 +742,21 @@ class _StreamingGoalsState extends BaseState<StreamingGoals> {
                   ),
                 )),
             new PopupMenuDivider(height: 3.0),
-            new PopupMenuItem<String>(
-                value: 'value05',
-                child: InkWell(
-                  onTap: () {
-                    Navigator.of(subcontext).push(PageRouteBuilder(
-                        pageBuilder: (_, __, ___) => new ActivityScreen()));
-                  },
-                  child: new Text(
-                    'My Activity',
-                    style: MyStyles.robotoMedium16.copyWith(
-                        letterSpacing: 1.0,
-                        color: MyColors.black,
-                        fontWeight: FontWeight.w100),
-                  ),
-                )),
+            // new PopupMenuItem<String>(
+            //     value: 'value05',
+            //     child: InkWell(
+            //       onTap: () {
+            //         Navigator.of(subcontext).push(PageRouteBuilder(
+            //             pageBuilder: (_, __, ___) => new ActivityScreen()));
+            //       },
+            //       child: new Text(
+            //         'My Activity',
+            //         style: MyStyles.robotoMedium16.copyWith(
+            //             letterSpacing: 1.0,
+            //             color: MyColors.black,
+            //             fontWeight: FontWeight.w100),
+            //       ),
+            //     )),
             new PopupMenuDivider(height: 3.0),
             new PopupMenuItem<String>(
                 value: 'value06',
@@ -748,10 +793,10 @@ class _StreamingGoalsState extends BaseState<StreamingGoals> {
                 pageBuilder: (_, __, ___) => new MyCouponScreen()));
           } else if (value == 'value04') {
             Navigator.of(subcontext).push(PageRouteBuilder(
-                pageBuilder: (_, __, ___) => new ChartsDemo()));
-          } else if (value == 'value05') {
-            Navigator.of(subcontext).push(PageRouteBuilder(
-                pageBuilder: (_, __, ___) => new ActivityScreen()));
+                pageBuilder: (_, __, ___) => new ChartsPage()));
+            // } else if (value == 'value05') {
+            //   Navigator.of(subcontext).push(PageRouteBuilder(
+            //       pageBuilder: (_, __, ___) => new ActivityScreen()));
           } else if (value == 'value06') {
             await SharedPrefManager.instance
                 .clearAll()
@@ -765,8 +810,8 @@ class _StreamingGoalsState extends BaseState<StreamingGoals> {
 
 Widget _submitButton(String buttonName) {
   return Container(
-    width: 220.0,
-    height: 45.0,
+    width: 170.0,
+    height: 40.0,
     padding: EdgeInsets.symmetric(vertical: 13),
     alignment: Alignment.center,
     decoration: BoxDecoration(

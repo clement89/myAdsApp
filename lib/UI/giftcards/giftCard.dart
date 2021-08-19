@@ -22,27 +22,43 @@ class GiftCardPage extends StatefulWidget {
 
 class _GiftCardPageState extends State<GiftCardPage> {
   BuildContext subcontext;
+
+  _appBar(height) => PreferredSize(
+    preferredSize:  Size(MediaQuery.of(context).size.width, height+20 ),
+    child: Stack(
+      children: <Widget>[
+        Container(     // Background
+          child: Center(
+            child: Text("",),),
+          color: MyColors.colorLight,
+          height: height+40,
+          width: MediaQuery.of(context).size.width,
+        ),
+
+        Container(),   // Required some widget in between to float AppBar
+
+        Positioned(    // To take AppBar Size only
+          top: 50.0,
+          left: 20.0,
+          right: 20.0,
+          child: Image.asset(MyImages.appBarLogo,height: 60,),
+        ),
+        Positioned(    // To take AppBar Size only
+          top: 40.0,
+          left:320.0,
+          right: 20.0,
+          child: _DividerPopMenu(),
+        )
+
+      ],
+    ),
+  );
   @override
   Widget build(BuildContext context) {
     final MediaQueryData media = MediaQuery.of(context);
     final double statusBarHeight = MediaQuery.of(context).padding.top;
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: MyColors.colorLight,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(''),
-            Padding(
-              padding: const EdgeInsets.only(left: 26.0),
-              child: Image.asset(MyImages.appBarLogo),
-            ),
-            _DividerPopMenu(),
-          ],
-        ),
-      ),
+      appBar: _appBar(AppBar().preferredSize.height),
       body: SingleChildScrollView(
         child: Container(
           height: MediaQuery.of(context).size.height,
@@ -303,7 +319,7 @@ class _GiftCardPageState extends State<GiftCardPage> {
                 child: InkWell(
                   onTap: () {
                     Navigator.of(context).push(PageRouteBuilder(
-                        pageBuilder: (_, __, ___) => new ChartsDemo()));
+                        pageBuilder: (_, __, ___) => new ChartsPage()));
                     // Navigator.push(
                     //     context,
                     //     MaterialPageRoute(
@@ -318,21 +334,21 @@ class _GiftCardPageState extends State<GiftCardPage> {
                   ),
                 )),
             new PopupMenuDivider(height: 3.0),
-            new PopupMenuItem<String>(
-                value: 'value05',
-                child: InkWell(
-                  onTap: () {
-                    Navigator.of(subcontext).push(PageRouteBuilder(
-                        pageBuilder: (_, __, ___) => new ActivityScreen()));
-                  },
-                  child: new Text(
-                    'My Activity',
-                    style: MyStyles.robotoMedium16.copyWith(
-                        letterSpacing: 1.0,
-                        color: MyColors.black,
-                        fontWeight: FontWeight.w100),
-                  ),
-                )),
+            // new PopupMenuItem<String>(
+            //     value: 'value05',
+            //     child: InkWell(
+            //       onTap: () {
+            //         Navigator.of(subcontext).push(PageRouteBuilder(
+            //             pageBuilder: (_, __, ___) => new ActivityScreen()));
+            //       },
+            //       child: new Text(
+            //         'My Activity',
+            //         style: MyStyles.robotoMedium16.copyWith(
+            //             letterSpacing: 1.0,
+            //             color: MyColors.black,
+            //             fontWeight: FontWeight.w100),
+            //       ),
+            //     )),
             new PopupMenuDivider(height: 3.0),
             new PopupMenuItem<String>(
                 value: 'value06',
@@ -373,10 +389,10 @@ class _GiftCardPageState extends State<GiftCardPage> {
                 pageBuilder: (_, __, ___) => new MyCouponScreen()));
           } else if (value == 'value04') {
             Navigator.of(subcontext).push(PageRouteBuilder(
-                pageBuilder: (_, __, ___) => new ChartsDemo()));
-          } else if (value == 'value05') {
-            Navigator.of(subcontext).push(PageRouteBuilder(
-                pageBuilder: (_, __, ___) => new ActivityScreen()));
+                pageBuilder: (_, __, ___) => new ChartsPage()));
+          // } else if (value == 'value05') {
+          //   Navigator.of(subcontext).push(PageRouteBuilder(
+          //       pageBuilder: (_, __, ___) => new ActivityScreen()));
           } else if (value == 'value06') {
             await SharedPrefManager.instance
                 .clearAll()

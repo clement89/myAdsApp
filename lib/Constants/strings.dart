@@ -13,7 +13,7 @@ class MyStrings {
 
   static const String WelcomeTo = "Welcome to";
   static const String My = "My";
-  static const String Ads = "Ads";
+  static const String Ads = "Ads.";
   static const String Watch = "Watch, Learn and Earn.";
   static const String Contribute = "Contribute to content and \n  get streaming services";
   static const String Paid = "paid for you.";
@@ -30,7 +30,7 @@ class MyStrings {
   static const String littleHelp = "A little helpful info to help us\n      send you the right ads";
   static const String okLetsGetIntoIt = "Ok. Let\'s get into it.";
   static const String selectStream = "Select the streaming services";
-  static const String thatYouLike = "that you like";
+  static const String thatYouLike = "that you like.";
   static const String basedOnSelection = "Based on your selection, we anticipate";
   static const String YouWillNeed = "you'll Need to watch this amount";
   static const String myAdsContent = "of MyAds content.";
@@ -38,8 +38,8 @@ class MyStrings {
   static const String goodToGO = "GOOD TO GO";
   static const String estimateOnly = "*This is an estimate only and can be reduced by";
   static const String participating = "participating in surveys, feedback and added";
-  static const String interaction = "interaction";
-  static const String okWeAre = "Ok - We are nearly there.";
+  static const String interaction = "interaction.";
+  static const String okWeAre = "OK - We are nearly there.";
   static const String whatSort = "What sorts of things do";
   static const String youLike = " you like?";
   static const String menSClothing = "Men\'s \nclothing";
@@ -113,7 +113,7 @@ class MyStrings {
 
   static const String goto = "Go To";
   static const String Watched = "Watched";
-  static const String giftCard = "Gift-Card";
+  static const String giftCard = "Gift Card";
   static const String requestTransaction = "Request Transaction";
 
   static const String updateEmail = "Update Email";

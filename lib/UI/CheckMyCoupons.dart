@@ -5,12 +5,10 @@ import 'package:myads_app/Constants/constants.dart';
 import 'package:myads_app/Constants/images.dart';
 import 'package:myads_app/Constants/strings.dart';
 import 'package:myads_app/Constants/styles.dart';
-import 'package:myads_app/UI/dashboardScreen/DashBoard.dart';
 import 'package:myads_app/UI/settings/SettingScreen.dart';
 import 'package:myads_app/UI/welcomeScreen/welcomeScreen.dart';
 import 'package:myads_app/utils/shared_pref_manager.dart';
 
-import 'package:myads_app/UI/activity/activityScreen.dart';
 import 'charts/BarChart.dart';
 
 class MyCouponScreen extends StatefulWidget {
@@ -66,129 +64,174 @@ class _MyCouponScreenState extends State<MyCouponScreen> {
         couponType: 'Netflix Gift Card',
         status: 'Pending'),
   ];
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: MyColors.colorLight,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(''),
-            Padding(
-              padding: const EdgeInsets.only(left: 26.0),
-              child: Image.asset(MyImages.appBarLogo),
-            ),
-            _DividerPopMenu(),
-          ],
-        ),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 40.0, bottom: 50.0),
+  _appBar(height) => PreferredSize(
+        preferredSize: Size(MediaQuery.of(context).size.width, 80),
+        child: Stack(
+          children: <Widget>[
+            Container(
+              // Background
               child: Center(
                 child: Text(
-                  MyStrings.yourSettings,
-                  style: MyStyles.robotoLight28.copyWith(
-                      letterSpacing: 1.0,
-                      color: MyColors.primaryColor,
-                      fontWeight: FontWeight.w100),
+                  "",
                 ),
               ),
+              color: MyColors.colorLight,
+              height: 60,
+              width: MediaQuery.of(context).size.width,
             ),
-            Divider(
-              height: 10.0,
-              color: MyColors.accentsColors,
-              thickness: 2.0,
+
+            Container(), // Required some widget in between to float AppBar
+
+            Positioned(
+              // To take AppBar Size only
+              top: 20.0,
+              left: 20.0,
+              right: 20.0,
+              child: Image.asset(
+                MyImages.appBarLogo,
+                height: 60,
+              ),
             ),
-            DataTable(
-                columns: const <DataColumn>[
-                  DataColumn(
-                    label: Text(
-                      '',
-                    ),
+            Positioned(
+              // To take AppBar Size only
+              top: 10.0,
+              left: 320.0,
+              right: 20.0,
+              child: _DividerPopMenu(),
+            )
+          ],
+        ),
+      );
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Scaffold(
+        appBar: _appBar(AppBar().preferredSize.height),
+        // appBar: AppBar(
+        //   automaticallyImplyLeading: false,
+        //   backgroundColor: MyColors.colorLight,
+        //   title: Row(
+        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //     crossAxisAlignment: CrossAxisAlignment.start,
+        //     children: [
+        //       Text(''),
+        //       Padding(
+        //         padding: const EdgeInsets.only(left: 26.0),
+        //         child: Image.asset(MyImages.appBarLogo,height: 60,),
+        //       ),
+        //       Padding(
+        //         padding: const EdgeInsets.only(top:8.0),
+        //         child: _DividerPopMenu(),
+        //       ),
+        //     ],
+        //   ),
+        // ),
+        body: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 40.0, bottom: 50.0),
+                child: Center(
+                  child: Text(
+                    MyStrings.giftCard,
+                    style: MyStyles.robotoLight28.copyWith(
+                        letterSpacing: 1.0,
+                        color: MyColors.primaryColor,
+                        fontWeight: FontWeight.w100),
                   ),
-                  DataColumn(
-                    label: Text(
-                      '',
+                ),
+              ),
+              Divider(
+                height: 10.0,
+                color: MyColors.accentsColors,
+                thickness: 2.0,
+              ),
+              DataTable(
+                  columns: const <DataColumn>[
+                    DataColumn(
+                      label: Text(
+                        '',
+                      ),
                     ),
-                  ),
-                  DataColumn(
-                    label: Text(
-                      '',
+                    DataColumn(
+                      label: Text(
+                        '',
+                      ),
                     ),
-                  ),
-                  DataColumn(
-                    label: Text(
-                      '',
+                    DataColumn(
+                      label: Text(
+                        '',
+                      ),
                     ),
-                  ),
-                ],
-                columnSpacing: 20.0,
-                headingRowHeight: 0,
-                rows: myCoupons != null
-                    ? List.generate(
-                        myCoupons.length,
-                        (index) => DataRow(
-                              color: MaterialStateProperty.resolveWith<Color>(
-                                  (Set<MaterialState> states) {
-                                return index % 2 == 0
-                                    ? MyColors.colorLight
-                                    : Colors.white;
-                              }),
-                              cells: <DataCell>[
-                                DataCell(
-                                  Text(
-                                    myCoupons[index].date,
+                    DataColumn(
+                      label: Text(
+                        '',
+                      ),
+                    ),
+                  ],
+                  columnSpacing: 20.0,
+                  headingRowHeight: 0,
+                  rows: myCoupons != null
+                      ? List.generate(
+                          myCoupons.length,
+                          (index) => DataRow(
+                                color: MaterialStateProperty.resolveWith<Color>(
+                                    (Set<MaterialState> states) {
+                                  return index % 2 == 0
+                                      ? MyColors.colorLight
+                                      : Colors.white;
+                                }),
+                                cells: <DataCell>[
+                                  DataCell(
+                                    Text(
+                                      myCoupons[index].date,
+                                      style: MyStyles.robotoMedium14.copyWith(
+                                          color: MyColors.lightGray,
+                                          fontWeight: FontWeight.w100),
+                                    ),
+                                  ),
+                                  DataCell(
+                                    Text(
+                                      myCoupons[index].couponType,
+                                      style: MyStyles.robotoMedium14.copyWith(
+                                          color: MyColors.black,
+                                          fontWeight: FontWeight.w100),
+                                    ),
+                                  ),
+                                  DataCell(Text(
+                                    myCoupons[index].status,
                                     style: MyStyles.robotoMedium14.copyWith(
                                         color: MyColors.lightGray,
                                         fontWeight: FontWeight.w100),
+                                  )),
+                                  DataCell(
+                                    Image.asset(
+                                      MyImages.copyIcon,
+                                    ),
                                   ),
-                                ),
-                                DataCell(
-                                  Text(
-                                    myCoupons[index].couponType,
-                                    style: MyStyles.robotoMedium14.copyWith(
-                                        color: MyColors.black,
-                                        fontWeight: FontWeight.w100),
-                                  ),
-                                ),
-                                DataCell(Text(
-                                  myCoupons[index].status,
-                                  style: MyStyles.robotoMedium14.copyWith(
-                                      color: MyColors.lightGray,
-                                      fontWeight: FontWeight.w100),
-                                )),
-                                DataCell(
-                                  Image.asset(
-                                    MyImages.copyIcon,
-                                  ),
-                                ),
-                              ],
-                            ))
-                    : SizedBox()),
-            Divider(height: 10.0, color: MyColors.lightGray),
-            SizedBox(
-              height: 30.0,
-            ),
-            InkWell(
-                onTap: () {
-                  Navigator.of(context).push(PageRouteBuilder(
-                      pageBuilder: (_, __, ___) => new SettingScreen()));
-                  // Navigator.push(context, MaterialPageRoute(builder: (context) => SettingScreen()));
-                },
-                child: _submitButton('RETURN TO SETTINGS')),
-          ],
+                                ],
+                              ))
+                      : SizedBox()),
+              Divider(height: 10.0, color: MyColors.lightGray),
+              SizedBox(
+                height: 30.0,
+              ),
+              InkWell(
+                  onTap: () {
+                    Navigator.of(context).push(PageRouteBuilder(
+                        pageBuilder: (_, __, ___) => new SettingScreen()));
+                    // Navigator.push(context, MaterialPageRoute(builder: (context) => SettingScreen()));
+                  },
+                  child: _submitButton('RETURN TO SETTINGS')),
+            ],
+          ),
         ),
       ),
     );
   }
+
   Widget _DividerPopMenu() {
     return new PopupMenuButton<String>(
         offset: const Offset(0, 30),
@@ -262,7 +305,7 @@ class _MyCouponScreenState extends State<MyCouponScreen> {
                 child: InkWell(
                   onTap: () {
                     Navigator.of(context).push(PageRouteBuilder(
-                        pageBuilder: (_, __, ___) => new ChartsDemo()));
+                        pageBuilder: (_, __, ___) => new ChartsPage()));
                     // Navigator.push(
                     //     context,
                     //     MaterialPageRoute(
@@ -277,21 +320,21 @@ class _MyCouponScreenState extends State<MyCouponScreen> {
                   ),
                 )),
             new PopupMenuDivider(height: 3.0),
-            new PopupMenuItem<String>(
-                value: 'value05',
-                child: InkWell(
-                  onTap: () {
-                    Navigator.of(subcontext).push(PageRouteBuilder(
-                        pageBuilder: (_, __, ___) => new ActivityScreen()));
-                  },
-                  child: new Text(
-                    'My Activity',
-                    style: MyStyles.robotoMedium16.copyWith(
-                        letterSpacing: 1.0,
-                        color: MyColors.black,
-                        fontWeight: FontWeight.w100),
-                  ),
-                )),
+            // new PopupMenuItem<String>(
+            //     value: 'value05',
+            //     child: InkWell(
+            //       onTap: () {
+            //         Navigator.of(subcontext).push(PageRouteBuilder(
+            //             pageBuilder: (_, __, ___) => new ActivityScreen()));
+            //       },
+            //       child: new Text(
+            //         'My Activity',
+            //         style: MyStyles.robotoMedium16.copyWith(
+            //             letterSpacing: 1.0,
+            //             color: MyColors.black,
+            //             fontWeight: FontWeight.w100),
+            //       ),
+            //     )),
             new PopupMenuDivider(height: 3.0),
             new PopupMenuItem<String>(
                 value: 'value06',
@@ -332,10 +375,10 @@ class _MyCouponScreenState extends State<MyCouponScreen> {
                 pageBuilder: (_, __, ___) => new MyCouponScreen()));
           } else if (value == 'value04') {
             Navigator.of(subcontext).push(PageRouteBuilder(
-                pageBuilder: (_, __, ___) => new ChartsDemo()));
-          } else if (value == 'value05') {
-            Navigator.of(subcontext).push(PageRouteBuilder(
-                pageBuilder: (_, __, ___) => new ActivityScreen()));
+                pageBuilder: (_, __, ___) => new ChartsPage()));
+            // } else if (value == 'value05') {
+            //   Navigator.of(subcontext).push(PageRouteBuilder(
+            //       pageBuilder: (_, __, ___) => new ActivityScreen()));
           } else if (value == 'value06') {
             await SharedPrefManager.instance
                 .clearAll()
@@ -346,8 +389,6 @@ class _MyCouponScreenState extends State<MyCouponScreen> {
         });
   }
 }
-
-
 
 Widget _submitButton(String buttonName) {
   return Container(

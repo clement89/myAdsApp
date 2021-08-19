@@ -51,12 +51,10 @@ class _LoginScreenState extends BaseState<LoginScreen> {
     if (widget.showOtp != null) {
       //cjc added
       _loginProvider.initialProviderNew();
-      SharedPrefManager.instance
-          .setString('signUp_staging', 'otp');
+      SharedPrefManager.instance.setString('signUp_staging', 'otp');
     } else {
       _loginProvider.initialProvider();
     }
-
   }
 
   String videoUrl;
@@ -119,6 +117,37 @@ class _LoginScreenState extends BaseState<LoginScreen> {
     }
   }
 
+  _appBar(height) => PreferredSize(
+        preferredSize: Size(MediaQuery.of(context).size.width, 80),
+        child: Stack(
+          children: <Widget>[
+            Container(
+              // Background
+              child: Center(
+                child: Text(
+                  "",
+                ),
+              ),
+              color: MyColors.colorLight,
+              height: 60,
+              width: MediaQuery.of(context).size.width,
+            ),
+
+            Container(), // Required some widget in between to float AppBar
+
+            Positioned(
+              // To take AppBar Size only
+              top: 20.0,
+              left: 20.0,
+              right: 20.0,
+              child: Image.asset(
+                MyImages.appBarLogo,
+                height: 60,
+              ),
+            ),
+          ],
+        ),
+      );
   @override
   Widget build(BuildContext context) {
     final MediaQueryData media = MediaQuery.of(context);
@@ -129,145 +158,146 @@ class _LoginScreenState extends BaseState<LoginScreen> {
     //   _loginProvider.initialProvider();
     // }
 
-    return Scaffold(
-      backgroundColor: MyColors.white,
-      appBar: AppBar(
-        centerTitle: true,
-        automaticallyImplyLeading: false,
-        backgroundColor: MyColors.colorLight,
-        title: Image.asset(MyImages.appBarLogo),
-      ),
-      body: SingleChildScrollView(
-        child: Consumer<LoginProvider>(builder: (context, provider, _) {
-          return Form(
-            key: _formKey,
-            child: Container(
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 50.0),
-                    child: Center(
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: MyColors.white,
+        appBar: _appBar(AppBar().preferredSize.height),
+        body: SingleChildScrollView(
+          child: Consumer<LoginProvider>(builder: (context, provider, _) {
+            return Form(
+              key: _formKey,
+              child: Container(
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10.0),
+                      child: Center(
+                        child: Text(
+                          MyStrings.letSGetThis,
+                          style: MyStyles.robotoLight28.copyWith(
+                              letterSpacing: 1.0,
+                              color: MyColors.accentsColors,
+                              fontWeight: FontWeight.w100),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 5.0,
+                    ),
+                    Center(
                       child: Text(
-                        MyStrings.letSGetThis,
-                        style: MyStyles.robotoMedium22.copyWith(
+                        MyStrings.theRoad,
+                        style: MyStyles.robotoLight28.copyWith(
                             letterSpacing: 1.0,
                             color: MyColors.accentsColors,
                             fontWeight: FontWeight.w100),
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 5.0,
-                  ),
-                  Center(
-                    child: Text(
-                      MyStrings.theRoad,
-                      style: MyStyles.robotoMedium22.copyWith(
-                          letterSpacing: 1.0,
-                          color: MyColors.accentsColors,
-                          fontWeight: FontWeight.w100),
+                    SizedBox(
+                      height: 40.0,
                     ),
-                  ),
-                  SizedBox(
-                    height: 40.0,
-                  ),
-                  CustomTextFormField(
-                    labelText: MyStrings.loginName,
-                    controller: provider.usernameController,
-                    validator: ValidateInput.validateEmail,
-                    onSave: (value) {
-                      provider.usernameController.text = value;
-                    },
-                  ),
-                  CustomTextFormField(
-                    labelText: MyStrings.password,
-                    controller: provider.passwordController,
-                    validator: ValidateInput.validatePassword,
-                    isPwdType: _passwordVisible,
-                    onSave: (value) {
-                      provider.passwordController.text = value;
-                    },
-                    iconButton: IconButton(
-                      icon: Icon(
-                        // Based on passwordVisible state choose the icon
-                        _passwordVisible == true
-                            ? Icons.visibility
-                            : Icons.visibility_off,
-                        color: Theme.of(context).primaryColorDark,
+                    CustomTextFormField(
+                      labelText: MyStrings.loginName,
+                      controller: provider.usernameController,
+                      validator: ValidateInput.validateEmail,
+                      onSave: (value) {
+                        provider.usernameController.text = value;
+                      },
+                    ),
+                    CustomTextFormField(
+                      labelText: MyStrings.password,
+                      controller: provider.passwordController,
+                      validator: ValidateInput.validatePassword,
+                      isPwdType: _passwordVisible,
+                      onSave: (value) {
+                        provider.passwordController.text = value;
+                      },
+                      iconButton: IconButton(
+                        icon: Icon(
+                          // Based on passwordVisible state choose the icon
+                          _passwordVisible == true
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                          color: Theme.of(context).primaryColorDark,
+                        ),
+                        onPressed: () {
+                          // Update the state i.e. toogle the state of passwordVisible variable
+                          setState(() {
+                            _passwordVisible = !_passwordVisible;
+                          });
+                        },
                       ),
-                      onPressed: () {
-                        // Update the state i.e. toogle the state of passwordVisible variable
-                        setState(() {
-                          _passwordVisible = !_passwordVisible;
-                        });
-                      },
                     ),
-                  ),
-                  widget.showOtp != null
-                      ? CustomTextFormField(
-                          labelText: 'Please Enter the OTP',
-                          controller: provider.otpController,
-                          validator: ValidateInput.validateOtp,
-                          isPwdType: _otpVisible,
-                          onSave: (value) {
-                            provider.otpController.text = value;
-                          },
-                          iconButton: IconButton(
-                            icon: Icon(
-                              // Based on passwordVisible state choose the icon
-                              _otpVisible == true
-                                  ? Icons.visibility
-                                  : Icons.visibility_off,
-                              color: Theme.of(context).primaryColorDark,
-                            ),
-                            onPressed: () {
-                              // Update the state i.e. toogle the state of passwordVisible variable
-                              setState(() {
-                                _otpVisible = !_otpVisible;
-                              });
+                    widget.showOtp != null
+                        ? CustomTextFormField(
+                            labelText: 'Please Enter the OTP',
+                            controller: provider.otpController,
+                            validator: ValidateInput.validateOtp,
+                            isPwdType: _otpVisible,
+                            onSave: (value) {
+                              provider.otpController.text = value;
                             },
-                          ),
-                        )
-                      : Container(),
+                            iconButton: IconButton(
+                              icon: Icon(
+                                // Based on passwordVisible state choose the icon
+                                _otpVisible == true
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                                color: Theme.of(context).primaryColorDark,
+                              ),
+                              onPressed: () {
+                                // Update the state i.e. toogle the state of passwordVisible variable
+                                setState(() {
+                                  _otpVisible = !_otpVisible;
+                                });
+                              },
+                            ),
+                          )
+                        : Container(),
 
-                  // _entryField(MyStrings.loginName),
-                  // _entryField(MyStrings.password,isPassword: true),
-                  SizedBox(
-                    height: 30.0,
-                  ),
-                  InkWell(
+                    // _entryField(MyStrings.loginName),
+                    // _entryField(MyStrings.password,isPassword: true),
+                    SizedBox(
+                      height: 30.0,
+                    ),
+                    InkWell(
+                        onTap: () {
+                          _performSubmit();
+                          // print(provider.usernameController.text);
+                          // print(provider.passwordController.text);
+                        },
+                        child: _submitButton(MyStrings.logIn)),
+                    SizedBox(height: media.size.height / 5),
+                    InkWell(
                       onTap: () {
-                        _performSubmit();
-                        // print(provider.usernameController.text);
-                        // print(provider.passwordController.text);
+                                           // Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ForgotPasswordScreen()));;
+                        //
+                        Navigator.of(context).push(PageRouteBuilder(
+                            pageBuilder: (_, __, ___) =>
+                                new ForgotPasswordScreen()));
+                        _formKey.currentState.reset();
                       },
-                      child: _submitButton(MyStrings.logIn)),
-                  SizedBox(height: media.size.height / 4),
-                  InkWell(
-                    onTap: () {
-                      Navigator.of(context).push(PageRouteBuilder(
-                          pageBuilder: (_, __, ___) =>
-                              new ForgotPasswordScreen()));
-                    },
-                    child: Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Text(
-                        MyStrings.didYouForgot,
-                        style: MyStyles.robotoLight12.copyWith(
-                          letterSpacing: 1.0,
-                          color: MyColors.lightGray,
-                          fontWeight: FontWeight.w100,
+                      child: Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Text(
+                          MyStrings.didYouForgot,
+                          style: MyStyles.robotoLight16.copyWith(
+                            letterSpacing: 1.0,
+                            height: 2.0,
+                            color: MyColors.lightGray,
+                            fontWeight: FontWeight.w100,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          );
-        }),
+            );
+          }),
+        ),
       ),
     );
   }
@@ -373,12 +403,10 @@ Widget _DividerPopMenu() {
                 value: 'value04',
                 child: InkWell(
                   onTap: () {
-                    Navigator.of(context).push(PageRouteBuilder(
-                        pageBuilder: (_, __, ___) => new ChartsDemo()));
-                    // Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //         builder: (context) => ChartsDemo()));
+                    // Navigator.of(context).push(PageRouteBuilder(
+                    //     pageBuilder: (_, __, ___) => new ChartsDemo()));
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => ChartsPage()));
                   },
                   child: new Text(
                     'Graphs',
@@ -396,8 +424,8 @@ Widget _DividerPopMenu() {
 
 Widget _submitButton(String buttonName) {
   return Container(
-    width: 180.0,
-    height: 45.0,
+    width: 170.0,
+    height: 40.0,
     padding: EdgeInsets.symmetric(vertical: 13),
     alignment: Alignment.center,
     decoration: BoxDecoration(
@@ -412,7 +440,7 @@ Widget _submitButton(String buttonName) {
         color: MyColors.primaryColor),
     child: Text(
       buttonName,
-      style: MyStyles.robotoMedium14.copyWith(
+      style: MyStyles.robotoMedium12.copyWith(
           letterSpacing: 3.0,
           color: MyColors.white,
           fontWeight: FontWeight.w500),

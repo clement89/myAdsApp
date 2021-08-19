@@ -33,10 +33,10 @@ class LoginProvider extends BaseProvider {
     }
 
     if (emailid != null && pass != null) {
-      usernameController = TextEditingController(text: emailid);
-      passwordController = TextEditingController(text: pass);
+      usernameController = TextEditingController();
+      passwordController = TextEditingController();
       _fromSharedPref = true;
-      performSignIn();
+      // performSignIn();
     } else {
       _fromSharedPref = false;
       usernameController = TextEditingController();
@@ -63,8 +63,8 @@ class LoginProvider extends BaseProvider {
     print('new email --- $emailid $pass');
 
     if (emailid != null && pass != null) {
-      usernameController = TextEditingController(text: emailid);
-      passwordController = TextEditingController(text: pass);
+      usernameController = TextEditingController();
+      passwordController = TextEditingController();
     }
     notifyListeners();
   }

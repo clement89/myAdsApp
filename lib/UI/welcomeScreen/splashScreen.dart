@@ -59,7 +59,7 @@ class SplashScreenState extends State<AnimatedSplashScreen>
               child: Container(
                 height: MediaQuery.of(context).size.height / 2.2,
                 width: MediaQuery.of(context).size.width / 1.8,
-                child: Image.asset(MyImages.appLogo),
+                child: Image.asset(MyImages.Logo),
               ),
             ),
           ),

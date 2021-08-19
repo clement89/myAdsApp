@@ -13,13 +13,14 @@ import 'package:myads_app/UI/settings/settingsProvider.dart';
 import 'package:myads_app/UI/streams/StreamingGoal.dart';
 import 'package:myads_app/UI/welcomeScreen/welcomeScreen.dart';
 import 'package:myads_app/base/base_state.dart';
+import 'package:myads_app/model/response/interests/getUserDetails.dart';
 import 'package:myads_app/model/response/settings/updatePasswordResponse.dart';
 import 'package:myads_app/model/response/settings/updatePlaybackResponse.dart';
 import 'package:myads_app/model/response/settings/updateProfileResponse.dart';
 import 'package:myads_app/utils/code_snippet.dart';
 import 'package:myads_app/utils/shared_pref_manager.dart';
 import 'package:provider/provider.dart';
-import 'package:myads_app/UI/activity/activityScreen.dart';
+
 import '../charts/BarChart.dart';
 import '../dashboardScreen/DashBoard.dart';
 import '../interest/Interest.dart';
@@ -35,7 +36,7 @@ class _SettingScreenState extends BaseState<SettingScreen> {
   BuildContext subcontext;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   // Group Value for Radio Button.
-  int id = 1;
+  int id;
 
   @override
   void initState() {
@@ -43,6 +44,7 @@ class _SettingScreenState extends BaseState<SettingScreen> {
     _settingsProvider = Provider.of<SettingsProvider>(context, listen: false);
     _settingsProvider.initialProvider();
     _settingsProvider.listener = this;
+    _settingsProvider.performGetUserDetails();
   }
 
   String videoUrl;
@@ -116,385 +118,441 @@ class _SettingScreenState extends BaseState<SettingScreen> {
           CodeSnippet.instance.showMsg(_response.playbackOption);
         }
         break;
+      case ResponseIds.GET_USER_DETAILS:
+        GetUserDetailsResponse _response = any as GetUserDetailsResponse;
+        if (_response.email != '') {
+          setState(() {
+            id = int.parse(_response.playbackOption);
+          });
+          print("success user details");
+        } else {
+          print('no data  user details');
+        }
+        break;
     }
+
   }
 
+  _appBar(height) => PreferredSize(
+        preferredSize: Size(MediaQuery.of(context).size.width, 80),
+        child: Stack(
+          children: <Widget>[
+            Container(
+              // Background
+              child: Center(
+                child: Text(
+                  "",
+                ),
+              ),
+              color: MyColors.colorLight,
+              height: 60,
+              width: MediaQuery.of(context).size.width,
+            ),
+
+            Container(), // Required some widget in between to float AppBar
+
+            Positioned(
+              // To take AppBar Size only
+              top: 20.0,
+              left: 20.0,
+              right: 20.0,
+              child: Image.asset(
+                MyImages.appBarLogo,
+                height: 60,
+              ),
+            ),
+            Positioned(
+              // To take AppBar Size only
+              top: 10.0,
+              left: 320.0,
+              right: 20.0,
+              child: _DividerPopMenu(),
+            )
+          ],
+        ),
+      );
   @override
   Widget build(BuildContext context) {
     final MediaQueryData media = MediaQuery.of(context);
     final double statusBarHeight = MediaQuery.of(context).padding.top;
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: MyColors.colorLight,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(''),
-            Padding(
-              padding: const EdgeInsets.only(left: 26.0),
-              child: Image.asset(MyImages.appBarLogo),
-            ),
-            _DividerPopMenu(),
-          ],
-        ),
-      ),
-      body: SingleChildScrollView(
-          child: Consumer<SettingsProvider>(builder: (context, provider, _) {
-        return Form(
-          key: _formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Padding(
-                padding: EdgeInsets.only(
-                    top: media.padding.top + 40,
-                    bottom: media.padding.top + 20),
-                child: Center(
-                  child: Text(
-                    MyStrings.yourSettings,
-                    style: MyStyles.robotoMedium28.copyWith(
-                        letterSpacing: 1.0,
-                        color: MyColors.accentsColors,
-                        fontWeight: FontWeight.w100),
+    return SafeArea(
+      child: Scaffold(
+        // appBar: AppBar(
+        //   automaticallyImplyLeading: false,
+        //   backgroundColor: MyColors.colorLight,
+        //   title: Row(
+        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //     crossAxisAlignment: CrossAxisAlignment.start,
+        //     children: [
+        //       Text(''),
+        //       Padding(
+        //         padding: const EdgeInsets.only(left: 26.0),
+        //         child: Image.asset(MyImages.appBarLogo,height: 60,),
+        //       ),
+        //       Padding(
+        //         padding: const EdgeInsets.only(top:8.0),
+        //         child: _DividerPopMenu(),
+        //       ),
+        //     ],
+        //   ),
+        // ),
+        appBar: _appBar(AppBar().preferredSize.height),
+        body: SingleChildScrollView(
+            child: Consumer<SettingsProvider>(builder: (context, provider, _) {
+          return Form(
+            key: _formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(
+                      top: media.padding.top + 20,
+                      bottom: media.padding.top + 20),
+                  child: Center(
+                    child: Text(
+                      MyStrings.yourSettings,
+                      style: MyStyles.robotoMedium28.copyWith(
+                          letterSpacing: 1.0,
+                          color: MyColors.accentsColors,
+                          fontWeight: FontWeight.w100),
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(
-                height: 20.0,
-              ),
-              ListTileTheme(
-                dense: true,
-                contentPadding: EdgeInsets.all(0),
-                child: ExpansionTile(
-                  // childrenPadding: EdgeInsets.only(left: 28.0),
-                  backgroundColor: MyColors.blueShade,
-                  trailing: SizedBox(),
-                  tilePadding: EdgeInsets.only(left: 40.0),
-                  // title: _expansionTileButton(MyStrings.updatePassword),
-                  title: InkWell(
-                    onTap: () async {
-                      await SharedPrefManager.instance
-                          .setString("settingsInterestIntent", (1).toString())
-                          .whenComplete(
-                              () => print("SetInterestIntentToggler True"));
-                      Navigator.of(context).push(PageRouteBuilder(
-                          pageBuilder: (_, __, ___) => new InterestScreen()));
-                      // Navigator.push(context, MaterialPageRoute(builder: (context) => InterestScreen()));
-                    },
-                    child: Container(
-                      width: 330.0,
-                      height: 45.0,
-                      padding: EdgeInsets.symmetric(vertical: 13),
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(5)),
-                          boxShadow: <BoxShadow>[
-                            BoxShadow(
-                                color: Colors.blueAccent.withAlpha(100),
-                                offset: Offset(2, 4),
-                                blurRadius: 8,
-                                spreadRadius: 1)
-                          ],
-                          color: MyColors.primaryColor),
-                      child: Align(
+                SizedBox(
+                  height: 20.0,
+                ),
+                ListTileTheme(
+                  dense: true,
+                  contentPadding: EdgeInsets.all(0),
+                  child: ExpansionTile(
+                    // childrenPadding: EdgeInsets.only(left: 28.0),
+                    backgroundColor: MyColors.blueShade,
+                    trailing: SizedBox(),
+                    tilePadding: EdgeInsets.only(left: 40.0),
+                    // title: _expansionTileButton(MyStrings.updatePassword),
+                    title: InkWell(
+                      onTap: () async {
+                        await SharedPrefManager.instance
+                            .setString("settingsInterestIntent", (1).toString())
+                            .whenComplete(
+                                () => print("SetInterestIntentToggler True"));
+                        Navigator.of(context).push(PageRouteBuilder(
+                            pageBuilder: (_, __, ___) => new InterestScreen()));
+                        // Navigator.push(context, MaterialPageRoute(builder: (context) => InterestScreen()));
+                      },
+                      child: Container(
+                        width: 330.0,
+                        height: 45.0,
+                        padding: EdgeInsets.symmetric(vertical: 13),
                         alignment: Alignment.center,
-                        child: Text(
-                          MyStrings.updateInterest,
-                          style: MyStyles.robotoMedium10.copyWith(
-                              letterSpacing: 3.0,
-                              color: MyColors.white,
-                              fontWeight: FontWeight.w500),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 10.0,
-              ),
-              ListTileTheme(
-                dense: true,
-                contentPadding: EdgeInsets.all(0),
-                child: ExpansionTile(
-                  // childrenPadding: EdgeInsets.only(left: 28.0),
-                  backgroundColor: MyColors.blueShade,
-                  trailing: SizedBox(),
-                  tilePadding: EdgeInsets.only(left: 40.0),
-                  // title: _expansionTileButton(MyStrings.updatePassword),
-                  title: InkWell(
-                    onTap: () async {
-                      await SharedPrefManager.instance
-                          .setString("settingsInterestIntent", (1).toString())
-                          .whenComplete(
-                              () => print("SetInterestIntentToggler True"));
-                      Navigator.of(context).push(PageRouteBuilder(
-                          pageBuilder: (_, __, ___) => new StreamingGoals()));
-                      // Navigator.push(context, MaterialPageRoute(builder: (context) => StreamingGoals()));
-                    },
-                    child: Container(
-                      width: 330.0,
-                      height: 45.0,
-                      padding: EdgeInsets.symmetric(vertical: 13),
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(5)),
-                          boxShadow: <BoxShadow>[
-                            BoxShadow(
-                                color: Colors.blueAccent.withAlpha(100),
-                                offset: Offset(2, 4),
-                                blurRadius: 8,
-                                spreadRadius: 1)
-                          ],
-                          color: MyColors.primaryColor),
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: Text(
-                          MyStrings.updateStreaming,
-                          style: MyStyles.robotoMedium10.copyWith(
-                              letterSpacing: 3.0,
-                              color: MyColors.white,
-                              fontWeight: FontWeight.w500),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 5.0,
-              ),
-              // update password
-              ListTileTheme(
-                dense: true,
-                contentPadding: EdgeInsets.all(0),
-                child: ExpansionTile(
-                  // childrenPadding: EdgeInsets.only(left: 28.0),
-                  backgroundColor: MyColors.blueShade,
-                  trailing: SizedBox(),
-                  tilePadding: EdgeInsets.only(left: 40.0),
-                  // title: _expansionTileButton(MyStrings.updatePassword),
-                  title: _expansionTileButton(MyStrings.updatePassword),
-                  children: <Widget>[
-                    new Container(
-                      child: CustomTextFormField(
-                        labelText: MyStrings.oldPass,
-                        controller: provider.oldController,
-                        isPwdType: true,
-                        validator: ValidateInput.validatePassword,
-                        onSave: (value) {
-                          provider.oldController.text = value;
-                        },
-                      ),
-                    ),
-                    new Container(
-                      child: CustomTextFormField(
-                        labelText: MyStrings.newPass,
-                        controller: provider.newController,
-                        isPwdType: true,
-                        validator: ValidateInput.validatePassword,
-                        onSave: (value) {
-                          provider.newController.text = value;
-                        },
-                      ),
-                    ),
-                    InkWell(
-                        onTap: () {
-                          _performPasswordSubmit();
-                          // print(provider.usernameController.text);
-                          // print(provider.passwordController.text);
-                        },
-                        child: _submitButton(MyStrings.saveNewPass)),
-                    new SizedBox(
-                      height: 10.0,
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 5.0,
-              ),
-              ListTileTheme(
-                dense: true,
-                contentPadding: EdgeInsets.all(0),
-                child: ExpansionTile(
-                  // childrenPadding: EdgeInsets.only(left: 28.0),
-                  backgroundColor: MyColors.blueShade,
-                  trailing: SizedBox(),
-                  tilePadding: EdgeInsets.only(left: 40.0),
-                  // title: _expansionTileButton(MyStrings.updatePassword),
-                  title: InkWell(
-                    onTap: () {
-                      Navigator.of(context).push(PageRouteBuilder(
-                          pageBuilder: (_, __, ___) => new MyCouponScreen()));
-                      // Navigator.push(context, MaterialPageRoute(builder: (context) => MyCouponScreen()));
-                    },
-                    child: Container(
-                      width: 330.0,
-                      height: 45.0,
-                      padding: EdgeInsets.symmetric(vertical: 13),
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(5)),
-                          boxShadow: <BoxShadow>[
-                            BoxShadow(
-                                color: Colors.blueAccent.withAlpha(100),
-                                offset: Offset(2, 4),
-                                blurRadius: 8,
-                                spreadRadius: 1)
-                          ],
-                          color: MyColors.primaryColor),
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: Text(
-                          MyStrings.checkMy,
-                          style: MyStyles.robotoMedium10.copyWith(
-                              letterSpacing: 3.0,
-                              color: MyColors.white,
-                              fontWeight: FontWeight.w500),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 5.0,
-              ),
-              // update playback
-              ListTileTheme(
-                dense: true,
-                contentPadding: EdgeInsets.all(0),
-                child: ExpansionTile(
-                  // childrenPadding: EdgeInsets.only(left: 28.0),
-                  backgroundColor: MyColors.blueShade,
-                  trailing: SizedBox(),
-                  tilePadding: EdgeInsets.only(left: 40.0),
-                  // title: _expansionTileButton(MyStrings.updatePassword),
-                  title: _expansionTileButton(MyStrings.playBack),
-                  children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Radio(
-                          value: 1,
-                          groupValue: id,
-                          onChanged: (val) {
-                            setState(() {
-                              radioButtonItem = '1';
-                              id = 1;
-                              print(id);
-                              provider.type = radioButtonItem;
-                              _settingsProvider.listener = this;
-                              _settingsProvider.performPlayBackUpdate();
-                            });
-                          },
-                        ),
-                        Text(
-                          'SD Playback',
-                          style: new TextStyle(fontSize: 17.0),
-                        ),
-                        Radio(
-                          value: 2,
-                          groupValue: id,
-                          onChanged: (val) {
-                            setState(() {
-                              radioButtonItem = '2';
-                              id = 2;
-                              print(id);
-                              provider.type = radioButtonItem;
-                              _settingsProvider.listener = this;
-                              _settingsProvider.performPlayBackUpdate();
-                            });
-                          },
-                        ),
-                        Text(
-                          'HD Playback',
-                          style: new TextStyle(
-                            fontSize: 17.0,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(5)),
+                            boxShadow: <BoxShadow>[
+                              BoxShadow(
+                                  color: Colors.blueAccent.withAlpha(100),
+                                  offset: Offset(2, 4),
+                                  blurRadius: 8,
+                                  spreadRadius: 1)
+                            ],
+                            color: MyColors.primaryColor),
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            MyStrings.updateInterest,
+                            style: MyStyles.robotoMedium10.copyWith(
+                                letterSpacing: 3.0,
+                                color: MyColors.white,
+                                fontWeight: FontWeight.w500),
                           ),
                         ),
-                      ],
+                      ),
                     ),
-                    new SizedBox(
-                      height: 10.0,
-                    ),
-                  ],
+                  ),
                 ),
-              ),
-              SizedBox(
-                height: 5.0,
-              ),
-              // update profile, TODO:Edits here
-              ListTileTheme(
-                dense: true,
-                contentPadding: EdgeInsets.all(0),
-                child: ExpansionTile(
-                  // childrenPadding: EdgeInsets.only(left: 28.0),
-                  backgroundColor: MyColors.blueShade,
-                  trailing: SizedBox(),
-                  tilePadding: EdgeInsets.only(left: 40.0),
-                  // title: _expansionTileButton(MyStrings.updatePassword),
-                  title: InkWell(
-                    onTap: () async {
-                      await SharedPrefManager.instance
-                          .setString("settingsIntent", (1).toString())
-                          .whenComplete(() => print("SetIntentToggler True"));
-                      Navigator.of(context).push(PageRouteBuilder(
-                          pageBuilder: (_, __, ___) =>
-                              new DemographicsScreen()));
-                      // Navigator.push(context, MaterialPageRoute(builder: (context) => InterestScreen()));
-                    },
-                    child: Container(
-                      width: 330.0,
-                      height: 45.0,
-                      padding: EdgeInsets.symmetric(vertical: 13),
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(5)),
-                          boxShadow: <BoxShadow>[
-                            BoxShadow(
-                                color: Colors.blueAccent.withAlpha(100),
-                                offset: Offset(2, 4),
-                                blurRadius: 8,
-                                spreadRadius: 1)
-                          ],
-                          color: MyColors.primaryColor),
-                      child: Align(
+                SizedBox(
+                  height: 10.0,
+                ),
+                ListTileTheme(
+                  dense: true,
+                  contentPadding: EdgeInsets.all(0),
+                  child: ExpansionTile(
+                    // childrenPadding: EdgeInsets.only(left: 28.0),
+                    backgroundColor: MyColors.blueShade,
+                    trailing: SizedBox(),
+                    tilePadding: EdgeInsets.only(left: 40.0),
+                    // title: _expansionTileButton(MyStrings.updatePassword),
+                    title: InkWell(
+                      onTap: () async {
+                        await SharedPrefManager.instance
+                            .setString("settingsInterestIntent", (1).toString())
+                            .whenComplete(
+                                () => print("SetInterestIntentToggler True"));
+                        Navigator.of(context).push(PageRouteBuilder(
+                            pageBuilder: (_, __, ___) => new StreamingGoals()));
+                        // Navigator.push(context, MaterialPageRoute(builder: (context) => StreamingGoals()));
+                      },
+                      child: Container(
+                        width: 330.0,
+                        height: 45.0,
+                        padding: EdgeInsets.symmetric(vertical: 13),
                         alignment: Alignment.center,
-                        child: Text(
-                          MyStrings.updateProfiles,
-                          style: MyStyles.robotoMedium10.copyWith(
-                              letterSpacing: 3.0,
-                              color: MyColors.white,
-                              fontWeight: FontWeight.w500),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(5)),
+                            boxShadow: <BoxShadow>[
+                              BoxShadow(
+                                  color: Colors.blueAccent.withAlpha(100),
+                                  offset: Offset(2, 4),
+                                  blurRadius: 8,
+                                  spreadRadius: 1)
+                            ],
+                            color: MyColors.primaryColor),
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            MyStrings.updateStreaming,
+                            style: MyStyles.robotoMedium10.copyWith(
+                                letterSpacing: 3.0,
+                                color: MyColors.white,
+                                fontWeight: FontWeight.w500),
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ),
-              ),
-              SizedBox(
-                height: 140.0,
-              ),
-              InkWell(
-                onTap: () {
-                  Navigator.of(context).push(PageRouteBuilder(
-                      pageBuilder: (_, __, ___) => new DashBoardScreen()));
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(builder: (context) => DashBoardScreen()),
-                  // );
-                },
-                child: _submitButton1(MyStrings.returnTo),
-              ),
-            ],
-          ),
-        );
-      })),
+                SizedBox(
+                  height: 5.0,
+                ),
+                // update password
+                ListTileTheme(
+                  dense: true,
+                  contentPadding: EdgeInsets.all(0),
+                  child: ExpansionTile(
+                    // childrenPadding: EdgeInsets.only(left: 28.0),
+                    backgroundColor: MyColors.blueShade,
+                    trailing: SizedBox(),
+                    tilePadding: EdgeInsets.only(left: 40.0),
+                    // title: _expansionTileButton(MyStrings.updatePassword),
+                    title: _expansionTileButton(MyStrings.updatePassword),
+                    children: <Widget>[
+                      new Container(
+                        child: CustomTextFormField(
+                          labelText: MyStrings.oldPass,
+                          controller: provider.oldController,
+                          isPwdType: true,
+                          validator: ValidateInput.validatePassword,
+                          onSave: (value) {
+                            provider.oldController.text = value;
+                          },
+                        ),
+                      ),
+                      new Container(
+                        child: CustomTextFormField(
+                          labelText: MyStrings.newPass,
+                          controller: provider.newController,
+                          isPwdType: true,
+                          validator: ValidateInput.validatePassword,
+                          onSave: (value) {
+                            provider.newController.text = value;
+                          },
+                        ),
+                      ),
+                      InkWell(
+                          onTap: () {
+                            _performPasswordSubmit();
+                            // print(provider.usernameController.text);
+                            // print(provider.passwordController.text);
+                          },
+                          child: _submitButton(MyStrings.saveNewPass)),
+                      new SizedBox(
+                        height: 10.0,
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 5.0,
+                ),
+                ListTileTheme(
+                  dense: true,
+                  contentPadding: EdgeInsets.all(0),
+                  child: ExpansionTile(
+                    // childrenPadding: EdgeInsets.only(left: 28.0),
+                    backgroundColor: MyColors.blueShade,
+                    trailing: SizedBox(),
+                    tilePadding: EdgeInsets.only(left: 40.0),
+                    // title: _expansionTileButton(MyStrings.updatePassword),
+                    title: InkWell(
+                      onTap: () {
+                        Navigator.of(context).push(PageRouteBuilder(
+                            pageBuilder: (_, __, ___) => new MyCouponScreen()));
+                        // Navigator.push(context, MaterialPageRoute(builder: (context) => MyCouponScreen()));
+                      },
+                      child: Container(
+                        width: 330.0,
+                        height: 45.0,
+                        padding: EdgeInsets.symmetric(vertical: 13),
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(5)),
+                            boxShadow: <BoxShadow>[
+                              BoxShadow(
+                                  color: Colors.blueAccent.withAlpha(100),
+                                  offset: Offset(2, 4),
+                                  blurRadius: 8,
+                                  spreadRadius: 1)
+                            ],
+                            color: MyColors.primaryColor),
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            MyStrings.checkMy,
+                            style: MyStyles.robotoMedium10.copyWith(
+                                letterSpacing: 3.0,
+                                color: MyColors.white,
+                                fontWeight: FontWeight.w500),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 5.0,
+                ),
+                // update playback
+                ListTileTheme(
+                  dense: true,
+                  contentPadding: EdgeInsets.all(0),
+                  child: ExpansionTile(
+                    // childrenPadding: EdgeInsets.only(left: 28.0),
+                    backgroundColor: MyColors.blueShade,
+                    trailing: SizedBox(),
+                    tilePadding: EdgeInsets.only(left: 40.0),
+                    // title: _expansionTileButton(MyStrings.updatePassword),
+                    title: _expansionTileButton(MyStrings.playBack),
+                    children: <Widget>[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Radio(
+                            value: 1,
+                            groupValue: id,
+                            onChanged: (val) {
+                              setState(() {
+                                radioButtonItem = '1';
+                                id = 1;
+                                print(id);
+                                provider.type = radioButtonItem;
+                                _settingsProvider.listener = this;
+                                _settingsProvider.performPlayBackUpdate();
+                              });
+                            },
+                          ),
+                          Text(
+                            'SD Playback',
+                            style: new TextStyle(fontSize: 17.0),
+                          ),
+                          Radio(
+                            value: 2,
+                            groupValue: id,
+                            onChanged: (val) {
+                              setState(() {
+                                radioButtonItem = '2';
+                                id = 2;
+                                print(id);
+                                provider.type = radioButtonItem;
+                                _settingsProvider.listener = this;
+                                _settingsProvider.performPlayBackUpdate();
+                              });
+                            },
+                          ),
+                          Text(
+                            'HD Playback',
+                            style: new TextStyle(
+                              fontSize: 17.0,
+                            ),
+                          ),
+                        ],
+                      ),
+                      new SizedBox(
+                        height: 10.0,
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 5.0,
+                ),
+                // update profile, TODO:Edits here
+                ListTileTheme(
+                  dense: true,
+                  contentPadding: EdgeInsets.all(0),
+                  child: ExpansionTile(
+                    // childrenPadding: EdgeInsets.only(left: 28.0),
+                    backgroundColor: MyColors.blueShade,
+                    trailing: SizedBox(),
+                    tilePadding: EdgeInsets.only(left: 40.0),
+                    // title: _expansionTileButton(MyStrings.updatePassword),
+                    title: InkWell(
+                      onTap: () async {
+                        await SharedPrefManager.instance
+                            .setString("settingsIntent", (1).toString())
+                            .whenComplete(() => print("SetIntentToggler True"));
+                        Navigator.of(context).push(PageRouteBuilder(
+                            pageBuilder: (_, __, ___) =>
+                                new DemographicsScreen()));
+                        // Navigator.push(context, MaterialPageRoute(builder: (context) => InterestScreen()));
+                      },
+                      child: Container(
+                        width: 330.0,
+                        height: 45.0,
+                        padding: EdgeInsets.symmetric(vertical: 13),
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(5)),
+                            boxShadow: <BoxShadow>[
+                              BoxShadow(
+                                  color: Colors.blueAccent.withAlpha(100),
+                                  offset: Offset(2, 4),
+                                  blurRadius: 8,
+                                  spreadRadius: 1)
+                            ],
+                            color: MyColors.primaryColor),
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            MyStrings.updateProfiles,
+                            style: MyStyles.robotoMedium10.copyWith(
+                                letterSpacing: 3.0,
+                                color: MyColors.white,
+                                fontWeight: FontWeight.w500),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 140.0,
+                ),
+                InkWell(
+                  onTap: () {
+                    Navigator.of(context).push(PageRouteBuilder(
+                        pageBuilder: (_, __, ___) => new DashBoardScreen()));
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(builder: (context) => DashBoardScreen()),
+                    // );
+                  },
+                  child: _submitButton1(MyStrings.returnTo),
+                ),
+              ],
+            ),
+          );
+        })),
+      ),
     );
   }
 
@@ -578,7 +636,7 @@ class _SettingScreenState extends BaseState<SettingScreen> {
                 child: InkWell(
                   onTap: () {
                     Navigator.of(context).push(PageRouteBuilder(
-                        pageBuilder: (_, __, ___) => new ChartsDemo()));
+                        pageBuilder: (_, __, ___) => new ChartsPage()));
                     // Navigator.push(
                     //     context,
                     //     MaterialPageRoute(
@@ -593,21 +651,21 @@ class _SettingScreenState extends BaseState<SettingScreen> {
                   ),
                 )),
             new PopupMenuDivider(height: 3.0),
-            new PopupMenuItem<String>(
-                value: 'value05',
-                child: InkWell(
-                  onTap: () {
-                    Navigator.of(subcontext).push(PageRouteBuilder(
-                        pageBuilder: (_, __, ___) => new ActivityScreen()));
-                  },
-                  child: new Text(
-                    'My Activity',
-                    style: MyStyles.robotoMedium16.copyWith(
-                        letterSpacing: 1.0,
-                        color: MyColors.black,
-                        fontWeight: FontWeight.w100),
-                  ),
-                )),
+            // new PopupMenuItem<String>(
+            //     value: 'value05',
+            //     child: InkWell(
+            //       onTap: () {
+            //         Navigator.of(subcontext).push(PageRouteBuilder(
+            //             pageBuilder: (_, __, ___) => new ActivityScreen()));
+            //       },
+            //       child: new Text(
+            //         'My Activity',
+            //         style: MyStyles.robotoMedium16.copyWith(
+            //             letterSpacing: 1.0,
+            //             color: MyColors.black,
+            //             fontWeight: FontWeight.w100),
+            //       ),
+            //     )),
             new PopupMenuDivider(height: 3.0),
             new PopupMenuItem<String>(
                 value: 'value06',
@@ -644,10 +702,10 @@ class _SettingScreenState extends BaseState<SettingScreen> {
                 pageBuilder: (_, __, ___) => new MyCouponScreen()));
           } else if (value == 'value04') {
             Navigator.of(subcontext).push(PageRouteBuilder(
-                pageBuilder: (_, __, ___) => new ChartsDemo()));
-          } else if (value == 'value05') {
-            Navigator.of(subcontext).push(PageRouteBuilder(
-                pageBuilder: (_, __, ___) => new ActivityScreen()));
+                pageBuilder: (_, __, ___) => new ChartsPage()));
+            // } else if (value == 'value05') {
+            //   Navigator.of(subcontext).push(PageRouteBuilder(
+            //       pageBuilder: (_, __, ___) => new ActivityScreen()));
           } else if (value == 'value06') {
             await SharedPrefManager.instance
                 .clearAll()

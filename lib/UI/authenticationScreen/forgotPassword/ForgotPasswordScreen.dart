@@ -9,6 +9,7 @@ import 'package:myads_app/Constants/styles.dart';
 import 'package:myads_app/Constants/validate_input.dart';
 import 'package:myads_app/UI/Widgets/custom_textformfield.dart';
 import 'package:myads_app/UI/Widgets/progressbar.dart';
+import 'package:myads_app/UI/authenticationScreen/signIn/LogInScreen.dart';
 import 'package:myads_app/UI/welcomeScreen/welcomeScreen.dart';
 import 'package:myads_app/base/base_state.dart';
 import 'package:myads_app/model/response/authentication/forgot_response.dart';
@@ -103,7 +104,30 @@ class _ForgotPasswordScreenState extends BaseState<ForgotPasswordScreen> {
       ModalRoute.withName('/'),
     );
   }
+  _appBar(height) => PreferredSize(
+    preferredSize:  Size(MediaQuery.of(context).size.width, 80 ),
+    child: Stack(
+      children: <Widget>[
+        Container(     // Background
+          child: Center(
+            child: Text("",),),
+          color: MyColors.colorLight,
+          height: 60,
+          width: MediaQuery.of(context).size.width,
+        ),
 
+        Container(),   // Required some widget in between to float AppBar
+
+        Positioned(    // To take AppBar Size only
+          top: 20.0,
+          left: 20.0,
+          right: 20.0,
+          child: Image.asset(MyImages.appBarLogo,height: 60,),
+        ),
+
+      ],
+    ),
+  );
   @override
   Widget build(BuildContext context) {
     final MediaQueryData media = MediaQuery.of(context);
@@ -115,23 +139,7 @@ class _ForgotPasswordScreenState extends BaseState<ForgotPasswordScreen> {
     final theme = Theme.of(context).copyWith(dividerColor: Colors.transparent);
     return Scaffold(
       backgroundColor: MyColors.white,
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: MyColors.colorLight,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(''),
-            Padding(
-              padding: const EdgeInsets.only(left: 26.0),
-              child: Image.asset(MyImages.appBarLogo),
-            ),
-            // _DividerPopMenu()
-            SizedBox()
-          ],
-        ),
-      ),
+      appBar: _appBar(AppBar().preferredSize.height),
       body: SingleChildScrollView(
         child: Consumer<ForgotProvider>(
             builder: (context, provider, _) {
@@ -148,7 +156,7 @@ class _ForgotPasswordScreenState extends BaseState<ForgotPasswordScreen> {
                       .width,
                   child: Column(
                     children: [
-                      SizedBox(height: 200.0,),
+                      SizedBox(height: 150.0,),
                       CustomTextFormField(
                         labelText: MyStrings.loginName,
                         controller: provider.usernameController,
@@ -167,6 +175,8 @@ class _ForgotPasswordScreenState extends BaseState<ForgotPasswordScreen> {
                       InkWell(
                           onTap: (){
                             Navigator.of(context).pop();
+                            // Navigator.of(context).popUntil((route) => route.isFirst);
+                            // Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => LoginScreen()));;
                           },
                           child: _submitButton(MyStrings.logIn)),
 
@@ -261,7 +271,7 @@ class _ForgotPasswordScreenState extends BaseState<ForgotPasswordScreen> {
                   onTap:(){
                     Navigator.of(context).pop();
                     Navigator.of(context).push(PageRouteBuilder(
-                        pageBuilder: (_, __, ___) => new ChartsDemo()));
+                        pageBuilder: (_, __, ___) => new ChartsPage()));
 
                   },
                   title: Text(
@@ -296,8 +306,8 @@ class _ForgotPasswordScreenState extends BaseState<ForgotPasswordScreen> {
   }
   Widget _submitButton(String buttonName) {
     return Container(
-      width: 180.0,
-      height: 45.0,
+      width: 170.0,
+      height: 40.0,
       padding: EdgeInsets.symmetric(vertical: 13),
       alignment: Alignment.center,
       decoration: BoxDecoration(
@@ -312,7 +322,7 @@ class _ForgotPasswordScreenState extends BaseState<ForgotPasswordScreen> {
           color: MyColors.primaryColor),
       child: Text(
         buttonName,
-        style: MyStyles.robotoMedium14.copyWith(letterSpacing: 3.0,
+        style: MyStyles.robotoMedium12.copyWith(letterSpacing: 3.0,
             color: MyColors.white,
             fontWeight: FontWeight.w500),
 

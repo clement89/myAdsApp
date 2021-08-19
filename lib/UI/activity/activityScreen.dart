@@ -1,5 +1,6 @@
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
+import 'package:instant/instant.dart';
 import 'package:intl/intl.dart';
 import 'package:month_picker_dialog/month_picker_dialog.dart';
 import 'package:myads_app/Constants/response_ids.dart';
@@ -12,7 +13,7 @@ import 'package:myads_app/utils/code_snippet.dart';
 import 'package:myads_app/utils/shared_pref_manager.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
-import 'package:syncfusion_flutter_core/theme.dart';
+
 import '../../Constants/colors.dart';
 import '../../Constants/constants.dart';
 import '../../Constants/images.dart';
@@ -23,8 +24,6 @@ import '../charts/BarChart.dart';
 import '../settings/SettingScreen.dart';
 import '../welcomeScreen/welcomeScreen.dart';
 import 'activityProvider.dart';
-import 'package:horizontal_data_table/horizontal_data_table.dart';
-import 'package:data_table_2/data_table_2.dart';
 
 class ActivityScreen extends StatefulWidget {
   @override
@@ -34,9 +33,10 @@ class ActivityScreen extends StatefulWidget {
 class _ActivityScreenState extends BaseState<ActivityScreen>
     with SingleTickerProviderStateMixin {
   BuildContext subcontext;
-  DateTime selectedDate = DateTime.now();
-  String month = 'June';
-  int year = 2021;
+  DateTime selectedDate =
+      dateTimeToZone(zone: "AEST", datetime: DateTime.now());
+  String month;
+  int year;
   ActivityProvider _activityProvider;
   TabController _tabController;
   String tab = 'performance';
@@ -46,8 +46,10 @@ class _ActivityScreenState extends BaseState<ActivityScreen>
   @override
   void initState() {
     super.initState();
-    String formatDate = new DateFormat("MMMM yyyy").format(selectedDate);
+    // String formatDate = new DateFormat("MMMM yyyy").format(selectedDate);
+    // month = new DateFormat("MMMM").format(selectedDate);
     month = new DateFormat("MMMM").format(selectedDate);
+    year = selectedDate.year;
     _tabController = TabController(vsync: this, length: 2);
 
     _tabController.addListener(() {
@@ -77,8 +79,6 @@ class _ActivityScreenState extends BaseState<ActivityScreen>
     _activityProvider.listener = this;
     _activityProvider.performGetPerformance(month, year, 'performance');
     employees = _activityProvider.getDailyReportList;
-
-
   }
 
   String ronValue = "0.0";
@@ -163,25 +163,48 @@ class _ActivityScreenState extends BaseState<ActivityScreen>
     return series;
   }
 
+  _appBar(height) => PreferredSize(
+        preferredSize: Size(MediaQuery.of(context).size.width, 80),
+        child: Stack(
+          children: <Widget>[
+            Container(
+              // Background
+              child: Center(
+                child: Text(
+                  "",
+                ),
+              ),
+              color: MyColors.colorLight,
+              height: 60,
+              width: MediaQuery.of(context).size.width,
+            ),
+
+            Container(), // Required some widget in between to float AppBar
+
+            Positioned(
+              // To take AppBar Size only
+              top: 20.0,
+              left: 20.0,
+              right: 20.0,
+              child: Image.asset(
+                MyImages.appBarLogo,
+                height: 60,
+              ),
+            ),
+            Positioned(
+              // To take AppBar Size only
+              top: 10.0,
+              left: 320.0,
+              right: 20.0,
+              child: _DividerPopMenu(),
+            )
+          ],
+        ),
+      );
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: MyColors.colorLight,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(''),
-            Padding(
-              padding: const EdgeInsets.only(left: 26.0),
-              child: Image.asset(MyImages.appBarLogo),
-            ),
-            _DividerPopMenu(),
-          ],
-        ),
-      ),
+      appBar: _appBar(AppBar().preferredSize.height),
       body: Consumer<ActivityProvider>(builder: (context, provider, _) {
         return Column(
           children: [
@@ -233,7 +256,7 @@ class _ActivityScreenState extends BaseState<ActivityScreen>
                       });
                     },
                     child: Container(
-                      width: 100,
+                      width: 110,
                       margin: const EdgeInsets.all(15.0),
                       padding: const EdgeInsets.all(3.0),
                       decoration: BoxDecoration(
@@ -242,6 +265,7 @@ class _ActivityScreenState extends BaseState<ActivityScreen>
                         children: [
                           Text(
                             DateFormat("MMM yyyy").format(selectedDate),
+                            // month,
                             style: MyStyles.robotoMedium16.copyWith(
                                 color: MyColors.primaryColor,
                                 fontWeight: FontWeight.w100),
@@ -257,7 +281,7 @@ class _ActivityScreenState extends BaseState<ActivityScreen>
                   child: Center(
                     child: Text(
                       'Rons: $ronValue',
-                      style: MyStyles.robotoMedium16.copyWith(
+                      style: MyStyles.robotoMedium14.copyWith(
                           letterSpacing: 1.0,
                           color: MyColors.white,
                           fontWeight: FontWeight.w100),
@@ -290,16 +314,14 @@ class _ActivityScreenState extends BaseState<ActivityScreen>
                           physics: NeverScrollableScrollPhysics(),
                           controller: _tabController,
                           children: [
-
                             SingleChildScrollView(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-
                                   Padding(
-                                    padding: const EdgeInsets.only(top:18.0),
+                                    padding: const EdgeInsets.only(top: 15.0),
                                     child: Container(
-                                      height: 200,
+                                      height: 190,
                                       width: 400,
                                       child: charts.BarChart(
                                         _getSeriesData(),
@@ -469,89 +491,99 @@ class _ActivityScreenState extends BaseState<ActivityScreen>
                                   //   ),
                                   // )
                                   //     : SizedBox(),
-                                  _activityProvider.getDailyReportList != null ?  SfDataGridTheme(
-                                    data: SfDataGridThemeData(
-                                        headerColor:  MyColors.primaryColor),
-                                    child: SfDataGrid(
-                                      source: employeeDataSource,
-                                      columnWidthMode: ColumnWidthMode.fill,
-
-                                      columns: <GridColumn>[
-                                        GridColumn(
-                                            columnName: 'id',
-                                            label: Container(
-                                              // padding: EdgeInsets.symmetric(horizontal: 16.0),
-                                                alignment: Alignment.center,
-                                                child: Text(
-                                                  'Date',                     style: MyStyles
-                                                    .robotoMedium16
-                                                    .copyWith(
-                                                    color: MyColors
-                                                        .white,
-                                                    fontWeight:
-                                                    FontWeight
-                                                        .w100),
-                                                ))),
-                                        GridColumn(
-                                            columnName: 'name',
-                                            label: Container(
-                                              // padding: EdgeInsets.all(8.0),
-                                                alignment: Alignment.center,
-                                                child: Text('Batch',                     style: MyStyles
-                                                    .robotoMedium16
-                                                    .copyWith(
-                                                    color: MyColors
-                                                        .white,
-                                                    fontWeight:
-                                                    FontWeight
-                                                        .w100),))),
-                                        GridColumn(
-                                            columnName: 'designation',
-                                            label: Container(
-                                              // padding: EdgeInsets.all(8.0),
-                                                alignment: Alignment.center,
-                                                child: Text(
-                                                  'Watchtime',
-                                                  style: MyStyles
-                                                      .robotoMedium16
-                                                      .copyWith(
-                                                      color: MyColors
-                                                          .white,
-                                                      fontWeight:
-                                                      FontWeight
-                                                          .w100),
-                                                ))),
-                                        GridColumn(
-                                            columnName: 'salary',
-                                            label: Container(
-                                              // padding: EdgeInsets.all(8.0),
-                                                alignment: Alignment.center,
-                                                child: Text('Survey',                     style: MyStyles
-                                                    .robotoMedium16
-                                                    .copyWith(
-                                                    color: MyColors
-                                                        .white,
-                                                    fontWeight:
-                                                    FontWeight
-                                                        .w100),))),
-                                        GridColumn(
-                                            columnName: 'rons',
-                                            label: Container(
-                                              // padding: EdgeInsets.all(8.0),
-                                                alignment: Alignment.center,
-                                                child: Text('Rons',                     style: MyStyles
-                                                    .robotoMedium16
-                                                    .copyWith(
-                                                    color: MyColors
-                                                        .white,
-                                                    fontWeight:
-                                                    FontWeight
-                                                        .w100),))),
-                                      ],
-                                    ),
-                                  )
-                               :
-                               SizedBox(),
+                                  _activityProvider.getDailyReportList != null
+                                      ? Container(
+                                          height: 300,
+                                          child: SfDataGrid(
+                                            source: employeeDataSource,
+                                            columnWidthMode:
+                                                ColumnWidthMode.fill,
+                                            columns: <GridColumn>[
+                                              GridColumn(
+                                                  columnName: 'id',
+                                                  label: Container(
+                                                      // padding: EdgeInsets.symmetric(horizontal: 16.0),
+                                                      alignment:
+                                                          Alignment.center,
+                                                      child: Text(
+                                                        'Date',
+                                                        style: MyStyles
+                                                            .robotoMedium16
+                                                            .copyWith(
+                                                                color: MyColors
+                                                                    .black,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w100),
+                                                      ))),
+                                              // GridColumn(
+                                              //     columnName: 'name',
+                                              //     label: Container(
+                                              //       // padding: EdgeInsets.all(8.0),
+                                              //         alignment: Alignment.center,
+                                              //         child: Text('Batch',                     style: MyStyles
+                                              //             .robotoMedium16
+                                              //             .copyWith(
+                                              //             color: MyColors
+                                              //                 .white,
+                                              //             fontWeight:
+                                              //             FontWeight
+                                              //                 .w100),))),
+                                              GridColumn(
+                                                  columnName: 'designation',
+                                                  label: Container(
+                                                      // padding: EdgeInsets.all(8.0),
+                                                      alignment:
+                                                          Alignment.center,
+                                                      child: Text(
+                                                        'Watchtime',
+                                                        style: MyStyles
+                                                            .robotoMedium16
+                                                            .copyWith(
+                                                                color: MyColors
+                                                                    .black,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w100),
+                                                      ))),
+                                              GridColumn(
+                                                  columnName: 'salary',
+                                                  label: Container(
+                                                      // padding: EdgeInsets.all(8.0),
+                                                      alignment:
+                                                          Alignment.center,
+                                                      child: Text(
+                                                        'Survey',
+                                                        style: MyStyles
+                                                            .robotoMedium16
+                                                            .copyWith(
+                                                                color: MyColors
+                                                                    .black,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w100),
+                                                      ))),
+                                              GridColumn(
+                                                  columnName: 'rons',
+                                                  label: Container(
+                                                      // padding: EdgeInsets.all(8.0),
+                                                      alignment:
+                                                          Alignment.center,
+                                                      child: Text(
+                                                        'Rons',
+                                                        style: MyStyles
+                                                            .robotoMedium16
+                                                            .copyWith(
+                                                                color: MyColors
+                                                                    .black,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w100),
+                                                      ))),
+                                            ],
+                                          ),
+                                        )
+                                      : SizedBox(),
                                   Center(
                                     child: InkWell(
                                         onTap: () {
@@ -559,7 +591,8 @@ class _ActivityScreenState extends BaseState<ActivityScreen>
                                           Navigator.pushReplacement(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (BuildContext context) => DashBoardScreen(),
+                                              builder: (BuildContext context) =>
+                                                  DashBoardScreen(),
                                             ),
                                           );
                                           // Navigator.push(context, MaterialPageRoute(builder: (context) => DashBoardScreen()));
@@ -568,12 +601,11 @@ class _ActivityScreenState extends BaseState<ActivityScreen>
                                             _submitButton(MyStrings.returnTo)),
                                   ),
                                   SizedBox(
-                                    height: 20,
+                                    height: 10,
                                   ),
                                 ],
                               ),
                             ),
-
                             SingleChildScrollView(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -670,18 +702,18 @@ class _ActivityScreenState extends BaseState<ActivityScreen>
                                   SizedBox(
                                     height: 30,
                                   ),
-                                  Center(
-                                    child: InkWell(
-                                        onTap: () {
-                                          Navigator.of(context).pop();
-                                          // Navigator.push(context, MaterialPageRoute(builder: (context) => SettingScreen()));
-                                        },
-                                        child: _submitButton(
-                                            MyStrings.requestBalance)),
-                                  ),
-                                  SizedBox(
-                                    height: 20.0,
-                                  ),
+                                  // Center(
+                                  //   child: InkWell(
+                                  //       onTap: () {
+                                  //         Navigator.of(context).pop();
+                                  //         // Navigator.push(context, MaterialPageRoute(builder: (context) => SettingScreen()));
+                                  //       },
+                                  //       child: _submitButton(
+                                  //           MyStrings.requestBalance)),
+                                  // ),
+                                  // SizedBox(
+                                  //   height: 20.0,
+                                  // ),
                                   Center(
                                     child: InkWell(
                                         onTap: () {
@@ -808,7 +840,7 @@ class _ActivityScreenState extends BaseState<ActivityScreen>
                 child: InkWell(
                   onTap: () {
                     Navigator.of(context).push(PageRouteBuilder(
-                        pageBuilder: (_, __, ___) => new ChartsDemo()));
+                        pageBuilder: (_, __, ___) => new ChartsPage()));
                     // Navigator.push(
                     //     context,
                     //     MaterialPageRoute(
@@ -823,21 +855,21 @@ class _ActivityScreenState extends BaseState<ActivityScreen>
                   ),
                 )),
             new PopupMenuDivider(height: 3.0),
-            new PopupMenuItem<String>(
-                value: 'value05',
-                child: InkWell(
-                  onTap: () {
-                    Navigator.of(subcontext).push(PageRouteBuilder(
-                        pageBuilder: (_, __, ___) => new ActivityScreen()));
-                  },
-                  child: new Text(
-                    'My Activity',
-                    style: MyStyles.robotoMedium16.copyWith(
-                        letterSpacing: 1.0,
-                        color: MyColors.black,
-                        fontWeight: FontWeight.w100),
-                  ),
-                )),
+            // new PopupMenuItem<String>(
+            //     value: 'value05',
+            //     child: InkWell(
+            //       onTap: () {
+            //         Navigator.of(subcontext).push(PageRouteBuilder(
+            //             pageBuilder: (_, __, ___) => new ActivityScreen()));
+            //       },
+            //       child: new Text(
+            //         'My Activity',
+            //         style: MyStyles.robotoMedium16.copyWith(
+            //             letterSpacing: 1.0,
+            //             color: MyColors.black,
+            //             fontWeight: FontWeight.w100),
+            //       ),
+            //     )),
             new PopupMenuDivider(height: 3.0),
             new PopupMenuItem<String>(
                 value: 'value06',
@@ -878,10 +910,10 @@ class _ActivityScreenState extends BaseState<ActivityScreen>
                 pageBuilder: (_, __, ___) => new MyCouponScreen()));
           } else if (value == 'value04') {
             Navigator.of(subcontext).push(PageRouteBuilder(
-                pageBuilder: (_, __, ___) => new ChartsDemo()));
-          } else if (value == 'value05') {
-            Navigator.of(subcontext).push(PageRouteBuilder(
-                pageBuilder: (_, __, ___) => new ActivityScreen()));
+                pageBuilder: (_, __, ___) => new ChartsPage()));
+            // } else if (value == 'value05') {
+            //   Navigator.of(subcontext).push(PageRouteBuilder(
+            //       pageBuilder: (_, __, ___) => new ActivityScreen()));
           } else if (value == 'value06') {
             await SharedPrefManager.instance
                 .clearAll()
@@ -897,7 +929,7 @@ Widget _submitButton(String buttonName) {
   return Container(
     width: 280.0,
     height: 45.0,
-    padding: EdgeInsets.symmetric(vertical: 13),
+    padding: EdgeInsets.symmetric(vertical: 5),
     alignment: Alignment.center,
     decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(5)),
@@ -964,17 +996,14 @@ class PopulationData {
 class EmployeeDataSource extends DataGridSource {
   /// Creates the employee data source class with required details.
   EmployeeDataSource({@required List<DailyReport> employeeData}) {
-    _employeeData = employeeData.map<DataGridRow>((e) => DataGridRow(
-
-        cells: [
-
-      DataGridCell<String>(columnName: 'data', value: e.date),
-      DataGridCell<String>(columnName: 'badge', value: e.badge),
-      DataGridCell<String>(
-          columnName: 'watch', value: e.watchSeconds),
-      DataGridCell<String>(columnName: 'survey', value: e.surveys),
-      DataGridCell<String>(columnName: 'rons', value: e.ron),
-    ]))
+    _employeeData = employeeData
+        .map<DataGridRow>((e) => DataGridRow(cells: [
+              DataGridCell<String>(columnName: 'data', value: e.date),
+              // DataGridCell<String>(columnName: 'badge', value: e.badge),
+              DataGridCell<String>(columnName: 'watch', value: e.watchSeconds),
+              DataGridCell<String>(columnName: 'survey', value: e.surveys),
+              DataGridCell<String>(columnName: 'rons', value: e.ron),
+            ]))
         .toList();
   }
 
@@ -987,13 +1016,14 @@ class EmployeeDataSource extends DataGridSource {
   DataGridRowAdapter buildRow(DataGridRow row) {
     return DataGridRowAdapter(
         cells: row.getCells().map<Widget>((e) {
-          return Container(
-            height: 200,padding: EdgeInsets.symmetric(horizontal: .0),
+      return Container(
+        height: 190,
+        padding: EdgeInsets.symmetric(horizontal: .0),
 
-            alignment: Alignment.center,
-            // padding: EdgeInsets.all(8.0),
-            child: Text(e.value.toString()),
-          );
-        }).toList());
+        alignment: Alignment.center,
+        // padding: EdgeInsets.all(8.0),
+        child: Text(e.value.toString()),
+      );
+    }).toList());
   }
 }

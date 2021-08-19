@@ -62,14 +62,14 @@ class CustomTextFormField extends StatelessWidget {
               labelText,
               style: MyStyles.robotoMedium16.copyWith(
                   letterSpacing: Dimens.letterSpacing_14,
-                  color: MyColors.accentsColors,
+                  color: MyColors.primaryLightColor,
                   fontWeight: FontWeight.w100),
             ),
             SizedBox(
-              height: 10,
+              height: 5,
             ),
             Container(
-              // height: 50.0, cjc commented
+              // height: 50.0,
               width: 300.0,
               child: TextFormField(
                 controller: controller,
@@ -88,6 +88,8 @@ class CustomTextFormField extends StatelessWidget {
                 onTap: onClick,
                 onFieldSubmitted: onFieldSubmit,
                 decoration: InputDecoration(
+                  contentPadding:
+                  EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
                   fillColor: MyColors.colorLight,
                   filled: true,
                   border: OutlineInputBorder(
@@ -95,6 +97,10 @@ class CustomTextFormField extends StatelessWidget {
                     // fillColor: Color(0xfff3f3f4),
                     // filled: true
                   ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: MyColors.textColor1b1c20,
+                    ),),
                   suffixIcon: iconButton,
                 ),
               ),

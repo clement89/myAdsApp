@@ -36,23 +36,23 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           children: [
             Padding(
               padding: EdgeInsets.only(
-                top: media.padding.top + 20,
+                top: media.padding.top +0,
               ),
               child: Center(
                 child: Container(
                   height: MediaQuery.of(context).size.height / 3,
                   width: MediaQuery.of(context).size.width / 2,
-                  child: Image.asset(MyImages.appLogo),
+                  child: Image.asset(MyImages.Logo),
                 ),
               ),
             ),
             SizedBox(
-              height: MediaQuery.of(context).size.height / 150,
+              height: 35,
             ),
             Center(
                 child: Text(
               MyStrings.WelcomeTo,
-              style: MyStyles.robotoLight60.copyWith(
+              style: MyStyles.robotoLight51.copyWith(
                   letterSpacing: Dimens.letterSpacing_14,
                   color: MyColors.accentsColors,
                   fontWeight: FontWeight.w100),
@@ -64,14 +64,14 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 children: <TextSpan>[
                   new TextSpan(
                     text: MyStrings.My,
-                    style: MyStyles.robotoLight60.copyWith(
+                    style: MyStyles.robotoLight51.copyWith(
                         letterSpacing: Dimens.letterSpacing_14,
                         color: MyColors.accentsColors,
                         fontWeight: FontWeight.bold),
                   ),
                   new TextSpan(
                     text: MyStrings.Ads,
-                    style: MyStyles.robotoLight60.copyWith(
+                    style: MyStyles.robotoLight51.copyWith(
                         letterSpacing: Dimens.letterSpacing_14,
                         color: MyColors.accentsColors,
                         fontWeight: FontWeight.w100),
@@ -84,24 +84,24 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             ),
             Text(
               MyStrings.Watch,
-              style: MyStyles.robotoMedium20.copyWith(
-                  color: MyColors.darkGray, fontWeight: FontWeight.w500),
+              style: MyStyles.robotoMedium23.copyWith(
+                  color: MyColors.textdColor, fontWeight: FontWeight.w500),
             ),
             SizedBox(
               height: MediaQuery.of(context).size.height / 120,
             ),
             Text(
               MyStrings.Contribute,
-              style: MyStyles.robotoLight20
-                  .copyWith(color: MyColors.black, fontWeight: FontWeight.w500),
+              style: MyStyles.robotoLight23
+                  .copyWith(color: MyColors.textColor, fontWeight: FontWeight.w500),
             ),
             Text(
               MyStrings.Paid,
-              style: MyStyles.robotoLight20
-                  .copyWith(color: MyColors.black, fontWeight: FontWeight.w500),
+              style: MyStyles.robotoLight23
+                  .copyWith(color: MyColors.textColor, fontWeight: FontWeight.w500),
             ),
             SizedBox(
-              height: Dimens.dp_40,
+              height: Dimens.dp_44,
             ),
             InkWell(
                 onTap: () {
@@ -111,7 +111,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 },
                 child: _submitButton(MyStrings.SignUp)),
             SizedBox(
-              height: 10.0,
+              height: 20.0,
             ),
             InkWell(
                 onTap: () {
@@ -129,7 +129,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   Widget _submitButton(String buttonName) {
     return Container(
       width: MediaQuery.of(context).size.height / 4,
-      height: MediaQuery.of(context).size.height / 16,
+      height: MediaQuery.of(context).size.height / 18,
       padding: EdgeInsets.symmetric(vertical: 13),
       alignment: Alignment.center,
       decoration: BoxDecoration(
@@ -144,7 +144,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           color: MyColors.primaryColor),
       child: Text(
         buttonName,
-        style: MyStyles.robotoMedium14.copyWith(
+        style: MyStyles.robotoMedium12.copyWith(
             letterSpacing: 3.0,
             color: MyColors.white,
             fontWeight: FontWeight.w500),

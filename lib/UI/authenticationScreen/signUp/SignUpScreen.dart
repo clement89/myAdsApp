@@ -14,7 +14,6 @@ import 'package:myads_app/UI/authenticationScreen/FoxProxy.dart';
 import 'package:myads_app/UI/authenticationScreen/signUp/signupProvider.dart';
 import 'package:myads_app/base/base_state.dart';
 import 'package:myads_app/model/response/authentication/signupResponse.dart';
-import 'package:myads_app/utils/code_snippet.dart';
 import 'package:myads_app/utils/shared_pref_manager.dart';
 import 'package:provider/provider.dart';
 
@@ -81,38 +80,44 @@ class _SignUpScreenState extends BaseState<SignUpScreen> {
     }
   }
 
+  _appBar(height) => PreferredSize(
+        preferredSize: Size(MediaQuery.of(context).size.width, 35),
+        child: Stack(
+          children: <Widget>[
+            Container(
+              // Background
+              child: Center(
+                child: Text(
+                  "",
+                ),
+              ),
+              color: MyColors.colorLight,
+              height: 60,
+              width: MediaQuery.of(context).size.width,
+            ),
+
+            Container(), // Required some widget in between to float AppBar
+
+            Positioned(
+              // To take AppBar Size only
+              top: 10.0,
+              left: 20.0,
+              right: 20.0,
+              child: Image.asset(
+                MyImages.appBarLogo,
+                height: 60,
+              ),
+            ),
+          ],
+        ),
+      );
   @override
   Widget build(BuildContext context) {
     final MediaQueryData media = MediaQuery.of(context);
     final double statusBarHeight = MediaQuery.of(context).padding.top;
     return Scaffold(
       backgroundColor: MyColors.white,
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: MyColors.colorLight,
-        title: Center(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(''),
-              Padding(
-                padding: const EdgeInsets.only(left: 26.0),
-                child: Center(child: Image.asset(MyImages.appBarLogo)),
-              ),
-              // _simplePopup(),
-              // _DividerPopMenu(),
-              // Padding(
-              //   padding: const EdgeInsets.all(8.0),
-              //   child: IconButton(icon: Icon(Icons.menu, color: MyColors.accentsColors, size: 30,),onPressed: (){
-              //    print("jhkl");
-              //     _simplePopup();
-              //   },),
-              // ),
-            ],
-          ),
-        ),
-      ),
+      // appBar: _appBar(AppBar().preferredSize.height),
       body: SingleChildScrollView(
         child: Consumer<SignUpProvider>(builder: (context, provider, _) {
           return Form(
@@ -120,7 +125,7 @@ class _SignUpScreenState extends BaseState<SignUpScreen> {
             child: Column(
               children: [
                 Container(
-                    height: MediaQuery.of(context).size.height / 4,
+                    height: MediaQuery.of(context).size.height / 3.1,
                     width: MediaQuery.of(context).size.width,
                     color: MyColors.colorLight,
                     child: Image.asset(
@@ -131,10 +136,9 @@ class _SignUpScreenState extends BaseState<SignUpScreen> {
                   padding: const EdgeInsets.only(top: 30.0),
                   child: Text(
                     MyStrings.EnterName,
-                    style: MyStyles.robotoMedium26.copyWith(
-                        letterSpacing: 2.0,
+                    style: MyStyles.robotoLight25.copyWith(
                         color: MyColors.accentsColors,
-                        fontWeight: FontWeight.w100),
+                        fontWeight: FontWeight.w500),
                   ),
                 ),
                 SizedBox(
@@ -147,6 +151,9 @@ class _SignUpScreenState extends BaseState<SignUpScreen> {
                   onSave: (value) {
                     provider.usernameController.text = value;
                   },
+                ),
+                SizedBox(
+                  height: 10.0,
                 ),
                 CustomTextFormField(
                   labelText: MyStrings.password,
@@ -163,7 +170,7 @@ class _SignUpScreenState extends BaseState<SignUpScreen> {
                 InkWell(
                     onTap: _performSubmit,
                     child: _submitButton(MyStrings.signMeUp)),
-                SizedBox(height: media.size.height / 10),
+                SizedBox(height: 30),
                 Align(
                   alignment: Alignment.bottomCenter,
                   child: Column(
@@ -176,21 +183,21 @@ class _SignUpScreenState extends BaseState<SignUpScreen> {
                             children: <TextSpan>[
                               new TextSpan(
                                 text: MyStrings.termCondition,
-                                style: MyStyles.robotoLight12.copyWith(
+                                style: MyStyles.robotoLight14.copyWith(
                                     letterSpacing: 1.0,
                                     color: MyColors.lightGray,
                                     fontWeight: FontWeight.w100),
                               ),
                               new TextSpan(
                                 text: MyStrings.terms,
-                                style: MyStyles.robotoLight12.copyWith(
+                                style: MyStyles.robotoLight14.copyWith(
                                     letterSpacing: 1.0,
                                     color: MyColors.darkGray,
                                     fontWeight: FontWeight.bold),
                               ),
                               new TextSpan(
                                 text: MyStrings.read,
-                                style: MyStyles.robotoLight12.copyWith(
+                                style: MyStyles.robotoLight14.copyWith(
                                   letterSpacing: 1.0,
                                   color: MyColors.lightGray,
                                   fontWeight: FontWeight.w100,
@@ -213,7 +220,7 @@ class _SignUpScreenState extends BaseState<SignUpScreen> {
                               children: <TextSpan>[
                                 new TextSpan(
                                   text: MyStrings.haveReadOur,
-                                  style: MyStyles.robotoLight12.copyWith(
+                                  style: MyStyles.robotoLight14.copyWith(
                                     letterSpacing: 1.0,
                                     color: MyColors.lightGray,
                                     fontWeight: FontWeight.w100,
@@ -221,7 +228,7 @@ class _SignUpScreenState extends BaseState<SignUpScreen> {
                                 ),
                                 new TextSpan(
                                   text: MyStrings.privacyPolicy,
-                                  style: MyStyles.robotoLight12.copyWith(
+                                  style: MyStyles.robotoLight14.copyWith(
                                       letterSpacing: 1.0,
                                       color: MyColors.darkGray,
                                       fontWeight: FontWeight.bold),
@@ -314,7 +321,7 @@ Widget _DividerPopMenu() {
                 child: InkWell(
                   onTap: () {
                     Navigator.of(context).push(PageRouteBuilder(
-                        pageBuilder: (_, __, ___) => new ChartsDemo()));
+                        pageBuilder: (_, __, ___) => new ChartsPage()));
                     // Navigator.push(
                     //     context,
                     //     MaterialPageRoute(
@@ -336,8 +343,8 @@ Widget _DividerPopMenu() {
 
 Widget _submitButton(String buttonName) {
   return Container(
-    width: 220.0,
-    height: 45.0,
+    width: 170.0,
+    height: 40.0,
     padding: EdgeInsets.symmetric(vertical: 13),
     alignment: Alignment.center,
     decoration: BoxDecoration(
@@ -352,7 +359,7 @@ Widget _submitButton(String buttonName) {
         color: MyColors.primaryColor),
     child: Text(
       buttonName,
-      style: MyStyles.robotoMedium14.copyWith(
+      style: MyStyles.robotoMedium12.copyWith(
           letterSpacing: 3.0,
           color: MyColors.white,
           fontWeight: FontWeight.w500),

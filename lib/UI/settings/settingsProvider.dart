@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:myads_app/Constants/constants.dart';
 import 'package:myads_app/Constants/response_ids.dart';
 import 'package:myads_app/base/base_provider.dart';
+import 'package:myads_app/model/response/interests/getUserDetails.dart';
 import 'package:myads_app/model/response/settings/updatePasswordResponse.dart';
 import 'package:myads_app/model/response/settings/updatePlaybackResponse.dart';
 import 'package:myads_app/model/response/settings/updateProfileResponse.dart';
@@ -124,5 +125,27 @@ class SettingsProvider extends BaseProvider{
 
   }
 
+  performGetUserDetails() async {
+    print("1");
+    Map<String, String> qParams = {
+      'u': await SharedPrefManager.instance.getString(Constants.userId),
+    };
+    await ApiManager().getDio(isJsonType: false).
+    post(Endpoints.userDetails,queryParameters: qParams).
+    then((response) =>
+        getGetUserDetails(response)
+    ).catchError((onError){
+      print("5");
+      listener.onFailure(DioErrorUtil.handleErrors(onError));
+      print("6");
+    });
+  }
+  getGetUserDetails(Response response){
+    print("2");
+    GetUserDetailsResponse _response = GetUserDetailsResponse.fromJson(response.data);
+    print("3");
+    listener.onSuccess(_response,reqId: ResponseIds.GET_USER_DETAILS);
+    print("4");
+  }
 
 }

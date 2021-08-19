@@ -4,7 +4,6 @@ import 'package:myads_app/Constants/constants.dart';
 import 'package:myads_app/Constants/images.dart';
 import 'package:myads_app/Constants/strings.dart';
 import 'package:myads_app/Constants/styles.dart';
-import 'package:myads_app/UI/activity/activityScreen.dart';
 import 'package:myads_app/UI/welcomeScreen/welcomeScreen.dart';
 import 'package:myads_app/model/response/dashboard/getVideosResponse.dart';
 import 'package:myads_app/utils/shared_pref_manager.dart';
@@ -32,48 +31,72 @@ class _RewardsScreenState extends State<RewardsScreen> {
   }
 
   BuildContext subcontext;
+  _appBar(height) => PreferredSize(
+        preferredSize: Size(MediaQuery.of(context).size.width, 80),
+        child: Stack(
+          children: <Widget>[
+            Container(
+              // Background
+              child: Center(
+                child: Text(
+                  "",
+                ),
+              ),
+              color: MyColors.colorLight,
+              height: 60,
+              width: MediaQuery.of(context).size.width,
+            ),
 
+            Container(), // Required some widget in between to float AppBar
+
+            Positioned(
+              // To take AppBar Size only
+              top: 20.0,
+              left: 20.0,
+              right: 20.0,
+              child: Image.asset(
+                MyImages.appBarLogo,
+                height: 60,
+              ),
+            ),
+            Positioned(
+              // To take AppBar Size only
+              top: 10.0,
+              left: 320.0,
+              right: 20.0,
+              child: _DividerPopMenu(),
+            )
+          ],
+        ),
+      );
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: MyColors.white,
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          backgroundColor: MyColors.colorLight,
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(''),
-              Padding(
-                padding: const EdgeInsets.only(left: 26.0),
-                child: Image.asset(MyImages.appBarLogo),
-              ),
-              _DividerPopMenu(),
-            ],
-          ),
-        ),
-        body: PageView.builder(
-          controller: _controller, //cjc added
-          itemBuilder: (context, position) {
-            return widget.userbadge != null
-                ? widget.userbadge[position].type == 'multiply'
-                    ? MyPage1Widget(
-                        multiply: widget.userbadge[position],
-                        controller: _controller)
-                    : widget.userbadge[position].type == 'bonus'
-                        ? MyPage2Widget(
-                            bonus: widget.userbadge[position],
-                            controller: _controller)
-                        : MyPage3Widget(
-                            special: widget.userbadge[position],
-                            controller: _controller)
-                : Container();
-            // widget.userbadge.bonus != null ?    MyPage2Widget(bonus: widget.userbadge,controller: _controller) : Container(),
-            // widget.userbadge.specialOffer[0].image != null ?    MyPage3Widget(special: widget.userbadge.specialOffer[0],controller: _controller): Container(),
-          },
-          itemCount: widget.userbadge.length, // Can be null
-        ));
+    return SafeArea(
+      child: Scaffold(
+          backgroundColor: MyColors.white,
+          appBar: _appBar(AppBar().preferredSize.height),
+          body: PageView.builder(
+            controller: _controller, //cjc added
+            itemBuilder: (context, position) {
+              return widget.userbadge != null
+                  ? widget.userbadge[position].type == 'multiply'
+                      ? MyPage1Widget(
+                          multiply: widget.userbadge[position],
+                          controller: _controller)
+                      : widget.userbadge[position].type == 'bonus'
+                          ? MyPage2Widget(
+                              bonus: widget.userbadge[position],
+                              controller: _controller)
+                          : MyPage3Widget(
+                              special: widget.userbadge[position],
+                              controller: _controller)
+                  : Container();
+              // widget.userbadge.bonus != null ?    MyPage2Widget(bonus: widget.userbadge,controller: _controller) : Container(),
+              // widget.userbadge.specialOffer[0].image != null ?    MyPage3Widget(special: widget.userbadge.specialOffer[0],controller: _controller): Container(),
+            },
+            itemCount: widget.userbadge.length, // Can be null
+          )),
+    );
   }
 
   Widget _DividerPopMenu() {
@@ -149,7 +172,7 @@ class _RewardsScreenState extends State<RewardsScreen> {
                 child: InkWell(
                   onTap: () {
                     Navigator.of(context).push(PageRouteBuilder(
-                        pageBuilder: (_, __, ___) => new ChartsDemo()));
+                        pageBuilder: (_, __, ___) => new ChartsPage()));
                     // Navigator.push(
                     //     context,
                     //     MaterialPageRoute(
@@ -164,21 +187,21 @@ class _RewardsScreenState extends State<RewardsScreen> {
                   ),
                 )),
             new PopupMenuDivider(height: 3.0),
-            new PopupMenuItem<String>(
-                value: 'value05',
-                child: InkWell(
-                  onTap: () {
-                    Navigator.of(subcontext).push(PageRouteBuilder(
-                        pageBuilder: (_, __, ___) => ActivityScreen()));
-                  },
-                  child: new Text(
-                    'My Activity',
-                    style: MyStyles.robotoMedium16.copyWith(
-                        letterSpacing: 1.0,
-                        color: MyColors.black,
-                        fontWeight: FontWeight.w100),
-                  ),
-                )),
+            // new PopupMenuItem<String>(
+            //     value: 'value05',
+            //     child: InkWell(
+            //       onTap: () {
+            //         Navigator.of(subcontext).push(PageRouteBuilder(
+            //             pageBuilder: (_, __, ___) => ActivityScreen()));
+            //       },
+            //       child: new Text(
+            //         'My Activity',
+            //         style: MyStyles.robotoMedium16.copyWith(
+            //             letterSpacing: 1.0,
+            //             color: MyColors.black,
+            //             fontWeight: FontWeight.w100),
+            //       ),
+            //     )),
             new PopupMenuDivider(height: 3.0),
             new PopupMenuItem<String>(
                 value: 'value06',
@@ -219,10 +242,10 @@ class _RewardsScreenState extends State<RewardsScreen> {
                 pageBuilder: (_, __, ___) => new MyCouponScreen()));
           } else if (value == 'value04') {
             Navigator.of(subcontext).push(PageRouteBuilder(
-                pageBuilder: (_, __, ___) => new ChartsDemo()));
-          } else if (value == 'value05') {
-            Navigator.of(subcontext).push(PageRouteBuilder(
-                pageBuilder: (_, __, ___) => new ActivityScreen()));
+                pageBuilder: (_, __, ___) => new ChartsPage()));
+            // } else if (value == 'value05') {
+            //   Navigator.of(subcontext).push(PageRouteBuilder(
+            //       pageBuilder: (_, __, ___) => new ActivityScreen()));
           } else if (value == 'value06') {
             await SharedPrefManager.instance
                 .clearAll()

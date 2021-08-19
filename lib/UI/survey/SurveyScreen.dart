@@ -199,491 +199,493 @@ class _SurveyScreenState extends BaseState<SurveyScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: MyColors.colorLight,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(''),
-            Padding(
-              padding: const EdgeInsets.only(left: 26.0),
-              child: Image.asset(MyImages.group4),
-            ),
-            _DividerPopMenu(),
-          ],
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          backgroundColor: MyColors.colorLight,
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(''),
+              Padding(
+                padding: const EdgeInsets.only(left: 26.0),
+                child: Image.asset(MyImages.group4),
+              ),
+              _DividerPopMenu(),
+            ],
+          ),
         ),
-      ),
-      body: SingleChildScrollView(
-        child: Consumer<SurveyProvider>(
-          builder: (context, provider, _) {
-            return surveyDetails != null
-                ? surveyDetails.question.isNotEmpty
-                    ? Form(
-                        key: _formKey,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(top: 40.0),
-                              child: Center(
-                                child: Text(
-                                  surveyDetails.name,
-                                  style: MyStyles.robotoLight28.copyWith(
-                                      letterSpacing: 1.0,
-                                      color: MyColors.primaryColor,
-                                      fontWeight: FontWeight.w100),
+        body: SingleChildScrollView(
+          child: Consumer<SurveyProvider>(
+            builder: (context, provider, _) {
+              return surveyDetails != null
+                  ? surveyDetails.question.isNotEmpty
+                      ? Form(
+                          key: _formKey,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(top: 40.0),
+                                child: Center(
+                                  child: Text(
+                                    surveyDetails.name,
+                                    style: MyStyles.robotoLight28.copyWith(
+                                        letterSpacing: 1.0,
+                                        color: MyColors.primaryColor,
+                                        fontWeight: FontWeight.w100),
+                                  ),
                                 ),
                               ),
-                            ),
-                            SizedBox(
-                              height: 30.0,
-                            ),
-                            ListView.builder(
-                                physics: NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                itemCount: surveyDetails.question.length,
-                                itemBuilder: (BuildContext context, int index) {
-                                  return Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "${index + 1}. ${surveyDetails.question[index].question}",
-                                          style: MyStyles.robotoLight24
-                                              .copyWith(
-                                                  letterSpacing: 1.0,
-                                                  color: MyColors.primaryColor,
-                                                  fontWeight: FontWeight.w100),
-                                        ),
-                                        surveyDetails.question[index].type ==
-                                                'Text Box'
-                                            ? Center(
-                                                child: CustomTextFormField(
-                                                  labelText: "",
-                                                  controller: provider
-                                                      .commentController,
-                                                  validator: ValidateInput
-                                                      .requiredFields,
-                                                  onSave: (value) {
-                                                    provider.commentController
-                                                        .text = value;
-                                                  },
-                                                ),
-                                              )
-                                            : surveyDetails
-                                                        .question[index].type ==
-                                                    'Star Rating'
-                                                ? Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .only(
-                                                                left: 20.0,
-                                                                top: 10.0,
-                                                                right: 10),
-                                                        child:
-                                                            RatingBar.builder(
-                                                          initialRating: r1,
-                                                          minRating: 1,
-                                                          direction:
-                                                              Axis.horizontal,
-                                                          allowHalfRating: true,
-                                                          itemCount: 5,
-                                                          itemPadding: EdgeInsets
-                                                              .symmetric(
-                                                                  horizontal:
-                                                                      10.0),
-                                                          itemBuilder:
-                                                              (context, _) =>
-                                                                  Icon(
-                                                            Icons.star,
-                                                            color: MyColors
-                                                                .primaryColor,
+                              SizedBox(
+                                height: 30.0,
+                              ),
+                              ListView.builder(
+                                  physics: NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemCount: surveyDetails.question.length,
+                                  itemBuilder: (BuildContext context, int index) {
+                                    return Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "${index + 1}. ${surveyDetails.question[index].question}",
+                                            style: MyStyles.robotoLight24
+                                                .copyWith(
+                                                    letterSpacing: 1.0,
+                                                    color: MyColors.primaryColor,
+                                                    fontWeight: FontWeight.w100),
+                                          ),
+                                          surveyDetails.question[index].type ==
+                                                  'Text Box'
+                                              ? Center(
+                                                  child: CustomTextFormField(
+                                                    labelText: "",
+                                                    controller: provider
+                                                        .commentController,
+                                                    validator: ValidateInput
+                                                        .requiredFields,
+                                                    onSave: (value) {
+                                                      provider.commentController
+                                                          .text = value;
+                                                    },
+                                                  ),
+                                                )
+                                              : surveyDetails
+                                                          .question[index].type ==
+                                                      'Star Rating'
+                                                  ? Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  left: 20.0,
+                                                                  top: 10.0,
+                                                                  right: 10),
+                                                          child:
+                                                              RatingBar.builder(
+                                                            initialRating: r1,
+                                                            minRating: 1,
+                                                            direction:
+                                                                Axis.horizontal,
+                                                            allowHalfRating: true,
+                                                            itemCount: 5,
+                                                            itemPadding: EdgeInsets
+                                                                .symmetric(
+                                                                    horizontal:
+                                                                        10.0),
+                                                            itemBuilder:
+                                                                (context, _) =>
+                                                                    Icon(
+                                                              Icons.star,
+                                                              color: MyColors
+                                                                  .primaryColor,
+                                                            ),
+                                                            onRatingUpdate:
+                                                                (rating) {
+                                                              r1 = rating;
+                                                              provider.rating =
+                                                                  r1.toString();
+                                                              print(r1);
+                                                            },
                                                           ),
-                                                          onRatingUpdate:
-                                                              (rating) {
-                                                            r1 = rating;
-                                                            provider.rating =
-                                                                r1.toString();
-                                                            print(r1);
-                                                          },
-                                                        ),
-                                                      )
-                                                    ],
-                                                  )
-                                                : surveyDetails.question[index]
-                                                            .type ==
-                                                        'Yes / No'
-                                                    ? Center(
-                                                        child: Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
-                                                          children: <Widget>[
-                                                            Row(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .center,
-                                                              children: <
-                                                                  Widget>[
-                                                                Checkbox(
-                                                                  value: valYes,
-                                                                  onChanged: (bool
-                                                                      value) {
-                                                                    setState(
-                                                                        () {
-                                                                      valYes =
-                                                                          value;
-                                                                      valNo =
-                                                                          !value;
-                                                                      provider.yesNo =
-                                                                          'Yes';
-                                                                      yesNo =
-                                                                          'Yes';
-                                                                    });
-                                                                  },
-                                                                ),
-                                                                Text("Yes"),
-                                                              ],
-                                                            ),
-                                                            SizedBox(
-                                                              width: 150,
-                                                            ),
-                                                            Row(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .center,
-                                                              children: <
-                                                                  Widget>[
-                                                                Checkbox(
-                                                                  value: valNo,
-                                                                  onChanged: (bool
-                                                                      value) {
-                                                                    setState(
-                                                                        () {
-                                                                      valNo =
-                                                                          value;
-                                                                      valYes =
-                                                                          !value;
-                                                                      provider.yesNo =
-                                                                          'No';
-                                                                      yesNo =
-                                                                          'No';
-                                                                    });
-                                                                  },
-                                                                ),
-                                                                Text("No"),
-                                                              ],
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      )
-                                                    : surveyDetails
-                                                                .question[index]
-                                                                .type ==
-                                                            'Boolean (True / False)'
-                                                        ? Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .only(
-                                                                    left: 35,
-                                                                    top: 20.0),
-                                                            child: Row(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .start,
-                                                              children: <
-                                                                  Widget>[
-                                                                Radio(
-                                                                  value: 1,
-                                                                  groupValue:
-                                                                      id,
-                                                                  onChanged:
-                                                                      (val) {
-                                                                    setState(
-                                                                        () {
-                                                                      checkboxItem =
-                                                                          'True';
-                                                                      id = 1;
-                                                                      print(id);
-                                                                      provider.truefalse =
-                                                                          checkboxItem;
-                                                                    });
-                                                                  },
-                                                                ),
-                                                                Text(
-                                                                  'True',
-                                                                  style: MyStyles
-                                                                      .robotoMedium20
-                                                                      .copyWith(
-                                                                          letterSpacing: Dimens
-                                                                              .letterSpacing_14,
-                                                                          // color: MyColors.accentsColors,
-                                                                          fontWeight:
-                                                                              FontWeight.w100),
-                                                                ),
-                                                                SizedBox(
-                                                                  width: 80,
-                                                                ),
-                                                                Radio(
-                                                                  value: 2,
-                                                                  groupValue:
-                                                                      id,
-                                                                  onChanged:
-                                                                      (val) {
-                                                                    setState(
-                                                                        () {
-                                                                      checkboxItem =
-                                                                          'False';
-                                                                      id = 2;
-                                                                      print(id);
-                                                                      provider.truefalse =
-                                                                          checkboxItem;
-                                                                    });
-                                                                  },
-                                                                ),
-                                                                Text(
-                                                                  'False',
-                                                                  style: MyStyles
-                                                                      .robotoMedium20
-                                                                      .copyWith(
-                                                                          letterSpacing: Dimens
-                                                                              .letterSpacing_14,
-                                                                          // color: MyColors.accentsColors,
-                                                                          fontWeight:
-                                                                              FontWeight.w100),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          )
-                                                        : surveyDetails
-                                                                    .question[
-                                                                        index]
-                                                                    .type ==
-                                                                'Unlikely / Fairly likely / Very Likely'
-                                                            ? Center(
-                                                                child: Padding(
-                                                                  padding: const EdgeInsets
-                                                                          .only(
-                                                                      left:
-                                                                          10.0),
-                                                                  child: Row(
-                                                                    mainAxisAlignment:
-                                                                        MainAxisAlignment
-                                                                            .spaceAround,
-                                                                    children: [
-                                                                      IconButton(
-                                                                          icon:
-                                                                              Icon(
-                                                                            Icons.sentiment_very_dissatisfied,
-                                                                            color: isUnlikely == true
-                                                                                ? Colors.red
-                                                                                : Colors.grey,
-                                                                          ),
-                                                                          onPressed:
-                                                                              () {
-                                                                            setState(() {
-                                                                              isUnlikely = true;
-                                                                              isFairly = false;
-                                                                              isVeryLikely = false;
-                                                                              ufv = 'Unlikely';
-                                                                              print(ufv);
-                                                                              provider.unlikely = ufv;
-                                                                            });
-                                                                          }),
-                                                                      IconButton(
-                                                                          icon:
-                                                                              Icon(
-                                                                            Icons.sentiment_neutral,
-                                                                            color: isFairly == true
-                                                                                ? Colors.amber
-                                                                                : Colors.grey,
-                                                                          ),
-                                                                          onPressed:
-                                                                              () {
-                                                                            setState(() {
-                                                                              isUnlikely = false;
-                                                                              isFairly = true;
-                                                                              isVeryLikely = false;
-                                                                              ufv = 'Fairly likely';
-                                                                              print(ufv);
-                                                                              provider.unlikely = ufv;
-                                                                            });
-                                                                          }),
-                                                                      IconButton(
-                                                                          icon:
-                                                                              Icon(
-                                                                            Icons.sentiment_very_satisfied,
-                                                                            color: isVeryLikely
-                                                                                ? Colors.green
-                                                                                : Colors.grey,
-                                                                          ),
-                                                                          onPressed:
-                                                                              () {
-                                                                            setState(() {
-                                                                              isUnlikely = false;
-                                                                              isFairly = false;
-                                                                              isVeryLikely = true;
-                                                                              ufv = 'Very Likely';
-                                                                              print(ufv);
-                                                                              provider.unlikely = ufv;
-                                                                            });
-                                                                          })
-                                                                    ],
+                                                        )
+                                                      ],
+                                                    )
+                                                  : surveyDetails.question[index]
+                                                              .type ==
+                                                          'Yes / No'
+                                                      ? Center(
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            children: <Widget>[
+                                                              Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .center,
+                                                                children: <
+                                                                    Widget>[
+                                                                  Checkbox(
+                                                                    value: valYes,
+                                                                    onChanged: (bool
+                                                                        value) {
+                                                                      setState(
+                                                                          () {
+                                                                        valYes =
+                                                                            value;
+                                                                        valNo =
+                                                                            !value;
+                                                                        provider.yesNo =
+                                                                            'Yes';
+                                                                        yesNo =
+                                                                            'Yes';
+                                                                      });
+                                                                    },
                                                                   ),
-                                                                ),
-                                                              )
-                                                            : Center(
-                                                                child: Padding(
-                                                                  padding: const EdgeInsets
-                                                                          .only(
-                                                                      left:
-                                                                          10.0),
-                                                                  child: Row(
-                                                                    mainAxisAlignment:
-                                                                        MainAxisAlignment
-                                                                            .spaceAround,
-                                                                    children: [
-                                                                      IconButton(
-                                                                          icon:
-                                                                              Icon(
-                                                                            Icons.sentiment_very_dissatisfied,
-                                                                            color: isDislike == true
-                                                                                ? Colors.red
-                                                                                : Colors.grey,
-                                                                          ),
-                                                                          onPressed:
-                                                                              () {
-                                                                            setState(() {
-                                                                              isDislike = true;
-                                                                              isLike = false;
-                                                                              isLoved = false;
-                                                                              lld = 'Dislike';
-                                                                              print(lld);
-                                                                              provider.likedislike = lld;
-                                                                            });
-                                                                          }),
-                                                                      IconButton(
-                                                                          icon:
-                                                                              Icon(
-                                                                            Icons.sentiment_neutral,
-                                                                            color: isLike == true
-                                                                                ? Colors.amber
-                                                                                : Colors.grey,
-                                                                          ),
-                                                                          onPressed:
-                                                                              () {
-                                                                            setState(() {
-                                                                              isDislike = false;
-                                                                              isLike = true;
-                                                                              isLoved = false;
-                                                                              lld = 'Like';
-                                                                              print(lld);
-                                                                              provider.likedislike = lld;
-                                                                            });
-                                                                          }),
-                                                                      IconButton(
-                                                                          icon:
-                                                                              Icon(
-                                                                            Icons.sentiment_very_satisfied,
-                                                                            color: isLoved
-                                                                                ? Colors.green
-                                                                                : Colors.grey,
-                                                                          ),
-                                                                          onPressed:
-                                                                              () {
-                                                                            setState(() {
-                                                                              isDislike = false;
-                                                                              isLike = false;
-                                                                              isLoved = true;
-                                                                              lld = 'Loved';
-                                                                              print(lld);
-                                                                              provider.likedislike = lld;
-                                                                            });
-                                                                          })
-                                                                    ],
-                                                                  ),
-                                                                ),
+                                                                  Text("Yes"),
+                                                                ],
                                                               ),
-                                      ],
-                                    ),
-                                  );
-                                }),
-                            SizedBox(
-                              height: 30.0,
-                            ),
-                            InkWell(
-                                onTap: () {
-                                  int count = 0;
-                                  for (var i in surveyDetails.question) {
-                                    if (surveyDetails.question[count].type ==
-                                        'Star Rating') {
-                                      print("yes star");
-                                      _surveyProvider.addQuestions(
-                                          "answer:${r1.toString()}&&question:${surveyDetails.question[count].question}&&type:${surveyDetails.question[count].type}");
-                                    } else if (surveyDetails
-                                            .question[count].type ==
-                                        'Boolean (True / False)') {
-                                      print("yes true");
-                                      _surveyProvider.addQuestions(
-                                          "answer:${checkboxItem.toString()}&&question:${surveyDetails.question[count].question}&&type:${surveyDetails.question[count].type}");
-                                    } else if (surveyDetails
-                                            .question[count].type ==
-                                        'Yes / No') {
-                                      print("yes no");
-                                      _surveyProvider.addQuestions(
-                                          "answer:${yesNo.toString()}&&question:${surveyDetails.question[count].question}&&type:${surveyDetails.question[count].type}");
-                                    } else if (surveyDetails
-                                            .question[count].type ==
-                                        'Dislike / Liked / Loved') {
-                                      print("yes like");
-                                      _surveyProvider.addQuestions(
-                                          "answer:${lld.toString()}&&question:${surveyDetails.question[count].question}&&type:${surveyDetails.question[count].type}");
-                                    } else if (surveyDetails
-                                            .question[count].type ==
-                                        'Unlikely / Fairly likely / Very Likely') {
-                                      print("yes like");
-                                      _surveyProvider.addQuestions(
-                                          "answer:${ufv.toString()}&&question:${surveyDetails.question[count].question}&&type:${surveyDetails.question[count].type}");
-                                    } else if (surveyDetails
-                                            .question[count].type ==
-                                        'Text Box') {
-                                      print("yes like");
-                                      _surveyProvider.addQuestions(
-                                          "answer:${provider.commentController.text.toString()}&&question:${surveyDetails.question[count].question}&&type:${surveyDetails.question[count].type}");
+                                                              SizedBox(
+                                                                width: 150,
+                                                              ),
+                                                              Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .center,
+                                                                children: <
+                                                                    Widget>[
+                                                                  Checkbox(
+                                                                    value: valNo,
+                                                                    onChanged: (bool
+                                                                        value) {
+                                                                      setState(
+                                                                          () {
+                                                                        valNo =
+                                                                            value;
+                                                                        valYes =
+                                                                            !value;
+                                                                        provider.yesNo =
+                                                                            'No';
+                                                                        yesNo =
+                                                                            'No';
+                                                                      });
+                                                                    },
+                                                                  ),
+                                                                  Text("No"),
+                                                                ],
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        )
+                                                      : surveyDetails
+                                                                  .question[index]
+                                                                  .type ==
+                                                              'Boolean (True / False)'
+                                                          ? Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                          .only(
+                                                                      left: 35,
+                                                                      top: 20.0),
+                                                              child: Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .start,
+                                                                children: <
+                                                                    Widget>[
+                                                                  Radio(
+                                                                    value: 1,
+                                                                    groupValue:
+                                                                        id,
+                                                                    onChanged:
+                                                                        (val) {
+                                                                      setState(
+                                                                          () {
+                                                                        checkboxItem =
+                                                                            'True';
+                                                                        id = 1;
+                                                                        print(id);
+                                                                        provider.truefalse =
+                                                                            checkboxItem;
+                                                                      });
+                                                                    },
+                                                                  ),
+                                                                  Text(
+                                                                    'True',
+                                                                    style: MyStyles
+                                                                        .robotoMedium20
+                                                                        .copyWith(
+                                                                            letterSpacing: Dimens
+                                                                                .letterSpacing_14,
+                                                                            // color: MyColors.accentsColors,
+                                                                            fontWeight:
+                                                                                FontWeight.w100),
+                                                                  ),
+                                                                  SizedBox(
+                                                                    width: 80,
+                                                                  ),
+                                                                  Radio(
+                                                                    value: 2,
+                                                                    groupValue:
+                                                                        id,
+                                                                    onChanged:
+                                                                        (val) {
+                                                                      setState(
+                                                                          () {
+                                                                        checkboxItem =
+                                                                            'False';
+                                                                        id = 2;
+                                                                        print(id);
+                                                                        provider.truefalse =
+                                                                            checkboxItem;
+                                                                      });
+                                                                    },
+                                                                  ),
+                                                                  Text(
+                                                                    'False',
+                                                                    style: MyStyles
+                                                                        .robotoMedium20
+                                                                        .copyWith(
+                                                                            letterSpacing: Dimens
+                                                                                .letterSpacing_14,
+                                                                            // color: MyColors.accentsColors,
+                                                                            fontWeight:
+                                                                                FontWeight.w100),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            )
+                                                          : surveyDetails
+                                                                      .question[
+                                                                          index]
+                                                                      .type ==
+                                                                  'Unlikely / Fairly likely / Very Likely'
+                                                              ? Center(
+                                                                  child: Padding(
+                                                                    padding: const EdgeInsets
+                                                                            .only(
+                                                                        left:
+                                                                            10.0),
+                                                                    child: Row(
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .spaceAround,
+                                                                      children: [
+                                                                        IconButton(
+                                                                            icon:
+                                                                                Icon(
+                                                                              Icons.sentiment_very_dissatisfied,
+                                                                              color: isUnlikely == true
+                                                                                  ? Colors.red
+                                                                                  : Colors.grey,
+                                                                            ),
+                                                                            onPressed:
+                                                                                () {
+                                                                              setState(() {
+                                                                                isUnlikely = true;
+                                                                                isFairly = false;
+                                                                                isVeryLikely = false;
+                                                                                ufv = 'Unlikely';
+                                                                                print(ufv);
+                                                                                provider.unlikely = ufv;
+                                                                              });
+                                                                            }),
+                                                                        IconButton(
+                                                                            icon:
+                                                                                Icon(
+                                                                              Icons.sentiment_neutral,
+                                                                              color: isFairly == true
+                                                                                  ? Colors.amber
+                                                                                  : Colors.grey,
+                                                                            ),
+                                                                            onPressed:
+                                                                                () {
+                                                                              setState(() {
+                                                                                isUnlikely = false;
+                                                                                isFairly = true;
+                                                                                isVeryLikely = false;
+                                                                                ufv = 'Fairly likely';
+                                                                                print(ufv);
+                                                                                provider.unlikely = ufv;
+                                                                              });
+                                                                            }),
+                                                                        IconButton(
+                                                                            icon:
+                                                                                Icon(
+                                                                              Icons.sentiment_very_satisfied,
+                                                                              color: isVeryLikely
+                                                                                  ? Colors.green
+                                                                                  : Colors.grey,
+                                                                            ),
+                                                                            onPressed:
+                                                                                () {
+                                                                              setState(() {
+                                                                                isUnlikely = false;
+                                                                                isFairly = false;
+                                                                                isVeryLikely = true;
+                                                                                ufv = 'Very Likely';
+                                                                                print(ufv);
+                                                                                provider.unlikely = ufv;
+                                                                              });
+                                                                            })
+                                                                      ],
+                                                                    ),
+                                                                  ),
+                                                                )
+                                                              : Center(
+                                                                  child: Padding(
+                                                                    padding: const EdgeInsets
+                                                                            .only(
+                                                                        left:
+                                                                            10.0),
+                                                                    child: Row(
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .spaceAround,
+                                                                      children: [
+                                                                        IconButton(
+                                                                            icon:
+                                                                                Icon(
+                                                                              Icons.sentiment_very_dissatisfied,
+                                                                              color: isDislike == true
+                                                                                  ? Colors.red
+                                                                                  : Colors.grey,
+                                                                            ),
+                                                                            onPressed:
+                                                                                () {
+                                                                              setState(() {
+                                                                                isDislike = true;
+                                                                                isLike = false;
+                                                                                isLoved = false;
+                                                                                lld = 'Dislike';
+                                                                                print(lld);
+                                                                                provider.likedislike = lld;
+                                                                              });
+                                                                            }),
+                                                                        IconButton(
+                                                                            icon:
+                                                                                Icon(
+                                                                              Icons.sentiment_neutral,
+                                                                              color: isLike == true
+                                                                                  ? Colors.amber
+                                                                                  : Colors.grey,
+                                                                            ),
+                                                                            onPressed:
+                                                                                () {
+                                                                              setState(() {
+                                                                                isDislike = false;
+                                                                                isLike = true;
+                                                                                isLoved = false;
+                                                                                lld = 'Like';
+                                                                                print(lld);
+                                                                                provider.likedislike = lld;
+                                                                              });
+                                                                            }),
+                                                                        IconButton(
+                                                                            icon:
+                                                                                Icon(
+                                                                              Icons.sentiment_very_satisfied,
+                                                                              color: isLoved
+                                                                                  ? Colors.green
+                                                                                  : Colors.grey,
+                                                                            ),
+                                                                            onPressed:
+                                                                                () {
+                                                                              setState(() {
+                                                                                isDislike = false;
+                                                                                isLike = false;
+                                                                                isLoved = true;
+                                                                                lld = 'Loved';
+                                                                                print(lld);
+                                                                                provider.likedislike = lld;
+                                                                              });
+                                                                            })
+                                                                      ],
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                        ],
+                                      ),
+                                    );
+                                  }),
+                              SizedBox(
+                                height: 30.0,
+                              ),
+                              InkWell(
+                                  onTap: () {
+                                    int count = 0;
+                                    for (var i in surveyDetails.question) {
+                                      if (surveyDetails.question[count].type ==
+                                          'Star Rating') {
+                                        print("yes star");
+                                        _surveyProvider.addQuestions(
+                                            "answer:${r1.toString()}&&question:${surveyDetails.question[count].question}&&type:${surveyDetails.question[count].type}");
+                                      } else if (surveyDetails
+                                              .question[count].type ==
+                                          'Boolean (True / False)') {
+                                        print("yes true");
+                                        _surveyProvider.addQuestions(
+                                            "answer:${checkboxItem.toString()}&&question:${surveyDetails.question[count].question}&&type:${surveyDetails.question[count].type}");
+                                      } else if (surveyDetails
+                                              .question[count].type ==
+                                          'Yes / No') {
+                                        print("yes no");
+                                        _surveyProvider.addQuestions(
+                                            "answer:${yesNo.toString()}&&question:${surveyDetails.question[count].question}&&type:${surveyDetails.question[count].type}");
+                                      } else if (surveyDetails
+                                              .question[count].type ==
+                                          'Dislike / Liked / Loved') {
+                                        print("yes like");
+                                        _surveyProvider.addQuestions(
+                                            "answer:${lld.toString()}&&question:${surveyDetails.question[count].question}&&type:${surveyDetails.question[count].type}");
+                                      } else if (surveyDetails
+                                              .question[count].type ==
+                                          'Unlikely / Fairly likely / Very Likely') {
+                                        print("yes like");
+                                        _surveyProvider.addQuestions(
+                                            "answer:${ufv.toString()}&&question:${surveyDetails.question[count].question}&&type:${surveyDetails.question[count].type}");
+                                      } else if (surveyDetails
+                                              .question[count].type ==
+                                          'Text Box') {
+                                        print("yes like");
+                                        _surveyProvider.addQuestions(
+                                            "answer:${provider.commentController.text.toString()}&&question:${surveyDetails.question[count].question}&&type:${surveyDetails.question[count].type}");
+                                      }
+                                      count++;
                                     }
-                                    count++;
-                                  }
-                                  _surveyProvider.performSurvey(
-                                      widget.videoId, surveyid);
-                                },
-                                child: _submitButton('RETURN TO MYADS')),
-                            SizedBox(
-                              height: 30.0,
-                            ),
-                          ],
-                        ),
-                      )
-                    : Padding(
-                        padding: EdgeInsets.only(
-                            top: MediaQuery.of(context).size.height / 2),
-                        child: Center(child: Text('No Survey')),
-                      )
-                : Center(child: CircularProgressIndicator());
-          },
+                                    _surveyProvider.performSurvey(
+                                        widget.videoId, surveyid);
+                                  },
+                                  child: _submitButton('RETURN TO MYADS')),
+                              SizedBox(
+                                height: 30.0,
+                              ),
+                            ],
+                          ),
+                        )
+                      : Padding(
+                          padding: EdgeInsets.only(
+                              top: MediaQuery.of(context).size.height / 2),
+                          child: Center(child: Text('No Survey')),
+                        )
+                  : Center(child: CircularProgressIndicator());
+            },
+          ),
         ),
       ),
     );
@@ -762,7 +764,7 @@ class _SurveyScreenState extends BaseState<SurveyScreen> {
                 child: InkWell(
                   onTap: () {
                     Navigator.of(context).push(PageRouteBuilder(
-                        pageBuilder: (_, __, ___) => new ChartsDemo()));
+                        pageBuilder: (_, __, ___) => new ChartsPage()));
                     // Navigator.push(
                     //     context,
                     //     MaterialPageRoute(
@@ -777,21 +779,21 @@ class _SurveyScreenState extends BaseState<SurveyScreen> {
                   ),
                 )),
             new PopupMenuDivider(height: 3.0),
-            new PopupMenuItem<String>(
-                value: 'value05',
-                child: InkWell(
-                  onTap: () {
-                    Navigator.of(subcontext).push(PageRouteBuilder(
-                        pageBuilder: (_, __, ___) => new ActivityScreen()));
-                  },
-                  child: new Text(
-                    'My Activity',
-                    style: MyStyles.robotoMedium16.copyWith(
-                        letterSpacing: 1.0,
-                        color: MyColors.black,
-                        fontWeight: FontWeight.w100),
-                  ),
-                )),
+            // new PopupMenuItem<String>(
+            //     value: 'value05',
+            //     child: InkWell(
+            //       onTap: () {
+            //         Navigator.of(subcontext).push(PageRouteBuilder(
+            //             pageBuilder: (_, __, ___) => new ActivityScreen()));
+            //       },
+            //       child: new Text(
+            //         'My Activity',
+            //         style: MyStyles.robotoMedium16.copyWith(
+            //             letterSpacing: 1.0,
+            //             color: MyColors.black,
+            //             fontWeight: FontWeight.w100),
+            //       ),
+            //     )),
             new PopupMenuDivider(height: 3.0),
             new PopupMenuItem<String>(
                 value: 'value06',
@@ -832,10 +834,10 @@ class _SurveyScreenState extends BaseState<SurveyScreen> {
                 pageBuilder: (_, __, ___) => new MyCouponScreen()));
           } else if (value == 'value04') {
             Navigator.of(subcontext).push(PageRouteBuilder(
-                pageBuilder: (_, __, ___) => new ChartsDemo()));
-          } else if (value == 'value05') {
-            Navigator.of(subcontext).push(PageRouteBuilder(
-                pageBuilder: (_, __, ___) => new ActivityScreen()));
+                pageBuilder: (_, __, ___) => new ChartsPage()));
+          // } else if (value == 'value05') {
+          //   Navigator.of(subcontext).push(PageRouteBuilder(
+          //       pageBuilder: (_, __, ___) => new ActivityScreen()));
           } else if (value == 'value06') {
             await SharedPrefManager.instance
                 .clearAll()

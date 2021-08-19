@@ -1,14 +1,20 @@
 class GetStreamResponse {
   List<StreamList> streamList;
+  List<double> targetList;
 
   GetStreamResponse({this.streamList});
 
   GetStreamResponse.fromJson(Map<String, dynamic> json) {
     if (json['stream_list'] != null) {
-      streamList = new List<StreamList>();
+      streamList = [];
+      targetList = [];
       json['stream_list'].forEach((v) {
         streamList.add(new StreamList.fromJson(v));
       });
+
+      targetList.add(json['target']['1']);
+      targetList.add(json['target']['2']);
+      targetList.add(json['target']['3']);
     }
   }
 

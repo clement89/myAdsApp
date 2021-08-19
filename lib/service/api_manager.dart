@@ -12,8 +12,8 @@ class ApiManager {
   bool isContentTypeJson = true;
   bool _isHttpRequest = false;
   bool _urlEncode = false;
-  // static const String BASE_URL = "https://myads-web.vitruvian-test.com.au/new/api/v1/";
-  static const String BASE_URL = "https://myads-web.vitruvian-test.com.au/test/api/v1/";
+  static const String BASE_URL = "https://myads-web.vitruvian-test.com.au/new/api/v1/";
+  // static const String BASE_URL = "https://myads-web.vitruvian-test.com.au/test/api/v1/";
   factory ApiManager() {
     return _apiService;
   }
