@@ -69,9 +69,7 @@ class _SignUpScreenState extends BaseState<SignUpScreen> {
 
           await SharedPrefManager.instance
               .setString('signUp_staging', 'not_started'); //cjc staging..
-
-          Navigator.of(context).push(PageRouteBuilder(
-              pageBuilder: (_, __, ___) => new FoxProxyScreen()));
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => FoxProxyScreen()));
         } else {
           print("failure");
           // CodeSnippet.instance.showMsg(_response.error);

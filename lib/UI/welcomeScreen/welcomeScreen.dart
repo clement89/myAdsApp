@@ -31,7 +31,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
     return Scaffold(
       backgroundColor: MyColors.white,
-      body: Container(
+      body: SingleChildScrollView(
         child: Column(
           children: [
             Padding(

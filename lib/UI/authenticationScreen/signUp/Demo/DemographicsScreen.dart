@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:grouped_buttons/grouped_buttons.dart';
 import 'package:menu_button/menu_button.dart';
@@ -285,22 +288,22 @@ class _DemographicsScreenState extends BaseState<DemographicsScreen> {
   //         .setString('signUp_staging', 'DemographicsScreen'); //cjc staging..
   //   }
   // }
-  void _performSubmit() {
+  void _performSubmit(String status) {
     print('submitting...');
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
       print("DemographicsScreen.dart:PerformSubmit");
-      _performSignup2();
+      _performSignup2(status);
     } else {
       _demographicsProvider.setAutoValidate(true);
     }
   }
 
-  void _performSignup2() {
+  void _performSignup2(String status) {
     print("DemographicsScreen.dart:PerformSignup2");
     _demographicsProvider.listener = this;
     ProgressBar.instance.showProgressbar(context);
-    _demographicsProvider.performSignUp2();
+    _demographicsProvider.performSignUp2(status);
   }
 
   int c = 0, d = 0, e = 0;
@@ -363,8 +366,14 @@ class _DemographicsScreenState extends BaseState<DemographicsScreen> {
             Navigator.of(context).push(PageRouteBuilder(
                 pageBuilder: (_, __, ___) => new SettingScreen()));
           } else {
-            Navigator.of(context).push(PageRouteBuilder(
-                pageBuilder: (_, __, ___) => new InterestScreen()));
+
+            if(_response.status == "1"){
+              Navigator.of(context).push(PageRouteBuilder(
+                  pageBuilder: (_, __, ___) => new InterestScreen()));
+            }else{
+              SystemNavigator.pop();
+            }
+
           }
           // print("success ${_response.interests}");
           SharedPrefManager.instance.setString('signUp_staging', 'completed');
@@ -470,388 +479,417 @@ class _DemographicsScreenState extends BaseState<DemographicsScreen> {
       ),
     );
     int _value = 42;
-
-    return SafeArea(
-      child: Scaffold(
-        appBar: _appBar(AppBar().preferredSize.height),
-        body: SingleChildScrollView(
-          child: Consumer<DemographicsProvider>(builder: (context, provider, _) {
-            return Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10.0),
-                    child: Center(
-                      child: Text(
-                        MyStrings.tellUs,
-                        style: MyStyles.robotoLight29.copyWith(
-                            letterSpacing: 1.0,
-                            color: MyColors.primaryColor,
-                            fontWeight: FontWeight.w100),
+    Future<bool> _onBackPressed() {
+      return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Are you sure?'),
+            content: Text('Do you want to save this to draft'),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('No'),
+                onPressed: () {
+                  // Navigator.of(context).pop(false);
+                  SystemNavigator.pop();
+                },
+              ),
+              FlatButton(
+                child: Text('Yes'),
+                onPressed: () {
+                  _performSubmit("2");
+                  // Navigator.of(context).pop(true);
+                },
+              )
+            ],
+          );
+        },
+      ) ?? false;
+    }
+    return WillPopScope(
+      onWillPop:  _onBackPressed,
+      child: SafeArea(
+        child: Scaffold(
+          appBar: _appBar(AppBar().preferredSize.height),
+          body: SingleChildScrollView(
+            child: Consumer<DemographicsProvider>(builder: (context, provider, _) {
+              return Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10.0),
+                      child: Center(
+                        child: Text(
+                          MyStrings.tellUs,
+                          style: MyStyles.robotoLight29.copyWith(
+                              letterSpacing: 1.0,
+                              color: MyColors.primaryColor,
+                              fontWeight: FontWeight.w100),
+                        ),
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 25.0),
-                    child: Text(
-                      MyStrings.theBasic,
-                      style: MyStyles.robotoLight22.copyWith(
-                          letterSpacing: 1.0,
-                          color: MyColors.accentsColors,
-                          fontWeight: FontWeight.w100),
-                    ),
-                  ),
-                  Divider(
-                    height: 10.0,
-                    color: MyColors.accentsColors,
-                    thickness: 2.0,
-                  ),
-                  SizedBox(
-                    height: 30.0,
-                  ),
-                  CustomTextFormField(
-                    labelText: 'First Name',
-                    controller: provider.firstnameController,
-                    validator: ValidateInput.validateName,
-                    onSave: (value) {
-                      provider.firstnameController.text = value;
-                    },
-                  ),
-                  CustomTextFormField(
-                    labelText: 'Last Name',
-                    controller: provider.lastnameController,
-                    validator: ValidateInput.validateName,
-                    onSave: (value) {
-                      provider.lastnameController.text = value;
-                    },
-                  ),
-                  CustomTextFormField(
-                    isEnabled: false,
-                    labelText: 'Email',
-                    controller: provider.emailController,
-                    validator: ValidateInput.validateEmail,
-                    onSave: (value) {
-                      provider.emailController.text = EmailID;
-                    },
-                  ),
-                  CustomTextFormField(
-                    labelText: 'Phone Number',
-                    controller: provider.mobileController,
-                    validator: ValidateInput.validateMobile,
-                    onSave: (value) {
-                      provider.mobileController.text = value;
-                    },
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 20.0),
-                    child: Center(
+                    Padding(
+                      padding: const EdgeInsets.only(top: 25.0),
                       child: Text(
-                        MyStrings.littleHelp,
-                        style: MyStyles.robotoLight24.copyWith(
+                        MyStrings.theBasic,
+                        style: MyStyles.robotoLight22.copyWith(
                             letterSpacing: 1.0,
                             color: MyColors.accentsColors,
                             fontWeight: FontWeight.w100),
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10.0),
-                    child: Divider(
-                      height: 5.0,
+                    Divider(
+                      height: 10.0,
                       color: MyColors.accentsColors,
-                      thickness: 1.3,
+                      thickness: 2.0,
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 250, top: 20.0),
-                    child: Text(
-                      'Gender',
-                      style: MyStyles.robotoMedium18.copyWith(
-                          letterSpacing: 1.0,
-                          color: MyColors.primaryLightColor,
-                          fontWeight: FontWeight.w100),
+                    SizedBox(
+                      height: 30.0,
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 35, top: 10.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        Radio(
-                          value: 1,
-                          groupValue: id,
-                          onChanged: (val) {
-                            setState(() {
-                              radioButtonItem = 'Male';
-                              id = 1;
-                              print(id);
-                              provider.type = radioButtonItem;
-                            });
-                          },
-                        ),
-                        Text(
-                          'Male',
-                          style: MyStyles.robotoLight24.copyWith(
-                              letterSpacing: Dimens.letterSpacing_14,
-                              color: MyColors.accentsColors,
-                              fontWeight: FontWeight.w100),
-                        ),
-                        Radio(
-                          value: 2,
-                          groupValue: id,
-                          onChanged: (val) {
-                            setState(() {
-                              radioButtonItem = 'Female';
-                              id = 2;
-                              print(id);
-                              provider.type = radioButtonItem;
-                            });
-                          },
-                        ),
-                        Text(
-                          'Female',
-                          style: MyStyles.robotoLight24.copyWith(
-                              letterSpacing: Dimens.letterSpacing_14,
-                              color: MyColors.accentsColors,
-                              fontWeight: FontWeight.w100),
-                        ),
-                      ],
+                    CustomTextFormField(
+                      labelText: 'First Name',
+                      controller: provider.firstnameController,
+                      validator: ValidateInput.validateName,
+                      onSave: (value) {
+                        provider.firstnameController.text = value;
+                      },
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 220, top: 20.0),
-                    child: Text(
-                      'Age Group',
-                      style: MyStyles.robotoMedium18.copyWith(
-                          letterSpacing: 1.0,
-                          color: MyColors.primaryLightColor,
-                          fontWeight: FontWeight.w100),
+                    CustomTextFormField(
+                      labelText: 'Last Name',
+                      controller: provider.lastnameController,
+                      validator: ValidateInput.validateName,
+                      onSave: (value) {
+                        provider.lastnameController.text = value;
+                      },
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 25, top: 10.0),
-                    child: CheckboxGroup(
-                      labels: _ageList,
-                      checked: _checked,
-                      labelStyle: MyStyles.robotoLight24.copyWith(
-                          letterSpacing: Dimens.letterSpacing_14,
-                          color: MyColors.accentsColors,
-                          fontWeight: FontWeight.w100),
-                      onChange: (bool isChecked, String label, int index) =>
-                          provider.agroup = label,
-                      onSelected: (List selected) => setState(() {
-                        if (selected.length > 1) {
-                          selected.removeAt(0);
-                          print('selected length  ${selected.length}');
-                        } else {
-                          print("only one $_checked");
-                        }
-                        _checked = selected;
-                      }),
+                    CustomTextFormField(
+                      isEnabled: false,
+                      labelText: 'Email',
+                      controller: provider.emailController,
+                      validator: ValidateInput.validateEmail,
+                      onSave: (value) {
+                        provider.emailController.text = EmailID;
+                      },
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 50, top: 20.0),
-                    child: Text(
-                      'Income in the last 12 months',
-                      style: MyStyles.robotoMedium18.copyWith(
-                          letterSpacing: 1.0,
-                          color: MyColors.primaryLightColor,
-                          fontWeight: FontWeight.w100),
+                    CustomTextFormField(
+                      labelText: 'Phone Number',
+                      controller: provider.mobileController,
+                      validator: ValidateInput.validateMobile,
+                      onSave: (value) {
+                        provider.mobileController.text = value;
+                      },
                     ),
-                  ),
-                  Padding(
-                    padding:
-                        const EdgeInsets.only(left: 25, top: 20.0, bottom: 20),
-                    child: CheckboxGroup(
-                      labels: _incomeList,
-                      checked: _ichecked,
-                      labelStyle: MyStyles.robotoLight24.copyWith(
-                          letterSpacing: Dimens.letterSpacing_14,
-                          color: MyColors.accentsColors,
-                          fontWeight: FontWeight.w100),
-                      onChange: (bool isChecked, String label, int index) =>
-                          // print("isChecked: $isChecked   label: $label  index: $index"),
-                          provider.igroup = label,
-                      onSelected: (List selected) => setState(() {
-                        if (selected.length > 1) {
-                          selected.removeAt(0);
-                          print('selected length  ${selected.length}');
-                        } else {
-                          print("only one");
-                        }
-                        _ichecked = selected;
-                      }),
-                    ),
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 12.0),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 20.0),
+                      child: Center(
                         child: Text(
-                          'Country',
-                          style: MyStyles.robotoMedium16.copyWith(
-                              letterSpacing: Dimens.letterSpacing_14,
-                              color: MyColors.primaryLightColor,
+                          MyStrings.littleHelp,
+                          style: MyStyles.robotoLight24.copyWith(
+                              letterSpacing: 1.0,
+                              color: MyColors.accentsColors,
                               fontWeight: FontWeight.w100),
                         ),
                       ),
-                      _demographicsProvider.getCountryList != null
-                          ? MenuButton<CountryList>(
-                              child: childButtonWithoutSameItem,
-                              items: _demographicsProvider.getCountryList != null
-                                  ? _demographicsProvider.getCountryList
-                                      .map((map) {
-                                      // FocusScope.of(context).unfocus();
-                                      // Future.microtask(() => FocusScope.of(context).requestFocus(FocusNode()));
-                                      return map;
-                                    }).toList()
-                                  : keys,
-                              // label: Text('Select Country'),
-                              topDivider: true,
-                              showSelectedItemOnList: true, //cjc country
-                              selectedItem:
-                                  _demographicsProvider.getCountryList.first,
-                              itemBackgroundColor: MyColors.blueShade,
-                              edgeMargin: 5.0,
-                              itemBuilder: (CountryList value) => Container(
-                                height: 40,
-                                alignment: Alignment.centerLeft,
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 0.0, horizontal: 16),
-                                child: Text(value.value),
-                              ),
-                              toggledChild: Container(
-                                child: childButtonWithoutSameItem,
-                              ),
-                              divider: Container(
-                                height: 1,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10.0),
+                      child: Divider(
+                        height: 5.0,
+                        color: MyColors.accentsColors,
+                        thickness: 1.3,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 250, top: 20.0),
+                      child: Text(
+                        'Gender',
+                        style: MyStyles.robotoMedium18.copyWith(
+                            letterSpacing: 1.0,
+                            color: MyColors.primaryLightColor,
+                            fontWeight: FontWeight.w100),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 35, top: 10.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          Radio(
+                            value: 1,
+                            groupValue: id,
+                            onChanged: (val) {
+                              setState(() {
+                                radioButtonItem = 'Male';
+                                id = 1;
+                                print(id);
+                                provider.type = radioButtonItem;
+                              });
+                            },
+                          ),
+                          Text(
+                            'Male',
+                            style: MyStyles.robotoLight24.copyWith(
+                                letterSpacing: Dimens.letterSpacing_14,
                                 color: MyColors.accentsColors,
-                              ),
-                              onItemSelected: (CountryList value) {
-                                setState(() {
-                                  selectedKey = value.value;
-                                  provider.selectedCountry = selectedKey;
-                                  // pin = int.parse(value.pinlength);
-                                  FocusScope.of(context)
-                                      .requestFocus(FocusNode());
-                                  print(selectedKey);
-                                  print(value.pinlength);
-
-                                  // print(selectedKey);
-                                });
-                              },
-                              decoration: BoxDecoration(
-                                border: Border.all(color: MyColors.accentsColors),
-                                borderRadius: const BorderRadius.all(
-                                  Radius.circular(3.0),
+                                fontWeight: FontWeight.w100),
+                          ),
+                          Radio(
+                            value: 2,
+                            groupValue: id,
+                            onChanged: (val) {
+                              setState(() {
+                                radioButtonItem = 'Female';
+                                id = 2;
+                                print(id);
+                                provider.type = radioButtonItem;
+                              });
+                            },
+                          ),
+                          Text(
+                            'Female',
+                            style: MyStyles.robotoLight24.copyWith(
+                                letterSpacing: Dimens.letterSpacing_14,
+                                color: MyColors.accentsColors,
+                                fontWeight: FontWeight.w100),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 220, top: 20.0),
+                      child: Text(
+                        'Age Group',
+                        style: MyStyles.robotoMedium18.copyWith(
+                            letterSpacing: 1.0,
+                            color: MyColors.primaryLightColor,
+                            fontWeight: FontWeight.w100),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 25, top: 10.0),
+                      child: CheckboxGroup(
+                        labels: _ageList,
+                        checked: _checked,
+                        labelStyle: MyStyles.robotoLight24.copyWith(
+                            letterSpacing: Dimens.letterSpacing_14,
+                            color: MyColors.accentsColors,
+                            fontWeight: FontWeight.w100),
+                        onChange: (bool isChecked, String label, int index) =>
+                            provider.agroup = label,
+                        onSelected: (List selected) => setState(() {
+                          if (selected.length > 1) {
+                            selected.removeAt(0);
+                            print('selected length  ${selected.length}');
+                          } else {
+                            print("only one $_checked");
+                          }
+                          _checked = selected;
+                        }),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 50, top: 20.0),
+                      child: Text(
+                        'Income in the last 12 months',
+                        style: MyStyles.robotoMedium18.copyWith(
+                            letterSpacing: 1.0,
+                            color: MyColors.primaryLightColor,
+                            fontWeight: FontWeight.w100),
+                      ),
+                    ),
+                    Padding(
+                      padding:
+                          const EdgeInsets.only(left: 25, top: 20.0, bottom: 20),
+                      child: CheckboxGroup(
+                        labels: _incomeList,
+                        checked: _ichecked,
+                        labelStyle: MyStyles.robotoLight24.copyWith(
+                            letterSpacing: Dimens.letterSpacing_14,
+                            color: MyColors.accentsColors,
+                            fontWeight: FontWeight.w100),
+                        onChange: (bool isChecked, String label, int index) =>
+                            // print("isChecked: $isChecked   label: $label  index: $index"),
+                            provider.igroup = label,
+                        onSelected: (List selected) => setState(() {
+                          if (selected.length > 1) {
+                            selected.removeAt(0);
+                            print('selected length  ${selected.length}');
+                          } else {
+                            print("only one");
+                          }
+                          _ichecked = selected;
+                        }),
+                      ),
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 12.0),
+                          child: Text(
+                            'Country',
+                            style: MyStyles.robotoMedium16.copyWith(
+                                letterSpacing: Dimens.letterSpacing_14,
+                                color: MyColors.primaryLightColor,
+                                fontWeight: FontWeight.w100),
+                          ),
+                        ),
+                        _demographicsProvider.getCountryList != null
+                            ? MenuButton<CountryList>(
+                                child: childButtonWithoutSameItem,
+                                items: _demographicsProvider.getCountryList != null
+                                    ? _demographicsProvider.getCountryList
+                                        .map((map) {
+                                        // FocusScope.of(context).unfocus();
+                                        // Future.microtask(() => FocusScope.of(context).requestFocus(FocusNode()));
+                                        return map;
+                                      }).toList()
+                                    : keys,
+                                // label: Text('Select Country'),
+                                topDivider: true,
+                                showSelectedItemOnList: true, //cjc country
+                                selectedItem:
+                                    _demographicsProvider.getCountryList.first,
+                                itemBackgroundColor: MyColors.blueShade,
+                                edgeMargin: 5.0,
+                                itemBuilder: (CountryList value) => Container(
+                                  height: 40,
+                                  alignment: Alignment.centerLeft,
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 0.0, horizontal: 16),
+                                  child: Text(value.value),
                                 ),
-                              ),
-                              onMenuButtonToggle: (bool isToggle) {
-                                // print(isToggle);
-                              },
-                            )
-                          : SizedBox()
-                    ],
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  CustomTextFormField(
-                    keyboardType: TextInputType.number,
-                    labelText: 'Postcode / ZIP Code',
-                    controller: provider.pcController,
-                    validator: (value) {
-                      //cjc commented
+                                toggledChild: Container(
+                                  child: childButtonWithoutSameItem,
+                                ),
+                                divider: Container(
+                                  height: 1,
+                                  color: MyColors.accentsColors,
+                                ),
+                                onItemSelected: (CountryList value) {
+                                  setState(() {
+                                    selectedKey = value.value;
+                                    provider.selectedCountry = selectedKey;
+                                    // pin = int.parse(value.pinlength);
+                                    FocusScope.of(context)
+                                        .requestFocus(FocusNode());
+                                    print(selectedKey);
+                                    print(value.pinlength);
 
-                      print('post code value - $value');
+                                    // print(selectedKey);
+                                  });
+                                },
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: MyColors.accentsColors),
+                                  borderRadius: const BorderRadius.all(
+                                    Radius.circular(3.0),
+                                  ),
+                                ),
+                                onMenuButtonToggle: (bool isToggle) {
+                                  // print(isToggle);
+                                },
+                              )
+                            : SizedBox()
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    CustomTextFormField(
+                      keyboardType: TextInputType.number,
+                      labelText: 'Postcode / ZIP Code',
+                      controller: provider.pcController,
+                      validator: (value) {
+                        //cjc commented
 
-                      if (value == null) {
-                        return "Postcode is required";
-                      }
-                      if (value.isEmpty) {
-                        return "Postcode is required";
-                      }
-                      if (value.length < pin) {
-                        return "Enter valid Postcode";
-                      } else {
-                        return null;
-                      }
-                      return null;
-                    },
-                    onSave: (value) {
-                      provider.pcController.text = value;
-                    },
-                  ),
-                  SizedBox(
-                    height: 20.0,
-                  ),
-                  InkWell(
-                      onTap: () async {
-                        print('tapped');
-                        print('_checked - $_checked');
-                        String emailid = await SharedPrefManager.instance
-                            .getString(Constants.userEmail);
-                        String pass = await SharedPrefManager.instance
-                            .getString(Constants.password);
-                        String uid = await SharedPrefManager.instance
-                            .getString(Constants.userId);
-                        print("jhfjhfhuj----------${emailid}");
-                        print("jhfjhfhuj----------${pass}");
-                        print("jhfjhfhuj----------${uid}");
-                        print("jhfjhfhuj----------${selectedKey}");
-                        if (_checked.isEmpty) {
-                          Fluttertoast.showToast(
-                            msg: "Please Select Atleast 1 Age Group",
-                            toastLength: Toast.LENGTH_LONG,
-                            gravity: ToastGravity.BOTTOM,
-                            timeInSecForIosWeb: 1,
-                            backgroundColor: Colors.redAccent,
-                            textColor: MyColors.white,
-                            fontSize: 16.0,
-                          );
-                          return;
+                        print('post code value - $value');
+
+                        if (value == null) {
+                          return "Postcode is required";
                         }
+                        if (value.isEmpty) {
+                          return "Postcode is required";
+                        }
+                        if (value.length < pin) {
+                          return "Enter valid Postcode";
+                        } else {
+                          return null;
+                        }
+                        return null;
+                      },
+                      onSave: (value) {
+                        provider.pcController.text = value;
+                      },
+                    ),
+                    SizedBox(
+                      height: 20.0,
+                    ),
+                    InkWell(
+                        onTap: () async {
+                          print('tapped');
+                          print('_checked - $_checked');
+                          String emailid = await SharedPrefManager.instance
+                              .getString(Constants.userEmail);
+                          String pass = await SharedPrefManager.instance
+                              .getString(Constants.password);
+                          String uid = await SharedPrefManager.instance
+                              .getString(Constants.userId);
+                          print("jhfjhfhuj----------${emailid}");
+                          print("jhfjhfhuj----------${pass}");
+                          print("jhfjhfhuj----------${uid}");
+                          print("jhfjhfhuj----------${selectedKey}");
+                          if (_checked.isEmpty) {
+                            Fluttertoast.showToast(
+                              msg: "Please Select Atleast 1 Age Group",
+                              toastLength: Toast.LENGTH_LONG,
+                              gravity: ToastGravity.BOTTOM,
+                              timeInSecForIosWeb: 1,
+                              backgroundColor: Colors.redAccent,
+                              textColor: MyColors.white,
+                              fontSize: 16.0,
+                            );
+                            return;
+                          }
 
-                        if (_ichecked.isEmpty) {
-                          Fluttertoast.showToast(
-                              msg: "Please Select Atleast 1 Income Group",
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.CENTER,
+                          if (_ichecked.isEmpty) {
+                            Fluttertoast.showToast(
+                                msg: "Please Select Atleast 1 Income Group",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.CENTER,
+                                timeInSecForIosWeb: 1,
+                                backgroundColor: Colors.red,
+                                textColor: Colors.white,
+                                fontSize: 16.0);
+                            return;
+                          }
+
+                          if (selectedKey == "Select Country" ||
+                              selectedKey == "" ||
+                              selectedKey.isEmpty) {
+                            Fluttertoast.showToast(
+                              msg: "Please Select Country",
+                              toastLength: Toast.LENGTH_LONG,
+                              gravity: ToastGravity.BOTTOM,
                               timeInSecForIosWeb: 1,
                               backgroundColor: Colors.red,
                               textColor: Colors.white,
-                              fontSize: 16.0);
-                          return;
-                        }
+                              fontSize: 16.0,
+                            );
+                            return;
+                          }
 
-                        if (selectedKey == "Select Country" ||
-                            selectedKey == "" ||
-                            selectedKey.isEmpty) {
-                          Fluttertoast.showToast(
-                            msg: "Please Select Country",
-                            toastLength: Toast.LENGTH_LONG,
-                            gravity: ToastGravity.BOTTOM,
-                            timeInSecForIosWeb: 1,
-                            backgroundColor: Colors.red,
-                            textColor: Colors.white,
-                            fontSize: 16.0,
-                          );
-                          return;
-                        }
-
-                        _performSubmit();
-                      },
-                      child: _submitButton(MyStrings.thatSMe)),
-                  SizedBox(
-                    height: 20.0,
-                  ),
-                ],
-              ),
-            );
-          }),
+                          _performSubmit("1");
+                        },
+                        child: _submitButton(MyStrings.thatSMe)),
+                    SizedBox(
+                      height: 20.0,
+                    ),
+                  ],
+                ),
+              );
+            }),
+          ),
         ),
       ),
     );

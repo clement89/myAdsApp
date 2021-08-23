@@ -208,7 +208,7 @@ class _MyCouponScreenState extends State<MyCouponScreen> {
                                   )),
                                   DataCell(
                                     Image.asset(
-                                      MyImages.copyIcon,
+                                      MyImages.copyIcon,height: 30,
                                     ),
                                   ),
                                 ],
@@ -225,6 +225,9 @@ class _MyCouponScreenState extends State<MyCouponScreen> {
                     // Navigator.push(context, MaterialPageRoute(builder: (context) => SettingScreen()));
                   },
                   child: _submitButton('RETURN TO SETTINGS')),
+              SizedBox(
+                height: 10.0,
+              ),
             ],
           ),
         ),
@@ -392,24 +395,24 @@ class _MyCouponScreenState extends State<MyCouponScreen> {
 
 Widget _submitButton(String buttonName) {
   return Container(
-    width: 280.0,
+    width: 230.0,
     height: 45.0,
     padding: EdgeInsets.symmetric(vertical: 13),
     alignment: Alignment.center,
     decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(5)),
-        boxShadow: <BoxShadow>[
-          BoxShadow(
-              color: Colors.blueAccent.withAlpha(100),
-              offset: Offset(2, 4),
-              blurRadius: 8,
-              spreadRadius: 1)
-        ],
+        // boxShadow: <BoxShadow>[
+        //   BoxShadow(
+        //       color: Colors.blueAccent.withAlpha(100),
+        //       offset: Offset(2, 4),
+        //       blurRadius: 8,
+        //       spreadRadius: 1)
+        // ],
         color: MyColors.primaryColor),
     child: Text(
       buttonName,
       style: MyStyles.robotoMedium14.copyWith(
-          letterSpacing: 3.0,
+          letterSpacing: 2.0,
           color: MyColors.white,
           fontWeight: FontWeight.w500),
     ),

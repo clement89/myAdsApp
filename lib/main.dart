@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:myads_app/Constants/colors.dart';
 import 'package:myads_app/UI/activity/activityProvider.dart';
+import 'package:myads_app/UI/welcomeScreen/splashScreen.dart';
 import 'package:myads_app/service/locator.dart';
 import 'package:provider/provider.dart';
 
@@ -64,7 +65,7 @@ class MyApp extends StatelessWidget {
             unselectedWidgetColor: MyColors.accentsColors,
             buttonColor: MyColors.accentsColors,
           ),
-          home: WelcomeScreen(),
+          home: AnimatedSplashScreen(),
           routes: {
             // MyRoutes.splashScreen: (context) => AnimatedSplashScreen(),
             MyRoutes.welcomeScreen: (context) => WelcomeScreen(),

@@ -208,20 +208,20 @@ class _SettingScreenState extends BaseState<SettingScreen> {
                 Padding(
                   padding: EdgeInsets.only(
                       top: media.padding.top + 20,
-                      bottom: media.padding.top + 20),
+                      bottom: media.padding.top + 30),
                   child: Center(
                     child: Text(
                       MyStrings.yourSettings,
-                      style: MyStyles.robotoMedium28.copyWith(
+                      style: MyStyles.robotoLight28.copyWith(
                           letterSpacing: 1.0,
                           color: MyColors.accentsColors,
                           fontWeight: FontWeight.w100),
                     ),
                   ),
                 ),
-                SizedBox(
-                  height: 20.0,
-                ),
+                // SizedBox(
+                //   height: 20.0,
+                // ),
                 ListTileTheme(
                   dense: true,
                   contentPadding: EdgeInsets.all(0),
@@ -248,31 +248,31 @@ class _SettingScreenState extends BaseState<SettingScreen> {
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.all(Radius.circular(5)),
-                            boxShadow: <BoxShadow>[
-                              BoxShadow(
-                                  color: Colors.blueAccent.withAlpha(100),
-                                  offset: Offset(2, 4),
-                                  blurRadius: 8,
-                                  spreadRadius: 1)
-                            ],
+                            // boxShadow: <BoxShadow>[
+                            //   BoxShadow(
+                            //       color: Colors.blueAccent.withAlpha(100),
+                            //       offset: Offset(2, 4),
+                            //       blurRadius: 8,
+                            //       spreadRadius: 1)
+                            // ],
                             color: MyColors.primaryColor),
                         child: Align(
                           alignment: Alignment.center,
                           child: Text(
                             MyStrings.updateInterest,
-                            style: MyStyles.robotoMedium10.copyWith(
-                                letterSpacing: 3.0,
+                            style: MyStyles.robotoMedium12.copyWith(
+                                letterSpacing: 1.0,
                                 color: MyColors.white,
                                 fontWeight: FontWeight.w500),
                           ),
                         ),
                       ),
-                    ),
+                    ) ,
                   ),
                 ),
-                SizedBox(
-                  height: 10.0,
-                ),
+                // SizedBox(
+                //   height: 10.0,
+                // ),
                 ListTileTheme(
                   dense: true,
                   contentPadding: EdgeInsets.all(0),
@@ -299,20 +299,20 @@ class _SettingScreenState extends BaseState<SettingScreen> {
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.all(Radius.circular(5)),
-                            boxShadow: <BoxShadow>[
-                              BoxShadow(
-                                  color: Colors.blueAccent.withAlpha(100),
-                                  offset: Offset(2, 4),
-                                  blurRadius: 8,
-                                  spreadRadius: 1)
-                            ],
+                            // boxShadow: <BoxShadow>[
+                            //   BoxShadow(
+                            //       color: Colors.blueAccent.withAlpha(100),
+                            //       offset: Offset(2, 4),
+                            //       blurRadius: 8,
+                            //       spreadRadius: 1)
+                            // ],
                             color: MyColors.primaryColor),
                         child: Align(
                           alignment: Alignment.center,
                           child: Text(
                             MyStrings.updateStreaming,
-                            style: MyStyles.robotoMedium10.copyWith(
-                                letterSpacing: 3.0,
+                            style: MyStyles.robotoMedium12.copyWith(
+                                letterSpacing: 1.0,
                                 color: MyColors.white,
                                 fontWeight: FontWeight.w500),
                           ),
@@ -321,16 +321,16 @@ class _SettingScreenState extends BaseState<SettingScreen> {
                     ),
                   ),
                 ),
-                SizedBox(
-                  height: 5.0,
-                ),
+                // SizedBox(
+                //   height: 5.0,
+                // ),
                 // update password
                 ListTileTheme(
                   dense: true,
                   contentPadding: EdgeInsets.all(0),
                   child: ExpansionTile(
                     // childrenPadding: EdgeInsets.only(left: 28.0),
-                    backgroundColor: MyColors.blueShade,
+                    backgroundColor: MyColors.liteBlueShade,
                     trailing: SizedBox(),
                     tilePadding: EdgeInsets.only(left: 40.0),
                     // title: _expansionTileButton(MyStrings.updatePassword),
@@ -371,9 +371,9 @@ class _SettingScreenState extends BaseState<SettingScreen> {
                     ],
                   ),
                 ),
-                SizedBox(
-                  height: 5.0,
-                ),
+                // SizedBox(
+                //   height: 5.0,
+                // ),
                 ListTileTheme(
                   dense: true,
                   contentPadding: EdgeInsets.all(0),
@@ -396,20 +396,20 @@ class _SettingScreenState extends BaseState<SettingScreen> {
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.all(Radius.circular(5)),
-                            boxShadow: <BoxShadow>[
-                              BoxShadow(
-                                  color: Colors.blueAccent.withAlpha(100),
-                                  offset: Offset(2, 4),
-                                  blurRadius: 8,
-                                  spreadRadius: 1)
-                            ],
+                            // boxShadow: <BoxShadow>[
+                            //   BoxShadow(
+                            //       color: Colors.blueAccent.withAlpha(100),
+                            //       offset: Offset(2, 4),
+                            //       blurRadius: 8,
+                            //       spreadRadius: 1)
+                            // ],
                             color: MyColors.primaryColor),
                         child: Align(
                           alignment: Alignment.center,
                           child: Text(
                             MyStrings.checkMy,
-                            style: MyStyles.robotoMedium10.copyWith(
-                                letterSpacing: 3.0,
+                            style: MyStyles.robotoMedium12.copyWith(
+                                letterSpacing: 1.0,
                                 color: MyColors.white,
                                 fontWeight: FontWeight.w500),
                           ),
@@ -418,9 +418,9 @@ class _SettingScreenState extends BaseState<SettingScreen> {
                     ),
                   ),
                 ),
-                SizedBox(
-                  height: 5.0,
-                ),
+                // SizedBox(
+                //   height: 5.0,
+                // ),
                 // update playback
                 ListTileTheme(
                   dense: true,
@@ -482,9 +482,9 @@ class _SettingScreenState extends BaseState<SettingScreen> {
                     ],
                   ),
                 ),
-                SizedBox(
-                  height: 5.0,
-                ),
+                // SizedBox(
+                //   height: 5.0,
+                // ),
                 // update profile, TODO:Edits here
                 ListTileTheme(
                   dense: true,
@@ -512,20 +512,20 @@ class _SettingScreenState extends BaseState<SettingScreen> {
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.all(Radius.circular(5)),
-                            boxShadow: <BoxShadow>[
-                              BoxShadow(
-                                  color: Colors.blueAccent.withAlpha(100),
-                                  offset: Offset(2, 4),
-                                  blurRadius: 8,
-                                  spreadRadius: 1)
-                            ],
+                            // boxShadow: <BoxShadow>[
+                            //   BoxShadow(
+                            //       color: Colors.blueAccent.withAlpha(100),
+                            //       offset: Offset(2, 4),
+                            //       blurRadius: 8,
+                            //       spreadRadius: 1)
+                            // ],
                             color: MyColors.primaryColor),
                         child: Align(
                           alignment: Alignment.center,
                           child: Text(
                             MyStrings.updateProfiles,
-                            style: MyStyles.robotoMedium10.copyWith(
-                                letterSpacing: 3.0,
+                            style: MyStyles.robotoMedium12.copyWith(
+                                letterSpacing: 1.0,
                                 color: MyColors.white,
                                 fontWeight: FontWeight.w500),
                           ),
@@ -719,26 +719,26 @@ class _SettingScreenState extends BaseState<SettingScreen> {
 
 Widget _submitButton(String buttonName) {
   return Container(
-    width: 300.0,
-    height: 45.0,
+    width: 220.0,
+    height: 40.0,
     padding: EdgeInsets.symmetric(vertical: 13),
     alignment: Alignment.center,
     decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(5)),
-        boxShadow: <BoxShadow>[
-          BoxShadow(
-              color: Colors.blueAccent.withAlpha(100),
-              offset: Offset(2, 4),
-              blurRadius: 8,
-              spreadRadius: 1)
-        ],
+        // boxShadow: <BoxShadow>[
+        //   BoxShadow(
+        //       color: Colors.blueAccent.withAlpha(100),
+        //       offset: Offset(2, 4),
+        //       blurRadius: 8,
+        //       spreadRadius: 1)
+        // ],
         color: MyColors.primaryColor),
     child: Align(
       alignment: Alignment.center,
       child: Text(
         buttonName,
         style: MyStyles.robotoMedium10.copyWith(
-            letterSpacing: 3.0,
+            letterSpacing: 1.0,
             color: MyColors.white,
             fontWeight: FontWeight.w500),
       ),
@@ -754,20 +754,20 @@ Widget _expansionTileButton(String buttonName) {
     alignment: Alignment.center,
     decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(5)),
-        boxShadow: <BoxShadow>[
-          BoxShadow(
-              color: Colors.blueAccent.withAlpha(100),
-              offset: Offset(2, 4),
-              blurRadius: 8,
-              spreadRadius: 1)
-        ],
+        // boxShadow: <BoxShadow>[
+        //   BoxShadow(
+        //       color: Colors.blueAccent.withAlpha(100),
+        //       offset: Offset(2, 4),
+        //       blurRadius: 8,
+        //       spreadRadius: 1)
+        // ],
         color: MyColors.primaryColor),
     child: Align(
       alignment: Alignment.center,
       child: Text(
         buttonName,
-        style: MyStyles.robotoMedium10.copyWith(
-            letterSpacing: 3.0,
+        style: MyStyles.robotoMedium12.copyWith(
+            letterSpacing: 1.0,
             color: MyColors.white,
             fontWeight: FontWeight.w500),
       ),
@@ -783,18 +783,18 @@ Widget _submitButton1(String buttonName) {
     alignment: Alignment.center,
     decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(5)),
-        boxShadow: <BoxShadow>[
-          BoxShadow(
-              color: Colors.blueAccent.withAlpha(100),
-              offset: Offset(2, 4),
-              blurRadius: 8,
-              spreadRadius: 1)
-        ],
+        // boxShadow: <BoxShadow>[
+        //   BoxShadow(
+        //       color: Colors.blueAccent.withAlpha(100),
+        //       offset: Offset(2, 4),
+        //       blurRadius: 8,
+        //       spreadRadius: 1)
+        // ],
         color: MyColors.primaryColor),
     child: Text(
       buttonName,
       style: MyStyles.robotoMedium12.copyWith(
-          letterSpacing: 3.0,
+          letterSpacing: 1.0,
           color: MyColors.white,
           fontWeight: FontWeight.w500),
     ),

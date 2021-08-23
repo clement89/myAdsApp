@@ -97,7 +97,7 @@ class DemographicsProvider extends BaseProvider {
     pcController.clear();
   }
 
-  performSignUp2() async {
+  performSignUp2(String status) async {
     print("DemographicsProvider.dart:PerformSignup2");
     Map<String, String> qParams = {
       'agroup': agroup,
@@ -108,7 +108,9 @@ class DemographicsProvider extends BaseProvider {
       "pc": pcController.text,
       "lname": lastnameController.text,
       'u': await SharedPrefManager.instance.getString(Constants.userId),
-      "g": type
+      "g": type,
+      "status": status,
+      "formNo": "2"
     };
     await ApiManager()
         .getDio(isJsonType: false)

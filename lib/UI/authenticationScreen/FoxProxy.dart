@@ -157,9 +157,8 @@ class _FoxProxyScreenState extends State<FoxProxyScreen> {
                     padding: const EdgeInsets.only(left: 100.0, right: 100),
                     child: InkWell(
                         onTap: () {
-                          Navigator.of(context).push(PageRouteBuilder(
-                              pageBuilder: (_, __, ___) =>
-                                  new DemographicsScreen()));
+                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => DemographicsScreen()));
+
                           // Navigator.push(context, MaterialPageRoute(builder: (context) => WelcomeScreen()));
                         },
                         child: _submitButton(MyStrings.agree)),

@@ -47,7 +47,9 @@ class SignUpProvider extends BaseProvider {
 
     Map<String, String> qParams = {
       'e': usernameController.text,
-      "p": passwordController.text
+      "p": passwordController.text,
+      "status": "1",
+      "formNo": "1"
     };
     await ApiManager()
         .getDio(isJsonType: false)

@@ -196,27 +196,49 @@ class _SurveyScreenState extends BaseState<SurveyScreen> {
         break;
     }
   }
+  _appBar(height) => PreferredSize(
+    preferredSize: Size(MediaQuery.of(context).size.width, 80),
+    child: Stack(
+      children: <Widget>[
+        Container(
+          // Background
+          child: Center(
+            child: Text(
+              "",
+            ),
+          ),
+          color: MyColors.colorLight,
+          height: 60,
+          width: MediaQuery.of(context).size.width,
+        ),
 
+        Container(), // Required some widget in between to float AppBar
+
+        Positioned(
+          // To take AppBar Size only
+          top: 20.0,
+          left: 20.0,
+          right: 20.0,
+          child: Image.asset(
+            MyImages.appBarLogo,
+            height: 60,
+          ),
+        ),
+        Positioned(
+          // To take AppBar Size only
+          top: 10.0,
+          left: 320.0,
+          right: 20.0,
+          child: _DividerPopMenu(),
+        )
+      ],
+    ),
+  );
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          backgroundColor: MyColors.colorLight,
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(''),
-              Padding(
-                padding: const EdgeInsets.only(left: 26.0),
-                child: Image.asset(MyImages.group4),
-              ),
-              _DividerPopMenu(),
-            ],
-          ),
-        ),
+        appBar: _appBar(AppBar().preferredSize.height),
         body: SingleChildScrollView(
           child: Consumer<SurveyProvider>(
             builder: (context, provider, _) {
@@ -229,7 +251,7 @@ class _SurveyScreenState extends BaseState<SurveyScreen> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Padding(
-                                padding: const EdgeInsets.only(top: 40.0),
+                                padding: const EdgeInsets.only(top: 50.0),
                                 child: Center(
                                   child: Text(
                                     surveyDetails.name,

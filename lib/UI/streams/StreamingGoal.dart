@@ -811,7 +811,7 @@ class _StreamingGoalsState extends BaseState<StreamingGoals> {
 Widget _submitButton(String buttonName) {
   return Container(
     width: 170.0,
-    height: 40.0,
+    height: 38.0,
     padding: EdgeInsets.symmetric(vertical: 13),
     alignment: Alignment.center,
     decoration: BoxDecoration(
@@ -826,8 +826,8 @@ Widget _submitButton(String buttonName) {
         color: MyColors.primaryColor),
     child: Text(
       buttonName,
-      style: MyStyles.robotoMedium14.copyWith(
-          letterSpacing: 3.0,
+      style: MyStyles.robotoMedium12.copyWith(
+          letterSpacing: 2.0,
           color: MyColors.white,
           fontWeight: FontWeight.w500),
     ),

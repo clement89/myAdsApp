@@ -161,17 +161,17 @@ class _CustomOrientationControlsState extends BaseState<CustomOrientationControl
             ),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.only(top:8.0,left: 15),
-          child: Container(
-              width:60,
-              height: 30,
-              color: MyColors.blueShade.withOpacity(0.3),
-              child: Text("${this.widget.rons}\nRons",
-                style: MyStyles.robotoBold12.copyWith( color: MyColors.black, fontWeight: FontWeight.w100),
-              )
-          ),
-        ),
+        // Padding(
+        //   padding: const EdgeInsets.only(top:8.0,left: 15),
+        //   child: Container(
+        //       width:60,
+        //       height: 30,
+        //       color: MyColors.blueShade.withOpacity(0.3),
+        //       child: Text("${this.widget.rons}\nRons",
+        //         style: MyStyles.robotoBold12.copyWith( color: MyColors.black, fontWeight: FontWeight.w100),
+        //       )
+        //   ),
+        // ),
         Positioned(
             right: 1,
             top: MediaQuery.of(context).size.height / 3.4,
@@ -278,7 +278,7 @@ class _CustomOrientationControlsState extends BaseState<CustomOrientationControl
               ],
             )),
         Padding(
-          padding: const EdgeInsets.only(left: 10.0, right: 30.0, top: 310.0),
+          padding: const EdgeInsets.only(left: 10.0, right: 100.0, top: 320.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -292,7 +292,7 @@ class _CustomOrientationControlsState extends BaseState<CustomOrientationControl
                         )));
                     print(this.widget.productUrl);
                   },
-                  child: Image.asset(MyImages.group2)),
+                  child: Image.asset(MyImages.group2,height: 45,)),
               SizedBox(width: 50,),
               InkWell(
                   onTap: () {
@@ -308,7 +308,7 @@ class _CustomOrientationControlsState extends BaseState<CustomOrientationControl
                         textColor: Colors.white,
                         fontSize: 16.0);
                   },
-                  child: Image.asset(MyImages.group1)),
+                  child: Image.asset(MyImages.group3,height: 45,)),
               SizedBox(width: 50,),
               InkWell(
                   onTap: () {
@@ -324,7 +324,7 @@ class _CustomOrientationControlsState extends BaseState<CustomOrientationControl
                         textColor: Colors.white,
                         fontSize: 16.0);
                   },
-                  child: Image.asset(MyImages.group3)),
+                  child: Image.asset(MyImages.group4,height: 45,)),
               SizedBox(width: 50,),
               InkWell(
                   onTap: () {
@@ -344,7 +344,7 @@ class _CustomOrientationControlsState extends BaseState<CustomOrientationControl
                           fontSize: 16.0);
                     }
                   },
-                  child: Image.asset(MyImages.group4)),
+                  child: Image.asset(MyImages.group1,height: 45,)),
             ],
           ),
         ),

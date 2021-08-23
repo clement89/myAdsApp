@@ -15,7 +15,8 @@ class InterestProvider extends BaseProvider {
   performGetInterest() async {
     Map<String, String> qParams = {
       'type': 'interests',
-      'u': await SharedPrefManager.instance.getString(Constants.userId)
+      'u': await SharedPrefManager.instance.getString(Constants.userId),
+
     };
     await ApiManager.instance
         .getDio(isJsonType: false)
@@ -52,11 +53,13 @@ class InterestProvider extends BaseProvider {
   }
 
   //update interest
-  performUpdateInterest(String interest) async {
+  performUpdateInterest(String interest,status) async {
     print("1");
     Map<String, String> qParams = {
       'u': await SharedPrefManager.instance.getString(Constants.userId),
       'intr': interest,
+      'status': status,
+      'formNo': '3'
     };
     await ApiManager()
         .getDio(isJsonType: false)

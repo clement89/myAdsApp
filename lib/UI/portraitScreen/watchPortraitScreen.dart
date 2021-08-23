@@ -307,34 +307,12 @@ class _WatchPortraitState extends BaseState<WatchPortrait> {
                 Padding(
                   padding:
                       const EdgeInsets.only(left: 50.0, right: 50.0, top: 30.0),
-                  child: Row(
+                  child: widget.productUrl == null ||
+                      widget.productUrl ==
+                          'http://myads-web.vitruvian-test.com.au/new/api'?
+                      Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      InkWell(
-                          onTap: () {
-                            if (widget.productUrl != null &&
-                                widget.productUrl !=
-                                    'http://myads-web.vitruvian-test.com.au/new/api') {
-                              Navigator.of(context).push(PageRouteBuilder(
-                                  pageBuilder: (_, __, ___) => new WebViewScreen(
-                                        url: widget.productUrl,
-                                        title: "Google",
-                                      )));
-                            } else {
-                              Fluttertoast.showToast(
-                                  msg:
-                                      "There is no Special Offers available now, please try again later.",
-                                  toastLength: Toast.LENGTH_LONG,
-                                  gravity: ToastGravity.CENTER,
-                                  timeInSecForIosWeb: 1,
-                                  backgroundColor: MyColors.primaryColor,
-                                  textColor: Colors.white,
-                                  fontSize: 16.0);
-                            }
-
-                            print(widget.productUrl);
-                          },
-                          child: Image.asset(MyImages.group2)),
                       InkWell(
                           onTap: () {
                             _watchPortraitProvider.listener = this;
@@ -349,7 +327,7 @@ class _WatchPortraitState extends BaseState<WatchPortrait> {
                                 textColor: Colors.white,
                                 fontSize: 16.0);
                           },
-                          child: Image.asset(MyImages.group1)),
+                          child: Image.asset(MyImages.group3,height: 35)),
                       InkWell(
                           onTap: () {
                             _watchPortraitProvider.listener = this;
@@ -364,7 +342,7 @@ class _WatchPortraitState extends BaseState<WatchPortrait> {
                                 textColor: Colors.white,
                                 fontSize: 16.0);
                           },
-                          child: Image.asset(MyImages.group3)),
+                          child: Image.asset(MyImages.group4,height: 35)),
                       InkWell(
                           onTap: () {
                             if (widget.surveyid != null) {
@@ -383,9 +361,150 @@ class _WatchPortraitState extends BaseState<WatchPortrait> {
                                   fontSize: 16.0);
                             }
                           },
-                          child: Image.asset(MyImages.group4)),
+                          child: Image.asset(MyImages.group1,height: 35)),
                     ],
-                  ),
+                  ):
+                      widget.surveyid == null ?
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          InkWell(
+                              onTap: () {
+                                if (widget.productUrl != null &&
+                                    widget.productUrl !=
+                                        'http://myads-web.vitruvian-test.com.au/new/api') {
+                                  Navigator.of(context).push(PageRouteBuilder(
+                                      pageBuilder: (_, __, ___) => new WebViewScreen(
+                                        url: widget.productUrl,
+                                        title: "Google",
+                                      )));
+                                } else {
+                                  Fluttertoast.showToast(
+                                      msg:
+                                      "There is no Special Offers available now, please try again later.",
+                                      toastLength: Toast.LENGTH_LONG,
+                                      gravity: ToastGravity.CENTER,
+                                      timeInSecForIosWeb: 1,
+                                      backgroundColor: MyColors.primaryColor,
+                                      textColor: Colors.white,
+                                      fontSize: 16.0);
+                                }
+
+                                print(widget.productUrl);
+                              },
+                              child: Image.asset(MyImages.group2,height: 35,)),
+                          InkWell(
+                              onTap: () {
+                                _watchPortraitProvider.listener = this;
+                                _watchPortraitProvider.performUpdateReaction(
+                                    "1", widget.VideoId);
+                                Fluttertoast.showToast(
+                                    msg: "Smile Reaction added ",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.CENTER,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor: Colors.green,
+                                    textColor: Colors.white,
+                                    fontSize: 16.0);
+                              },
+                              child: Image.asset(MyImages.group3,height: 35)),
+                          InkWell(
+                              onTap: () {
+                                _watchPortraitProvider.listener = this;
+                                _watchPortraitProvider.performUpdateReaction(
+                                    "0", widget.VideoId);
+                                Fluttertoast.showToast(
+                                    msg: "Sad Reaction added ",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.CENTER,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor: Colors.red,
+                                    textColor: Colors.white,
+                                    fontSize: 16.0);
+                              },
+                              child: Image.asset(MyImages.group4,height: 35)),
+                        ],
+                      ):
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          InkWell(
+                              onTap: () {
+                                if (widget.productUrl != null &&
+                                    widget.productUrl !=
+                                        'http://myads-web.vitruvian-test.com.au/new/api') {
+                                  Navigator.of(context).push(PageRouteBuilder(
+                                      pageBuilder: (_, __, ___) => new WebViewScreen(
+                                        url: widget.productUrl,
+                                        title: "Google",
+                                      )));
+                                } else {
+                                  Fluttertoast.showToast(
+                                      msg:
+                                      "There is no Special Offers available now, please try again later.",
+                                      toastLength: Toast.LENGTH_LONG,
+                                      gravity: ToastGravity.CENTER,
+                                      timeInSecForIosWeb: 1,
+                                      backgroundColor: MyColors.primaryColor,
+                                      textColor: Colors.white,
+                                      fontSize: 16.0);
+                                }
+
+                                print(widget.productUrl);
+                              },
+                              child: Image.asset(MyImages.group2,height: 35,)),
+                          InkWell(
+                              onTap: () {
+                                _watchPortraitProvider.listener = this;
+                                _watchPortraitProvider.performUpdateReaction(
+                                    "1", widget.VideoId);
+                                Fluttertoast.showToast(
+                                    msg: "Smile Reaction added ",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.CENTER,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor: Colors.green,
+                                    textColor: Colors.white,
+                                    fontSize: 16.0);
+                              },
+                              child: Image.asset(MyImages.group3,height: 35)),
+                          InkWell(
+                              onTap: () {
+                                _watchPortraitProvider.listener = this;
+                                _watchPortraitProvider.performUpdateReaction(
+                                    "0", widget.VideoId);
+                                Fluttertoast.showToast(
+                                    msg: "Sad Reaction added ",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.CENTER,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor: Colors.red,
+                                    textColor: Colors.white,
+                                    fontSize: 16.0);
+                              },
+                              child: Image.asset(MyImages.group4,height: 35)),
+                          InkWell(
+                              onTap: () {
+                                if (widget.surveyid != null) {
+                                  Navigator.of(context).push(PageRouteBuilder(
+                                      pageBuilder: (_, __, ___) =>
+                                      new SurveyScreen(videoId: widget.VideoId)));
+                                } else {
+                                  Fluttertoast.showToast(
+                                      msg:
+                                      "The survey for this Ads is not Available, pls try again later.",
+                                      toastLength: Toast.LENGTH_LONG,
+                                      gravity: ToastGravity.CENTER,
+                                      timeInSecForIosWeb: 1,
+                                      backgroundColor: MyColors.primaryColor,
+                                      textColor: Colors.white,
+                                      fontSize: 16.0);
+                                }
+                              },
+                              child: Image.asset(MyImages.group1,height: 35)),
+                        ],
+                      )
+
                 ),
                 SizedBox(
                   height: 20.0,
@@ -1040,7 +1159,7 @@ Widget _submitButton(String buttonName) {
     child: Text(
       buttonName,
       style: MyStyles.robotoMedium14.copyWith(
-          letterSpacing: 3.0,
+          letterSpacing: 1.0,
           color: MyColors.white,
           fontWeight: FontWeight.w500),
     ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:myads_app/Constants/colors.dart';
 import 'package:myads_app/Constants/dimens.dart';
@@ -54,6 +55,7 @@ class _InterestScreenState extends BaseState<InterestScreen> {
   }
 
   int c = 0;
+  String statusVar = '1';
   @override
   Future<void> onSuccess(any, {int reqId}) async {
     ProgressBar.instance.hideProgressBar();
@@ -100,8 +102,13 @@ class _InterestScreenState extends BaseState<InterestScreen> {
             Navigator.of(context).push(PageRouteBuilder(
                 pageBuilder: (_, __, ___) => new SettingScreen()));
           } else {
-            Navigator.of(context).push(PageRouteBuilder(
-                pageBuilder: (_, __, ___) => new StreamingGoals()));
+            if(statusVar == "1"){
+              Navigator.of(context).push(PageRouteBuilder(
+                  pageBuilder: (_, __, ___) => new StreamingGoals()));
+            }else{
+              SystemNavigator.pop();
+            }
+
           }
           SharedPrefManager.instance
               .setString('signUp_staging', 'completed'); //
@@ -126,7 +133,7 @@ class _InterestScreenState extends BaseState<InterestScreen> {
       });
     }
   }
-
+  String finalSTr = "";
   _appBar(height) => PreferredSize(
         preferredSize: Size(MediaQuery.of(context).size.width, 80),
         child: Stack(
@@ -164,130 +171,162 @@ class _InterestScreenState extends BaseState<InterestScreen> {
           ],
         ),
       );
+  Future<bool> _onBackPressed() {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Are you sure?'),
+          content: Text('Do you want to save this to draft'),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('No'),
+              onPressed: () {
+                // Navigator.of(context).pop(false);
+                SystemNavigator.pop();
+              },
+            ),
+            FlatButton(
+              child: Text('Yes'),
+              onPressed: () {
+                statusVar = "2";
+                _interestProvider.listener = this;
+                _interestProvider.performUpdateInterest(finalSTr,statusVar);
+                // Navigator.of(context).pop(true);
+              },
+            )
+          ],
+        );
+      },
+    ) ?? false;
+  }
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: MyColors.white,
-        appBar: _appBar(AppBar().preferredSize.height),
-        body: SingleChildScrollView(
-          child: Consumer<InterestProvider>(builder: (context, provider, _) {
-            return Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 20.0),
-                  child: Center(
-                    child: Text(
-                      MyStrings.okWeAre,
-                      style: MyStyles.robotoLight28.copyWith(
-                          letterSpacing: 1.0,
-                          color: MyColors.primaryColor,
-                          fontWeight: FontWeight.w100),
+    return WillPopScope(
+      onWillPop:  _onBackPressed,
+      child: SafeArea(
+        child: Scaffold(
+          backgroundColor: MyColors.white,
+          appBar: _appBar(AppBar().preferredSize.height),
+          body: SingleChildScrollView(
+            child: Consumer<InterestProvider>(builder: (context, provider, _) {
+              return Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 20.0),
+                    child: Center(
+                      child: Text(
+                        MyStrings.okWeAre,
+                        style: MyStyles.robotoLight28.copyWith(
+                            letterSpacing: 1.0,
+                            color: MyColors.primaryColor,
+                            fontWeight: FontWeight.w100),
+                      ),
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 10.0),
-                  child: Center(
-                    child: Text(
-                      MyStrings.whatSort,
-                      style: MyStyles.robotoLight28.copyWith(
-                          letterSpacing: 1.0,
-                          color: MyColors.accentsColors,
-                          fontWeight: FontWeight.w100),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10.0),
+                    child: Center(
+                      child: Text(
+                        MyStrings.whatSort,
+                        style: MyStyles.robotoLight28.copyWith(
+                            letterSpacing: 1.0,
+                            color: MyColors.accentsColors,
+                            fontWeight: FontWeight.w100),
+                      ),
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 10.0),
-                  child: Center(
-                    child: Text(
-                      MyStrings.youLike,
-                      style: MyStyles.robotoLight28.copyWith(
-                          letterSpacing: 1.0,
-                          color: MyColors.accentsColors,
-                          fontWeight: FontWeight.w100),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10.0),
+                    child: Center(
+                      child: Text(
+                        MyStrings.youLike,
+                        style: MyStyles.robotoLight28.copyWith(
+                            letterSpacing: 1.0,
+                            color: MyColors.accentsColors,
+                            fontWeight: FontWeight.w100),
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(
-                  height: 30.0,
-                ),
-                Container(
-                  height: 220 * ((interestList.length) / 2.1),
-                  child: GridView.builder(
-                      itemCount: interestList.length,
-                      primary: false,
-                      physics: NeverScrollableScrollPhysics(),
-                      padding: const EdgeInsets.all(1.0),
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2),
-                      itemBuilder: (BuildContext context, int index) {
-                        return Column(
-                          children: [
-                            Image(
-                              image: NetworkImage(interestList[index].image),
-                              height: 120,
-                            ),
-                            CheckboxListTile(
-                              controlAffinity: ListTileControlAffinity.leading,
-                              value: _selecteCategorys
-                                  .contains(interestList[index].value),
-                              onChanged: (bool selected) {
-                                _onCategorySelected(
-                                    selected, interestList[index].value);
-                                print(
-                                    "ISNULl here" + _selecteCategorys.toString());
-                              },
-                              title: Container(
-                                width: 160,
-                                child: Text(
-                                  interestList[index].value,
-                                  style: MyStyles.robotoLight16.copyWith(
-                                      letterSpacing: Dimens.letterSpacing_14,
-                                      color: MyColors.accentsColors,
-                                      fontWeight: FontWeight.w100),
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
+                  SizedBox(
+                    height: 30.0,
+                  ),
+                  Container(
+                    height: 221 * ((interestList.length) / 2.1),
+                    child: GridView.builder(
+                        itemCount: interestList.length,
+                        primary: false,
+                        physics: NeverScrollableScrollPhysics(),
+                        padding: const EdgeInsets.all(1.0),
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2),
+                        itemBuilder: (BuildContext context, int index) {
+                          return Column(
+                            children: [
+                              Image(
+                                image: NetworkImage(interestList[index].image),
+                                height: 120,
+                              ),
+                              CheckboxListTile(
+                                controlAffinity: ListTileControlAffinity.leading,
+                                value: _selecteCategorys
+                                    .contains(interestList[index].value),
+                                onChanged: (bool selected) {
+                                  _onCategorySelected(
+                                      selected, interestList[index].value);
+                                  print(
+                                      "ISNULl here" + _selecteCategorys.toString());
+                                },
+                                title: Container(
+                                  width: 160,
+                                  child: Text(
+                                    interestList[index].value,
+                                    style: MyStyles.robotoLight16.copyWith(
+                                        letterSpacing: Dimens.letterSpacing_14,
+                                        color: MyColors.accentsColors,
+                                        fontWeight: FontWeight.w100),
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
-                        );
-                      }),
-                ),
-                SizedBox(
-                  height: 10.0,
-                ),
-                InkWell(
-                    onTap: () {
-                      String finalSTr = "";
-                      print(_selecteCategorys.length);
-                      if (_selecteCategorys.length != 0) {
-                        for (var Str in _selecteCategorys) {
-                          finalSTr += Str + ",";
+                            ],
+                          );
+                        }),
+                  ),
+                  // SizedBox(
+                  //   height: 10.0,
+                  // ),
+                  InkWell(
+                      onTap: () {
+
+                        print(_selecteCategorys.length);
+                        if (_selecteCategorys.length != 0) {
+                          for (var Str in _selecteCategorys) {
+                            finalSTr += Str + ",";
+                          }
+                          print(finalSTr.substring(0, finalSTr.length - 1));
+                          _interestProvider.listener = this;
+                          _interestProvider.performUpdateInterest(finalSTr,'1');
+                        } else {
+                          Fluttertoast.showToast(
+                              msg: "Please Select Minimum 1 Interest",
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.CENTER,
+                              timeInSecForIosWeb: 1,
+                              backgroundColor: Colors.red,
+                              textColor: Colors.white,
+                              fontSize: 16.0);
                         }
-                        print(finalSTr.substring(0, finalSTr.length - 1));
-                        _interestProvider.listener = this;
-                        _interestProvider.performUpdateInterest(finalSTr);
-                      } else {
-                        Fluttertoast.showToast(
-                            msg: "Please Select Minimum 1 Interest",
-                            toastLength: Toast.LENGTH_SHORT,
-                            gravity: ToastGravity.CENTER,
-                            timeInSecForIosWeb: 1,
-                            backgroundColor: Colors.red,
-                            textColor: Colors.white,
-                            fontSize: 16.0);
-                      }
-                    },
-                    child: _submitButton(MyStrings.thatSMe)),
-                SizedBox(
-                  height: 10.0,
-                ),
-              ],
-            );
-          }),
+                      },
+                      child: _submitButton(MyStrings.thatSMe)),
+                  SizedBox(
+                    height: 20.0,
+                  ),
+                ],
+              );
+            }),
+          ),
         ),
       ),
     );

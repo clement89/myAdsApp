@@ -2,16 +2,26 @@ class SignInResponse {
   String username;
   String useremail;
   String userid;
+  String status;
+  String formNo;
   String error;
   String found;
 
   SignInResponse(
-      {this.username, this.useremail, this.userid, this.error, this.found});
+      {this.username,
+        this.useremail,
+        this.userid,
+        this.status,
+        this.formNo,
+        this.error,
+        this.found});
 
   SignInResponse.fromJson(Map<String, dynamic> json) {
     username = json['username'];
     useremail = json['useremail'];
     userid = json['userid'];
+    status = json['status'];
+    formNo = json['formNo'];
     error = json['error'];
     found = json['found'];
   }
@@ -21,6 +31,8 @@ class SignInResponse {
     data['username'] = this.username;
     data['useremail'] = this.useremail;
     data['userid'] = this.userid;
+    data['status'] = this.status;
+    data['formNo'] = this.formNo;
     data['error'] = this.error;
     data['found'] = this.found;
     return data;

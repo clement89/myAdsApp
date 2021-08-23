@@ -219,7 +219,7 @@ class _DashBoardScreenState extends BaseState<DashBoardScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           Padding(
-                            padding: const EdgeInsets.only(top: 20.0),
+                            padding: const EdgeInsets.only(top: 30.0),
                             child: Text(
                               '$watchTime',
                               style: MyStyles.robotoLight28.copyWith(
@@ -228,11 +228,11 @@ class _DashBoardScreenState extends BaseState<DashBoardScreen> {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(top: 24.0),
+                            padding: const EdgeInsets.only(top: 20.0),
                             child: Text(
                               'yet to watch',
-                              style: MyStyles.robotoMedium14.copyWith(
-                                  color: MyColors.colorLight,
+                              style: MyStyles.robotoLight14.copyWith(
+                                  color: MyColors.activeColor,
                                   fontWeight: FontWeight.w100),
                             ),
                           ),
@@ -257,7 +257,8 @@ class _DashBoardScreenState extends BaseState<DashBoardScreen> {
                               animation: true,
                               percent: percentage,
                               center: new Text(
-                                "${per.toString()}%",
+                                "${per != null? '${double.parse(per).toStringAsFixed(0)}%' : ''}",
+                                textAlign: TextAlign.center,
                                 style: MyStyles.robotoMedium20.copyWith(
                                     color: MyColors.white,
                                     fontWeight: FontWeight.w100),
@@ -268,8 +269,8 @@ class _DashBoardScreenState extends BaseState<DashBoardScreen> {
                           )),
                           Text(
                             "monthly progress",
-                            style: MyStyles.robotoMedium14.copyWith(
-                                color: MyColors.white,
+                            style: MyStyles.robotoLight14.copyWith(
+                                color: MyColors.activeColor,
                                 fontWeight: FontWeight.w100),
                           )
                         ],
@@ -296,8 +297,8 @@ class _DashBoardScreenState extends BaseState<DashBoardScreen> {
                             padding: const EdgeInsets.only(top: 12.0),
                             child: Text(
                               'days left in month',
-                              style: MyStyles.robotoMedium14.copyWith(
-                                  color: MyColors.colorLight,
+                              style: MyStyles.robotoLight14.copyWith(
+                                  color: MyColors.activeColor,
                                   fontWeight: FontWeight.w100),
                             ),
                           ),
@@ -409,19 +410,19 @@ class _DashBoardScreenState extends BaseState<DashBoardScreen> {
                         //     ],
                         //   ),
                         // ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 8.0, left: 15),
-                          child: Container(
-                              width: 60,
-                              height: 30,
-                              color: MyColors.blueShade.withOpacity(0.3),
-                              child: Text(
-                                "$rons\nRons",
-                                style: MyStyles.robotoBold12.copyWith(
-                                    color: MyColors.black,
-                                    fontWeight: FontWeight.w100),
-                              )),
-                        ),
+                        // Padding(
+                        //   padding: const EdgeInsets.only(top: 8.0, left: 15),
+                        //   child: Container(
+                        //       width: 60,
+                        //       height: 30,
+                        //       color: MyColors.blueShade.withOpacity(0.3),
+                        //       child: Text(
+                        //         "$rons\nRons",
+                        //         style: MyStyles.robotoBold12.copyWith(
+                        //             color: MyColors.black,
+                        //             fontWeight: FontWeight.w100),
+                        //       )),
+                        // ),
                         // Padding(
                         //   padding: const EdgeInsets.only(top:8.0,left: 15),
                         //   child: Image(image: NetworkImage(_dashboardProvider.getmultiple.image),height: 20,),
@@ -439,7 +440,7 @@ class _DashBoardScreenState extends BaseState<DashBoardScreen> {
                       //first element in the column is the white background (the Image.asset in your case)
                       flag == true
                           ? Container(
-                              color: MyColors.blueShade,
+                              color: MyColors.liteBlueShade,
                               width: MediaQuery.of(context).size.width,
                               height: 130.0,
                               child: InkWell(
@@ -675,7 +676,7 @@ class _DashBoardScreenState extends BaseState<DashBoardScreen> {
                                 ),
                                 Container(
                                   padding: EdgeInsets.symmetric(
-                                      vertical: 0.0, horizontal: 16.0),
+                                      vertical: 8.0, horizontal: 16.0),
                                   child: InkWell(
                                     onTap: () {
                                       _dashboardProvider.getuserBadge.isNotEmpty
@@ -699,12 +700,12 @@ class _DashBoardScreenState extends BaseState<DashBoardScreen> {
                                     child: Stack(
                                       children: [
                                         Container(
-                                          height: 70,
-                                          width: 70.0,
+                                          height: 58,
+                                          width: 58.0,
                                           child: Image.asset(MyImages.goldShield),
                                         ),
                                         Padding(
-                                          padding: const EdgeInsets.all(20.0),
+                                          padding: const EdgeInsets.all(15.0),
                                           child: Column(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.center,
@@ -985,26 +986,26 @@ successResponse4(Response response) async {
 
 Widget _submitButton(String buttonName) {
   return Container(
-    width: 190.0,
-    height: 45.0,
+    width: 180.0,
+    height: 40.0,
     padding: EdgeInsets.symmetric(vertical: 13),
     alignment: Alignment.center,
     decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(5)),
-        boxShadow: <BoxShadow>[
-          BoxShadow(
-              color: Colors.blueAccent.withAlpha(100),
-              offset: Offset(2, 4),
-              blurRadius: 8,
-              spreadRadius: 1)
-        ],
+        // boxShadow: <BoxShadow>[
+        //   BoxShadow(
+        //       color: Colors.blueAccent.withAlpha(100),
+        //       offset: Offset(2, 4),
+        //       blurRadius: 8,
+        //       spreadRadius: 1)
+        // ],
         color: MyColors.primaryColor),
     child: Align(
       alignment: Alignment.center,
       child: Text(
         buttonName,
         style: MyStyles.robotoMedium12.copyWith(
-            letterSpacing: 4.0,
+            letterSpacing: 2.0,
             color: MyColors.white,
             fontWeight: FontWeight.w500),
       ),
@@ -1020,20 +1021,20 @@ Widget _submitButton1(String buttonName) {
     alignment: Alignment.center,
     decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(5)),
-        boxShadow: <BoxShadow>[
-          BoxShadow(
-              color: Colors.blueAccent.withAlpha(100),
-              offset: Offset(2, 4),
-              blurRadius: 8,
-              spreadRadius: 1)
-        ],
+        // boxShadow: <BoxShadow>[
+        //   BoxShadow(
+        //       color: Colors.blueAccent.withAlpha(100),
+        //       offset: Offset(2, 4),
+        //       blurRadius: 8,
+        //       spreadRadius: 1)
+        // ],
         color: MyColors.primaryColor),
     child: Align(
       alignment: Alignment.center,
       child: Text(
         buttonName,
         style: MyStyles.robotoMedium12.copyWith(
-            letterSpacing: 4.0,
+            letterSpacing: 3.0,
             color: MyColors.white,
             fontWeight: FontWeight.w500),
       ),

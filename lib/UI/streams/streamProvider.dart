@@ -54,6 +54,7 @@ class StreamsProvider extends BaseProvider {
     Map<String, String> qParams = {
       'u': await SharedPrefManager.instance.getString(Constants.userId),
       'stream': interest,
+      'formNo': '4'
     };
     await ApiManager()
         .getDio(isJsonType: false)

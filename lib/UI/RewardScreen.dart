@@ -259,7 +259,7 @@ class _RewardsScreenState extends State<RewardsScreen> {
 
 Widget _submitButton(String buttonName) {
   return Container(
-    width: 280.0,
+    width: 230.0,
     height: 45.0,
     padding: EdgeInsets.symmetric(vertical: 13),
     alignment: Alignment.center,
@@ -275,7 +275,7 @@ Widget _submitButton(String buttonName) {
         color: MyColors.primaryColor),
     child: Text(
       buttonName,
-      style: MyStyles.robotoMedium14.copyWith(
+      style: MyStyles.robotoMedium12.copyWith(
           letterSpacing: 3.0,
           color: MyColors.white,
           fontWeight: FontWeight.w500),
@@ -289,125 +289,112 @@ class MyPage1Widget extends StatelessWidget {
   MyPage1Widget({this.multiply, this.controller});
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 30.0),
-          child: Center(
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 30.0),
+            child: Center(
+              child: Text(
+                '${MyStrings.congratulations}!',
+                style: MyStyles.robotoLight24.copyWith(
+                    letterSpacing: 1.0,
+                    color: MyColors.primaryColor,
+                    fontWeight: FontWeight.w100),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 5.0,
+          ),
+          Center(
             child: Text(
-              '${MyStrings.congratulations}!',
-              style: MyStyles.robotoMedium28.copyWith(
+              'Multiply: ${multiply.name}',
+              style: MyStyles.robotoLight24.copyWith(
                   letterSpacing: 1.0,
                   color: MyColors.primaryColor,
                   fontWeight: FontWeight.w100),
             ),
           ),
-        ),
-        SizedBox(
-          height: 5.0,
-        ),
-        Center(
-          child: Text(
-            'Multiply: ${multiply.name}',
-            style: MyStyles.robotoLight28.copyWith(
-                letterSpacing: 1.0,
-                color: MyColors.primaryColor,
-                fontWeight: FontWeight.w100),
+          SizedBox(
+            height: 5.0,
           ),
-        ),
-        SizedBox(
-          height: 5.0,
-        ),
-        Center(
-          child: Text(
-            'Benefit: ${(multiply.multiply - 100)}% multiplier',
-            style: MyStyles.robotoLight28.copyWith(
-                letterSpacing: 1.0,
-                color: MyColors.accentsColors,
-                fontWeight: FontWeight.w100),
-          ),
-        ),
-        SizedBox(
-          height: 5.0,
-        ),
-        Center(
-          child: Text(
-            "Criteria: ${multiply.criteria}",
-            style: MyStyles.robotoLight22.copyWith(
-                letterSpacing: 1.0,
-                color: MyColors.accentsColors,
-                fontWeight: FontWeight.w100),
-          ),
-        ),
-        SizedBox(
-          height: 20.0,
-        ),
-        Stack(
-          children: [
-            Image.network(multiply.image),
-            // Padding(
-            //   padding: const EdgeInsets.only(top:150.0, left: 190.0),
-            //   child: Text("${(multiply.multiply - 100).toString()}%",
-            //     style: MyStyles.robotoMedium40.copyWith(letterSpacing: 1.0, color: MyColors.accentsColors, fontWeight: FontWeight.w100),
-            //   ),
-            // ),
-            // Padding(
-            //   padding: const EdgeInsets.only(top:200.0, left: 160.0),
-            //   child: Text(MyStrings.multipliers,
-            //     style: MyStyles.robotoMedium26.copyWith(letterSpacing: 1.0, color: MyColors.accentsColors, fontWeight: FontWeight.w100),
-            //   ),
-            // ),
-          ],
-        ),
-        Padding(
-          padding: const EdgeInsets.only(top: 30.0),
-          child: Center(
+          Center(
             child: Text(
-              multiply.notification,
-              style: MyStyles.robotoLight22.copyWith(
+              'Benefit: ${(multiply.multiply - 100)}% multiplier',
+              style: MyStyles.robotoLight24.copyWith(
                   letterSpacing: 1.0,
                   color: MyColors.accentsColors,
                   fontWeight: FontWeight.w100),
             ),
           ),
-        ),
-        SizedBox(
-          height: 20.0,
-        ),
-        Center(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+          SizedBox(
+            height: 5.0,
+          ),
+          Center(
+            child: Text(
+              "Criteria: ${multiply.criteria}",
+              style: MyStyles.robotoLight20.copyWith(
+                  letterSpacing: 1.0,
+                  color: MyColors.accentsColors,
+                  fontWeight: FontWeight.w100),
+            ),
+          ),
+          SizedBox(
+            height: 20.0,
+          ),
+          Stack(
             children: [
-              //cjc commented
-              // multiply.multiply != null
-              //     ? SizedBox()
-              //     : IconButton(
-              //         icon: Icon(Icons.arrow_back_ios), onPressed: () {}),
-              InkWell(
-                onTap: () {
-                  Navigator.of(context).pop();
-                },
-                child: _submitButton(MyStrings.returnTo),
-              ),
-              Container(
-                  width: 40,
-                  height: 50,
-                  color: Color.fromRGBO(112, 174, 222, 90),
-                  child: IconButton(
-                      icon: Icon(
-                        Icons.arrow_forward_ios,
-                        color: Colors.white,
-                      ),
-                      onPressed: () {
-                        controller.nextPage(
-                            duration: Duration(milliseconds: 250),
-                            curve: Curves.easeInOut);
-                      })),
+              Image.network(multiply.image),
+              // Padding(
+              //   padding: const EdgeInsets.only(top:150.0, left: 190.0),
+              //   child: Text("${(multiply.multiply - 100).toString()}%",
+              //     style: MyStyles.robotoMedium40.copyWith(letterSpacing: 1.0, color: MyColors.accentsColors, fontWeight: FontWeight.w100),
+              //   ),
+              // ),
+              // Padding(
+              //   padding: const EdgeInsets.only(top:200.0, left: 160.0),
+              //   child: Text(MyStrings.multipliers,
+              //     style: MyStyles.robotoMedium26.copyWith(letterSpacing: 1.0, color: MyColors.accentsColors, fontWeight: FontWeight.w100),
+              //   ),
+              // ),
             ],
           ),
-        ),
-      ],
+          Padding(
+            padding: const EdgeInsets.only(top: 30.0),
+            child: Align(
+              alignment: Alignment.center,
+              child: Center(
+                child: Container(
+                  width: 300,
+                  child: Text(
+                    multiply.notification,
+                    textAlign: TextAlign.center,
+
+                    style: MyStyles.robotoLight22.copyWith(
+                        letterSpacing: 1.0,
+                        color: MyColors.accentsColors,
+                        fontWeight: FontWeight.w100),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 20.0,
+          ),
+          Center(
+            child: InkWell(
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+              child: _submitButton(MyStrings.returnTo),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -418,130 +405,100 @@ class MyPage2Widget extends StatelessWidget {
   MyPage2Widget({this.bonus, this.controller});
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 30.0),
-          child: Center(
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 30.0),
+            child: Center(
+              child: Text(
+                "${MyStrings.congratulations}!",
+                style: MyStyles.robotoLight24.copyWith(
+                    letterSpacing: 1.0,
+                    color: MyColors.primaryColor,
+                    fontWeight: FontWeight.w100),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 5.0,
+          ),
+          Center(
             child: Text(
-              "${MyStrings.congratulations}!",
-              style: MyStyles.robotoMedium28.copyWith(
+              'Bonus: ${bonus.name}',
+              textAlign: TextAlign.center,
+              style: MyStyles.robotoLight24.copyWith(
                   letterSpacing: 1.0,
                   color: MyColors.primaryColor,
                   fontWeight: FontWeight.w100),
             ),
           ),
-        ),
-        SizedBox(
-          height: 5.0,
-        ),
-        Center(
-          child: Text(
-            'Bonus: ${bonus.name}',
-            style: MyStyles.robotoLight28.copyWith(
-                letterSpacing: 1.0,
-                color: MyColors.primaryColor,
-                fontWeight: FontWeight.w100),
+          SizedBox(
+            height: 5.0,
           ),
-        ),
-        SizedBox(
-          height: 5.0,
-        ),
-        Center(
-          child: Text(
-            "Criteria: ${bonus.criteria}",
-            style: MyStyles.robotoLight22.copyWith(
-                letterSpacing: 1.0,
-                color: MyColors.accentsColors,
-                fontWeight: FontWeight.w100),
-          ),
-        ),
-        SizedBox(
-          height: 5.0,
-        ),
-        Center(
-          child: Text(
-            'Benefit: ${bonus.creditHours} Hours',
-            style: MyStyles.robotoLight28.copyWith(
-                letterSpacing: 1.0,
-                color: MyColors.accentsColors,
-                fontWeight: FontWeight.w100),
-          ),
-        ),
-        SizedBox(
-          height: 20.0,
-        ),
-        Stack(
-          children: [
-            Image.network(bonus.image),
-            // Padding(
-            //   padding: const EdgeInsets.only(top:90.0, left: 110.0),
-            //   child: Text((multiply.multiply - 100).toString() ,
-            //     style: MyStyles.robotoMedium60.copyWith(letterSpacing: 1.0, color: MyColors.accentsColors, fontWeight: FontWeight.w100),
-            //   ),
-            // ),
-          ],
-        ),
-        Padding(
-          padding: const EdgeInsets.only(top: 30.0),
-          child: Center(
+          Center(
             child: Text(
-              bonus.notification,
+              "Criteria: ${bonus.criteria}",
               style: MyStyles.robotoLight22.copyWith(
                   letterSpacing: 1.0,
                   color: MyColors.accentsColors,
                   fontWeight: FontWeight.w100),
             ),
           ),
-        ),
-        SizedBox(
-          height: 20.0,
-        ),
-        Center(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+          SizedBox(
+            height: 5.0,
+          ),
+          Center(
+            child: Text(
+              'Benefit: ${bonus.creditHours} Hours',
+              style: MyStyles.robotoLight24.copyWith(
+                  letterSpacing: 1.0,
+                  color: MyColors.accentsColors,
+                  fontWeight: FontWeight.w100),
+            ),
+          ),
+          SizedBox(
+            height: 20.0,
+          ),
+          Stack(
             children: [
-              Container(
-                  width: 40,
-                  height: 50,
-                  color: Color.fromRGBO(112, 174, 222, 90),
-                  child: IconButton(
-                      icon: Icon(
-                        Icons.arrow_back_ios,
-                        color: Colors.white,
-                      ),
-                      onPressed: () {
-                        controller.previousPage(
-                            duration: Duration(milliseconds: 250),
-                            curve: Curves.easeInOut);
-                      })),
-              InkWell(
-                onTap: () {
-                  Navigator.of(context).pop();
-                },
-                child: _submitButton(MyStrings.returnTo),
-              ),
-              //cjc commented
-              // bonus.notification != null
-              //     ? Container(
-              //         width: 40,
-              //         height: 50,
-              //         color: Color.fromRGBO(112, 174, 222, 90),
-              //         child: IconButton(
-              //             icon: Icon(
-              //               Icons.arrow_forward_ios,
-              //               color: Colors.white,
-              //             ),
-              //             onPressed: () {
-              //               controller.nextPage(
-              //                   duration: Duration(milliseconds: 250),
-              //                   curve: Curves.easeInOut);
-              //             }))
-              //     : SizedBox()
+              Image.network(bonus.image),
+              // Padding(
+              //   padding: const EdgeInsets.only(top:90.0, left: 110.0),
+              //   child: Text((multiply.multiply - 100).toString() ,
+              //     style: MyStyles.robotoMedium60.copyWith(letterSpacing: 1.0, color: MyColors.accentsColors, fontWeight: FontWeight.w100),
+              //   ),
+              // ),
             ],
           ),
-        ),
-      ],
+          Padding(
+            padding: const EdgeInsets.only(top: 30.0),
+            child: Center(
+              child: Text(
+                bonus.notification,
+                textAlign: TextAlign.center,
+                style: MyStyles.robotoLight22.copyWith(
+                    letterSpacing: 1.0,
+                    color: MyColors.accentsColors,
+                    fontWeight: FontWeight.w100),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 20.0,
+          ),
+          Center(
+            child: InkWell(
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+              child: _submitButton(MyStrings.returnTo),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -552,147 +509,111 @@ class MyPage3Widget extends StatelessWidget {
   MyPage3Widget({this.special, this.controller});
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 30.0),
-          child: Center(
-            child: Text(
-              "${MyStrings.congratulations}!",
-              style: MyStyles.robotoMedium28.copyWith(
-                  letterSpacing: 1.0,
-                  color: MyColors.primaryColor,
-                  fontWeight: FontWeight.w100),
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 30.0),
+            child: Center(
+              child: Text(
+                "${MyStrings.congratulations}!",
+                style: MyStyles.robotoLight24.copyWith(
+                    letterSpacing: 1.0,
+                    color: MyColors.primaryColor,
+                    fontWeight: FontWeight.w100),
+              ),
             ),
           ),
-        ),
-        SizedBox(
-          height: 5.0,
-        ),
-        Center(
-          child: Center(
+          SizedBox(
+            height: 5.0,
+          ),
+          Center(
+            child: Center(
+              child: Text(
+                'Special Offer: ${special.name}.',
+                textAlign: TextAlign.center,
+                style: MyStyles.robotoLight20.copyWith(
+                    letterSpacing: 1.0,
+                    color: MyColors.primaryColor,
+                    fontWeight: FontWeight.w100),
+              ),
+            ),
+          ),
+          // SizedBox(height: 5.0,),
+          Center(
             child: Text(
-              'Special Offer: ${special.name}.',
+              'Benefit: ${special.promoCode}',
+              style: MyStyles.robotoMedium24.copyWith(
+                  letterSpacing: 1.0,
+                  color: MyColors.accentsColors,),
+            ),
+          ),
+          SizedBox(
+            height: 5.0,
+          ),
+          Center(
+            child: Text(
+              special.promoUrl,
               style: MyStyles.robotoLight20.copyWith(
                   letterSpacing: 1.0,
-                  color: MyColors.primaryColor,
+                  color: MyColors.accentsColors,
                   fontWeight: FontWeight.w100),
             ),
           ),
-        ),
-        // SizedBox(height: 5.0,),
-        Center(
-          child: Text(
-            'Benefit: ${special.promoCode}',
-            style: MyStyles.robotoLight28.copyWith(
-                letterSpacing: 1.0,
-                color: MyColors.accentsColors,
-                fontWeight: FontWeight.w100),
-          ),
-        ),
-        SizedBox(
-          height: 5.0,
-        ),
-        Center(
-          child: Text(
-            special.promoUrl,
-            style: MyStyles.robotoLight22.copyWith(
-                letterSpacing: 1.0,
-                color: MyColors.accentsColors,
-                fontWeight: FontWeight.w100),
-          ),
-        ),
 
-        SizedBox(
-          height: 5.0,
-        ),
-        Center(
-          child: Text(
-            'Criteria: ${special.criteria}',
-            style: MyStyles.robotoLight22.copyWith(
-                letterSpacing: 1.0,
-                color: MyColors.accentsColors,
-                fontWeight: FontWeight.w100),
+          SizedBox(
+            height: 5.0,
           ),
-        ),
-        SizedBox(
-          height: 20.0,
-        ),
-        Stack(
-          children: [
-            Image.network(special.image),
-            // Padding(
-            //   padding: const EdgeInsets.only(top:90.0, left: 110.0),
-            //   child: Text((multiply.multiply - 100).toString() ,
-            //     style: MyStyles.robotoMedium60.copyWith(letterSpacing: 1.0, color: MyColors.accentsColors, fontWeight: FontWeight.w100),
-            //   ),
-            // ),
-          ],
-        ),
-        Padding(
-          padding: const EdgeInsets.only(top: 30.0),
-          child: Center(
+          Center(
             child: Text(
-              special.notification,
+              'Criteria: ${special.criteria}',
               style: MyStyles.robotoLight22.copyWith(
                   letterSpacing: 1.0,
                   color: MyColors.accentsColors,
                   fontWeight: FontWeight.w100),
             ),
           ),
-        ),
-        SizedBox(
-          height: 20.0,
-        ),
-        Center(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+          SizedBox(
+            height: 20.0,
+          ),
+          Stack(
             children: [
-              //cjc commented
-              // Container(
-              //   width: 40,
-              //   height: 50,
-              //   color: Color.fromRGBO(112, 174, 222, 90),
-              //   child: IconButton(
-              //     icon: Icon(
-              //       Icons.arrow_back_ios,
-              //       color: Colors.white,
-              //     ),
-              //     onPressed: () {
-              //       controller.previousPage(
-              //           duration: Duration(milliseconds: 250),
-              //           curve: Curves.easeInOut);
-              //     },
+              Image.network(special.image),
+              // Padding(
+              //   padding: const EdgeInsets.only(top:90.0, left: 110.0),
+              //   child: Text((multiply.multiply - 100).toString() ,
+              //     style: MyStyles.robotoMedium60.copyWith(letterSpacing: 1.0, color: MyColors.accentsColors, fontWeight: FontWeight.w100),
               //   ),
               // ),
-              InkWell(
-                onTap: () {
-                  Navigator.of(context).pop();
-                },
-                child: _submitButton(MyStrings.returnTo),
-              ),
-              special == null
-                  ? Container()
-                  : Container(
-                      width: 40,
-                      height: 50,
-                      color: Color.fromRGBO(112, 174, 222, 90),
-                      child: IconButton(
-                        icon: Icon(
-                          Icons.arrow_forward_ios,
-                          color: Colors.white,
-                        ),
-                        onPressed: () {
-                          controller.nextPage(
-                              duration: Duration(milliseconds: 250),
-                              curve: Curves.easeInOut);
-                        },
-                      ),
-                    ),
             ],
           ),
-        ),
-      ],
+          Padding(
+            padding: const EdgeInsets.only(top: 30.0),
+            child: Center(
+              child: Text(
+                special.notification,
+                style: MyStyles.robotoLight22.copyWith(
+                    letterSpacing: 1.0,
+                    color: MyColors.accentsColors,
+                    fontWeight: FontWeight.w100),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 20.0,
+          ),
+          Center(
+            child: InkWell(
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+              child: _submitButton(MyStrings.returnTo),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

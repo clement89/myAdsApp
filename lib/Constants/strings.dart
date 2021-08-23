@@ -56,7 +56,7 @@ class MyStrings {
   static const String minutesThis = "Watch Time";
   static const String yetToWatch = "Yet to watch";
   static const String addtocredit = "Add to Credit Card";
-  static const String enoughForNow = "Enough For Now";
+  static const String enoughForNow = "ENOUGH FOR NOW";
 
   static const String congratulations = "Congratulations";
   static const String youHaveAchieved = "You have achieved the";

@@ -1431,15 +1431,12 @@ class ChartsPageState extends BaseState<ChartsPage> {
                   color: MyColors.accentsColors,
                   thickness: 2.0,
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 10.0),
-                  child: Center(
-                    child: Text(
-                      MyStrings.dailyViewingTime,
-                      style: MyStyles.robotoMedium26.copyWith(
-                          color: MyColors.accentsColors,
-                          fontWeight: FontWeight.w100),
-                    ),
+                Center(
+                  child: Text(
+                    MyStrings.dailyViewingTime,
+                    style: MyStyles.robotoMedium22.copyWith(
+                        color: MyColors.primaryColor,
+                        fontWeight: FontWeight.w100),
                   ),
                 ),
                 Container(
@@ -1484,7 +1481,7 @@ class ChartsPageState extends BaseState<ChartsPage> {
                           ),
                           Text(
                             'Minutes per day',
-                            style: MyStyles.robotoMedium12.copyWith(
+                            style: MyStyles.robotoMedium10.copyWith(
                                 letterSpacing: 1.0,
                                 color: MyColors.black,
                                 fontWeight: FontWeight.w100),
@@ -1508,7 +1505,7 @@ class ChartsPageState extends BaseState<ChartsPage> {
                           ),
                           Text(
                             'Bonus Minutes',
-                            style: MyStyles.robotoMedium12.copyWith(
+                            style: MyStyles.robotoMedium10.copyWith(
                                 letterSpacing: 1.0,
                                 color: MyColors.black,
                                 fontWeight: FontWeight.w100),
@@ -1533,12 +1530,12 @@ class ChartsPageState extends BaseState<ChartsPage> {
                       padding: const EdgeInsets.only(left: 8.0),
                       child: Column(
                         children: <Widget>[
-                          SizedBox(
-                            height: 20,
-                          ),
+                          // SizedBox(
+                          //   height: 20,
+                          // ),
                           Text(
                             MyStrings.cumulative,
-                            style: MyStyles.robotoMedium24.copyWith(
+                            style: MyStyles.robotoMedium22.copyWith(
                                 color: MyColors.primaryColor,
                                 fontWeight: FontWeight.w100),
                           ),
@@ -1802,10 +1799,10 @@ class ChartsPageState extends BaseState<ChartsPage> {
         print('ok here..11 ${_selectedStreams.length}');
       }
     }
-    print('newList -- ${_chartProvider.getViewList.first.date}');
-    print('newList -- ${_chartProvider.getViewList.last.date}');
+    // print('newList -- ${_chartProvider.getViewList.first.date}');
+    // print('newList -- ${_chartProvider.getViewList.last.date}');
 
-    print('okkk -- $newList');
+    // print('okkk -- $newList');
 
     return newList;
   }
@@ -1977,24 +1974,17 @@ class Sales {
 
 Widget _submitButton(String buttonName) {
   return Container(
-    width: 250.0,
-    height: 40.0,
-    padding: EdgeInsets.symmetric(vertical: 13),
+    width: 220.0,
+    height: 39.0,
+    padding: EdgeInsets.symmetric(vertical: 10),
     alignment: Alignment.center,
     decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(5)),
-        boxShadow: <BoxShadow>[
-          BoxShadow(
-              color: Colors.blueAccent.withAlpha(100),
-              offset: Offset(2, 4),
-              blurRadius: 8,
-              spreadRadius: 1)
-        ],
         color: MyColors.primaryColor),
     child: Text(
       buttonName,
-      style: MyStyles.robotoMedium12.copyWith(
-          letterSpacing: 3.0,
+      style: MyStyles.robotoMedium10.copyWith(
+          letterSpacing: 1.0,
           color: MyColors.white,
           fontWeight: FontWeight.w500),
     ),
